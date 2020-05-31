@@ -4,7 +4,11 @@
 package utilities;
 
 import com.jme3.asset.AssetKey;
+import com.jme3.asset.AssetLocator;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.TextureKey;
+import com.jme3.asset.plugins.FileLocator;
+import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.texture.Texture2D;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,10 +45,6 @@ public class ImageManager {
 
         if (textures == null) {
             textures = new HashMap<>();
-        }
-
-        if (!directory.isDirectory() || !directory.exists()) {
-            throw new IllegalArgumentException("The argument 'directory' must be a directory. Passed: " + directory.getAbsolutePath());
         }
 
         int file_num = numberOfFilesInDir(directory);
@@ -108,18 +108,16 @@ public class ImageManager {
         textures.put(ID, texture);
     }
 
-    /**
-     * Loads the passed URL as a PNG image and returns it. This is used to quickly
-     * get an image as there's no recursion or anything.
-     *
-     * @param imgUrl the URL of the image to load. Use File.toURI().toURL();
-     */
     @Nullable
-    public Texture2D quickLoadImage(URL imgUrl) {
-        AssetKey<Texture2D> assetKey = new AssetKey<>(imgUrl.toString());
-//        return (Texture2D)assetManager.loadAsset(imgUrl.toString());
-        return assetManager.loadAsset(assetKey);
+    public Texture2D quickLoadImage(String assetName) {
+        Texture2D loaded = null;
 
+        assetManager.registerLocator("/Users/cbrooks/dev/QuickBounceGameKotlin/assets", FileLocator.class);
+
+        TextureKey textureKey = new TextureKey(assetName);
+        loaded = (Texture2D)assetManager.loadAsset(textureKey);
+
+        return loaded;
     }
 
     /**

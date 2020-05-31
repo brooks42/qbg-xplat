@@ -36,12 +36,8 @@ public class LoadingScreen extends BaseAppState {
 
         this.application = (QbgApplication)app;
 
-        try {
-            background = application.spriteFactory.getSprite(application.imageManager.quickLoadImage(new File("build/resources/main/images/skins/default/backgrounds/title.png").toURI().toURL()),
-                    0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
-        } catch (MalformedURLException e) {
-            System.out.println("broken URL: " + e.getMessage());
-        }
+        background = application.spriteFactory.getSprite(application.imageManager.quickLoadImage("title.png"),
+                0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
 
         // now start loading the images
         final LoadingScreen screen = this;
@@ -69,7 +65,7 @@ public class LoadingScreen extends BaseAppState {
             }
         };
 
-        application.imageManager.loadImages(loadListener, new File("resources/images"));
+//        application.imageManager.loadImages(loadListener, new File("resources/images"));
     }
 
     @Override
