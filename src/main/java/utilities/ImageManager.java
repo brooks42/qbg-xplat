@@ -3,32 +3,31 @@
  */
 package utilities;
 
+import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
-import com.jme3.texture.Image;
-import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import javax.swing.JOptionPane;
 
 /**
  *
  *
  * @author brooks42
  */
+// TODO: I'm like 90% sure I don't need any of this and the Texture2D interface stuff in JME just handles this for me
 public class ImageManager {
 
-    /*
-     * 
-     */
-    private static HashMap<String, Texture> textures;
+    private static HashMap<String, Texture2D> textures;
 
-    private static AssetManager mAssetManager;
+    private static AssetManager assetManager;
+
+    public ImageManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
 
     /**
      * Loads all of the images in the passed directory, recursively.
@@ -38,7 +37,7 @@ public class ImageManager {
      * @param listener the listener to send events to
      * @param directory the directory to recurse, loading all .pngs
      */
-    public static void loadImages(AssetManager assetManager, ImageLoadListener listener, File directory) {
+    public void loadImages(ImageLoadListener listener, File directory) {
 
         if (textures == null) {
             textures = new HashMap<>();
@@ -47,8 +46,6 @@ public class ImageManager {
         if (!directory.isDirectory() || !directory.exists()) {
             throw new IllegalArgumentException("The argument 'directory' must be a directory. Passed: " + directory.getAbsolutePath());
         }
-
-        mAssetManager = assetManager;
 
         int file_num = numberOfFilesInDir(directory);
 
@@ -64,7 +61,7 @@ public class ImageManager {
     /*
      * Returns the number of files in the passed directory, recursively.
      */
-    private static int numberOfFilesInDir(File directory) {
+    private int numberOfFilesInDir(File directory) {
         int num = 1;
         if (directory.isDirectory()) {
             num = 0;
@@ -79,7 +76,7 @@ public class ImageManager {
     /*
      * Returns the number of files in the passed directory, recursively.
      */
-    private static void loadImagesInDir(ImageLoadListener listener, File directory) {
+    private void loadImagesInDir(ImageLoadListener listener, File directory) {
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
             for (int i = 0; i < files.length; i++) {
@@ -104,12 +101,10 @@ public class ImageManager {
      * Loads the passed URL as a PNG image, into the textures hashmap with the 
      * passed ID key.
      */
-    private static void loadImage(String ID, URL imgUrl) {
+    private void loadImage(String ID, URL imgUrl) {
         System.out.println("Loading " + imgUrl.toString());
 
-//            textures.put(ID, TextureLoader.getTexture("PNG", imgUrl.openStream()));
-
-        Texture texture = mAssetManager.loadTexture(imgUrl.toString());
+        Texture2D texture = (Texture2D)assetManager.loadAsset(imgUrl.toString());
         textures.put(ID, texture);
     }
 
@@ -120,8 +115,11 @@ public class ImageManager {
      * @param imgUrl the URL of the image to load. Use File.toURI().toURL();
      */
     @Nullable
-    public static Texture quickLoadImage(URL imgUrl) {
-        return mAssetManager.loadTexture(imgUrl.toString());
+    public Texture2D quickLoadImage(URL imgUrl) {
+        AssetKey<Texture2D> assetKey = new AssetKey<>(imgUrl.toString());
+//        return (Texture2D)assetManager.loadAsset(imgUrl.toString());
+        return assetManager.loadAsset(assetKey);
+
     }
 
     /**
@@ -130,7 +128,7 @@ public class ImageManager {
      * @param ID the ID of the Image to get
      * @return the Image with the passed ID
      */
-    public static Texture getImage(String ID) {
+    public Texture2D getImage(String ID) {
         if (textures == null) {
             throw new RuntimeException("ImageManager getting image without loading first.");
         }
@@ -139,6 +137,7 @@ public class ImageManager {
             System.out.println("ImageManager.getImage(" + ID + "): could not find image");
             return null;
         }
+
         return textures.get(ID);
     }
 

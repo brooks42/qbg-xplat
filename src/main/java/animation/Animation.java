@@ -33,46 +33,46 @@ public class Animation {
      * @return
      */
     public static Texture[] getAnimation(int anim) {
-        switch (anim) {
-            case HUMAN_KNIGHT_ANIM:
-                return new Texture[]{ImageManager.getImage("human_knight_1"),
-                            ImageManager.getImage("human_knight_2"), ImageManager.getImage("human_knight_3")};
-
-            case HUMAN_SPEARMAN_ANIM:
-                return new Texture[]{ImageManager.getImage("human_spearman_1"),
-                            ImageManager.getImage("human_spearman_2"), ImageManager.getImage("human_spearman_3")};
-
-            case HUMAN_ARCHER_ANIM:
-                return new Texture[]{ImageManager.getImage("human_archer_1"),
-                            ImageManager.getImage("human_archer_2"), ImageManager.getImage("human_archer_3")};
-
-            case HUMAN_PALADIN_ANIM:
-                return new Texture[]{ImageManager.getImage("human_paladin_1"),
-                            ImageManager.getImage("human_paladin_2"), ImageManager.getImage("human_paladin_3")};
-
-            case HUMAN_WIZARD_ANIM:
-                return new Texture[]{ImageManager.getImage("human_wizard_1"),
-                            ImageManager.getImage("human_wizard_2"), ImageManager.getImage("human_wizard_3")};
-
-            case HUMAN_ASSASSIN_ANIM:
-                return new Texture[]{ImageManager.getImage("human_assassin_1"),
-                            ImageManager.getImage("human_assassin_2"), ImageManager.getImage("human_assassin_3")};
-
-            case HUMAN_ARROW_ANIM:
-                return new Texture[]{ImageManager.getImage("arrow_1"),
-                            ImageManager.getImage("arrow_2")};
-
-            case HUMAN_LIGHTNING_1_ANIM:
-                return new Texture[]{ImageManager.getImage("lightning_1")};
-            case HUMAN_LIGHTNING_2_ANIM:
-                return new Texture[]{ImageManager.getImage("lightning_2")};
-            case HUMAN_LIGHTNING_3_ANIM:
-                return new Texture[]{ImageManager.getImage("lightning_3")};
-
-            case ORK_KNIGHT_ANIM:
-                return new Texture[]{ImageManager.getImage("ork_knight_1"),
-                            ImageManager.getImage("ork_knight_2"), ImageManager.getImage("ork_knight_3")};
-        }
+//        switch (anim) {
+//            case HUMAN_KNIGHT_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_knight_1"),
+//                            ImageManager.getImage("human_knight_2"), ImageManager.getImage("human_knight_3")};
+//
+//            case HUMAN_SPEARMAN_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_spearman_1"),
+//                            ImageManager.getImage("human_spearman_2"), ImageManager.getImage("human_spearman_3")};
+//
+//            case HUMAN_ARCHER_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_archer_1"),
+//                            ImageManager.getImage("human_archer_2"), ImageManager.getImage("human_archer_3")};
+//
+//            case HUMAN_PALADIN_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_paladin_1"),
+//                            ImageManager.getImage("human_paladin_2"), ImageManager.getImage("human_paladin_3")};
+//
+//            case HUMAN_WIZARD_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_wizard_1"),
+//                            ImageManager.getImage("human_wizard_2"), ImageManager.getImage("human_wizard_3")};
+//
+//            case HUMAN_ASSASSIN_ANIM:
+//                return new Texture[]{ImageManager.getImage("human_assassin_1"),
+//                            ImageManager.getImage("human_assassin_2"), ImageManager.getImage("human_assassin_3")};
+//
+//            case HUMAN_ARROW_ANIM:
+//                return new Texture[]{ImageManager.getImage("arrow_1"),
+//                            ImageManager.getImage("arrow_2")};
+//
+//            case HUMAN_LIGHTNING_1_ANIM:
+//                return new Texture[]{ImageManager.getImage("lightning_1")};
+//            case HUMAN_LIGHTNING_2_ANIM:
+//                return new Texture[]{ImageManager.getImage("lightning_2")};
+//            case HUMAN_LIGHTNING_3_ANIM:
+//                return new Texture[]{ImageManager.getImage("lightning_3")};
+//
+//            case ORK_KNIGHT_ANIM:
+//                return new Texture[]{ImageManager.getImage("ork_knight_1"),
+//                            ImageManager.getImage("ork_knight_2"), ImageManager.getImage("ork_knight_3")};
+//        }
         return new Texture[0];
     }
 }

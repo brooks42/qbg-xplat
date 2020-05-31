@@ -47,89 +47,89 @@ public class MainScreen extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
 
-        showLoadGameInlay = false;
-
-        background = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("title"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-        skirmishBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("skirmish_btn"), 100, 525, 168, 27)), new Texture[]{
-                    ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn")
-                }) {
-            @Override
-            public void onButtonClicked() {
-                super.onButtonClicked();
-
-                dismissInlay();
-                // go to the skirmish screen?
-                System.out.println("Skirmish!");
-            }
-        };
-        campaignBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("campaign_btn"), 500, 525, 185, 27)), new Texture[]{
-                    ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn")
-                }) {
-            @Override
-            public void onButtonClicked() {
-                super.onButtonClicked();
-
-                // if there are any save games, show the load screen
-                if (SaveGame.getListOfFiles().length > 0) {
-                    showInlay();
-                } else {
-                    // if there's no save game file, start a new campaign
-                    startNewCampaign();
-                }
-            }
-        };
-
-        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
-                    ImageManager.getImage("exit_game_btn"),
-                    ImageManager.getImage("exit_game_btn"),
-                    ImageManager.getImage("exit_game_btn")
-                }) {
-            @Override
-            public void onButtonClicked() {
-                super.onButtonClicked();
-                GameDisplay.end();
-            }
-        };
-
-        if (Sounds.volume < 1) {
-            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
-                        ImageManager.getImage("volume_off"),
-                        ImageManager.getImage("volume_on"),
-                        ImageManager.getImage("volume_on")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    toggleMute();
-                    // go to the skirmish screen?
-                    System.out.println("Skirmish!");
-                }
-            };
-        } else {
-            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("volume_on"), 750, 550, 50, 50)), new Texture[]{
-                        ImageManager.getImage("volume_on"),
-                        ImageManager.getImage("volume_off"),
-                        ImageManager.getImage("volume_off")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    toggleMute();
-                    // go to the skirmish screen?
-                    System.out.println("Skirmish!");
-                }
-            };
-        }
-        
-        Sounds.playMusic("song_one");
+//        showLoadGameInlay = false;
+//
+//        background = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("title"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
+//        skirmishBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("skirmish_btn"), 100, 525, 168, 27)), new Texture[]{
+//                    ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn")
+//                }) {
+//            @Override
+//            public void onButtonClicked() {
+//                super.onButtonClicked();
+//
+//                dismissInlay();
+//                // go to the skirmish screen?
+//                System.out.println("Skirmish!");
+//            }
+//        };
+//        campaignBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("campaign_btn"), 500, 525, 185, 27)), new Texture[]{
+//                    ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn")
+//                }) {
+//            @Override
+//            public void onButtonClicked() {
+//                super.onButtonClicked();
+//
+//                // if there are any save games, show the load screen
+//                if (SaveGame.getListOfFiles().length > 0) {
+//                    showInlay();
+//                } else {
+//                    // if there's no save game file, start a new campaign
+//                    startNewCampaign();
+//                }
+//            }
+//        };
+//
+//        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
+//                    ImageManager.getImage("exit_game_btn"),
+//                    ImageManager.getImage("exit_game_btn"),
+//                    ImageManager.getImage("exit_game_btn")
+//                }) {
+//            @Override
+//            public void onButtonClicked() {
+//                super.onButtonClicked();
+//                GameDisplay.end();
+//            }
+//        };
+//
+//        if (Sounds.volume < 1) {
+//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
+//                        ImageManager.getImage("volume_off"),
+//                        ImageManager.getImage("volume_on"),
+//                        ImageManager.getImage("volume_on")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    toggleMute();
+//                    // go to the skirmish screen?
+//                    System.out.println("Skirmish!");
+//                }
+//            };
+//        } else {
+//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("volume_on"), 750, 550, 50, 50)), new Texture[]{
+//                        ImageManager.getImage("volume_on"),
+//                        ImageManager.getImage("volume_off"),
+//                        ImageManager.getImage("volume_off")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    toggleMute();
+//                    // go to the skirmish screen?
+//                    System.out.println("Skirmish!");
+//                }
+//            };
+//        }
+//
+//        Sounds.playMusic("song_one");
     }
 
     /**
@@ -198,71 +198,71 @@ public class MainScreen extends AbstractAppState {
     @Override
     public void update(float tpf) {
 
-        if (showLoadGameInlay) {
-            loadGameMenu.update(tpf);
-        } else {
-            skirmishBtn.update(tpf);
-            campaignBtn.update(tpf);
-            exitBtn.update(tpf);
-            volumeBtn.update(tpf);
-        }
+//        if (showLoadGameInlay) {
+//            loadGameMenu.update(tpf);
+//        } else {
+//            skirmishBtn.update(tpf);
+//            campaignBtn.update(tpf);
+//            exitBtn.update(tpf);
+//            volumeBtn.update(tpf);
+//        }
     }
 
     @Override
     public void render(RenderManager rm) {
 
-        background.render();
-        skirmishBtn.render();
-        campaignBtn.render();
-        exitBtn.render();
-        volumeBtn.render();
-
-        if (showLoadGameInlay) {
-            loadGameMenu.render();
-        }
+//        background.render();
+//        skirmishBtn.render();
+//        campaignBtn.render();
+//        exitBtn.render();
+//        volumeBtn.render();
+//
+//        if (showLoadGameInlay) {
+//            loadGameMenu.render();
+//        }
     }
 
     /**
      * Toggles whether the game sound is muted or not.
      */
     public void toggleMute() {
-        if (Sounds.volume != 1) {
-            // stop being muted and start playing the music again
-            Sounds.volume = 1;
-            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
-                        ImageManager.getImage("volume_off"),
-                        ImageManager.getImage("volume_on"),
-                        ImageManager.getImage("volume_on")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    toggleMute();
-                }
-            };
-
-            Sounds.playMusic("song_one");
-        } else {
-            // mute
-            Sounds.volume = 0;
-            Sounds.stopAllSounds();
-            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("volume_on"), 750, 550, 50, 50)), new Texture[]{
-                        ImageManager.getImage("volume_on"),
-                        ImageManager.getImage("volume_off"),
-                        ImageManager.getImage("volume_off")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    toggleMute();
-                }
-            };
-        }
-        // now store the volume in the settings
-        Settings.settings.put(Settings.SETTING_VOLUME, "" + Sounds.volume);
+//        if (Sounds.volume != 1) {
+//            // stop being muted and start playing the music again
+//            Sounds.volume = 1;
+//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
+//                        ImageManager.getImage("volume_off"),
+//                        ImageManager.getImage("volume_on"),
+//                        ImageManager.getImage("volume_on")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    toggleMute();
+//                }
+//            };
+//
+//            Sounds.playMusic("song_one");
+//        } else {
+//            // mute
+//            Sounds.volume = 0;
+//            Sounds.stopAllSounds();
+//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("volume_on"), 750, 550, 50, 50)), new Texture[]{
+//                        ImageManager.getImage("volume_on"),
+//                        ImageManager.getImage("volume_off"),
+//                        ImageManager.getImage("volume_off")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    toggleMute();
+//                }
+//            };
+//        }
+//        // now store the volume in the settings
+//        Settings.settings.put(Settings.SETTING_VOLUME, "" + Sounds.volume);
     }
 
     /**
@@ -272,116 +272,135 @@ public class MainScreen extends AbstractAppState {
      * @author brooks42
      */
     class LoadGameInlay extends InlayMenu {
-
-        private PSprite inlayBackground;
-        private PButton newGameButton, loadGameButton, closeButton;
-        private File[] ourFiles;
-        private int selectedIndex = -1;
-        private ArrayList<String> fileInfo;
-
         @Override
         public void setup() {
-            inlayBackground = new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("inlay"), 100, 100, 600, 400));
-            ourFiles = SaveGame.getListOfFiles();
 
-            newGameButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("new_game_btn"), 105, 469, 80, 26)), new Texture[]{
-                        ImageManager.getImage("new_game_btn"),
-                        ImageManager.getImage("new_game_btn"),
-                        ImageManager.getImage("new_game_btn")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    startNewCampaign();
-                }
-            };
-
-            loadGameButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("load_game_btn"), 598, 469, 93, 26)), new Texture[]{
-                        ImageManager.getImage("load_game_btn"),
-                        ImageManager.getImage("load_game_btn"),
-                        ImageManager.getImage("load_game_btn")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    if (selectedIndex != -1) {
-                        boolean worked = loadGame(ourFiles[selectedIndex]);
-                        if (worked) {
-                            startCampaign();
-                        } else {
-                            System.out.println("Loading game failed? (index=" + selectedIndex
-                                    + ", filename=" + ourFiles[selectedIndex].getName() + ")");
-                        }
-                    }
-                }
-            };
-
-            closeButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("close_inlay"), 669, 100, 31, 33)), new Texture[]{
-                        ImageManager.getImage("close_inlay"),
-                        ImageManager.getImage("close_inlay"),
-                        ImageManager.getImage("close_inlay")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    dismissInlay();
-                }
-            };
-
-            fileInfo = new ArrayList<String>();
-            for (int i = 0; i < 10; i++) {
-                if (i >= ourFiles.length) {
-                    break;
-                }
-                HashMap<String, String> data = SaveGame.importFromFile(ourFiles[i]);
-                fileInfo.add("Wins: " + data.get("battle_wins") + "   $"
-                        + data.get("money") + "   Date: " + data.get("save_date"));
-            }
-        }
-
-        @Override
-        public void update(float tpf) {
-            newGameButton.update(tpf);
-            loadGameButton.update(tpf);
-            closeButton.update(tpf);
-
-            if (Mouse.isButtonDown(0)) {
-                if (Mouse.getX() > 120 && Mouse.getX() < 600) {
-                    // get the Mouse's y position
-                    int mouse_y = Settings.SCREEN_HEIGHT - Mouse.getY();
-                    if (mouse_y > 120 && mouse_y < 370) {
-                        selectedIndex = (mouse_y - 120) / 25;
-                        System.out.println("Selected index " + selectedIndex);
-                    }
-                    //120 + (i * 25),
-                }
-            }
-        }
-
-        @Override
-        public void render() {
-            inlayBackground.render();
-            StringRender.drawString(StringRender.font24, "Choose a game:", 102, 100, Color.white);
-            newGameButton.render();
-            loadGameButton.render();
-            closeButton.render();
-
-            // now draw a list of all of the save files (or as many as will fit)
-            for (int i = 0; i < fileInfo.size(); i++) {
-                StringRender.drawString(StringRender.font24, fileInfo.get(i), 120, 120 + (i * 25),
-                        (i == selectedIndex ? Color.red : Color.white));
-            }
         }
 
         @Override
         public void destroy() {
-            // no-op
+
         }
+
+        @Override
+        public void update(float tpf) {
+
+        }
+
+        @Override
+        public void render() {
+
+        }
+
+//        private PSprite inlayBackground;
+//        private PButton newGameButton, loadGameButton, closeButton;
+//        private File[] ourFiles;
+//        private int selectedIndex = -1;
+//        private ArrayList<String> fileInfo;
+//
+//        @Override
+//        public void setup() {
+//            inlayBackground = new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("inlay"), 100, 100, 600, 400));
+//            ourFiles = SaveGame.getListOfFiles();
+//
+//            newGameButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("new_game_btn"), 105, 469, 80, 26)), new Texture[]{
+//                        ImageManager.getImage("new_game_btn"),
+//                        ImageManager.getImage("new_game_btn"),
+//                        ImageManager.getImage("new_game_btn")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    startNewCampaign();
+//                }
+//            };
+//
+//            loadGameButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("load_game_btn"), 598, 469, 93, 26)), new Texture[]{
+//                        ImageManager.getImage("load_game_btn"),
+//                        ImageManager.getImage("load_game_btn"),
+//                        ImageManager.getImage("load_game_btn")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    if (selectedIndex != -1) {
+//                        boolean worked = loadGame(ourFiles[selectedIndex]);
+//                        if (worked) {
+//                            startCampaign();
+//                        } else {
+//                            System.out.println("Loading game failed? (index=" + selectedIndex
+//                                    + ", filename=" + ourFiles[selectedIndex].getName() + ")");
+//                        }
+//                    }
+//                }
+//            };
+//
+//            closeButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("close_inlay"), 669, 100, 31, 33)), new Texture[]{
+//                        ImageManager.getImage("close_inlay"),
+//                        ImageManager.getImage("close_inlay"),
+//                        ImageManager.getImage("close_inlay")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    dismissInlay();
+//                }
+//            };
+//
+//            fileInfo = new ArrayList<String>();
+//            for (int i = 0; i < 10; i++) {
+//                if (i >= ourFiles.length) {
+//                    break;
+//                }
+//                HashMap<String, String> data = SaveGame.importFromFile(ourFiles[i]);
+//                fileInfo.add("Wins: " + data.get("battle_wins") + "   $"
+//                        + data.get("money") + "   Date: " + data.get("save_date"));
+//            }
+//        }
+//
+//        @Override
+//        public void update(float tpf) {
+//            newGameButton.update(tpf);
+//            loadGameButton.update(tpf);
+//            closeButton.update(tpf);
+//
+//            if (Mouse.isButtonDown(0)) {
+//                if (Mouse.getX() > 120 && Mouse.getX() < 600) {
+//                    // get the Mouse's y position
+//                    int mouse_y = Settings.SCREEN_HEIGHT - Mouse.getY();
+//                    if (mouse_y > 120 && mouse_y < 370) {
+//                        selectedIndex = (mouse_y - 120) / 25;
+//                        System.out.println("Selected index " + selectedIndex);
+//                    }
+//                    //120 + (i * 25),
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void render() {
+//            inlayBackground.render();
+//            StringRender.drawString(StringRender.font24, "Choose a game:", 102, 100, Color.white);
+//            newGameButton.render();
+//            loadGameButton.render();
+//            closeButton.render();
+//
+//            // now draw a list of all of the save files (or as many as will fit)
+//            for (int i = 0; i < fileInfo.size(); i++) {
+//                StringRender.drawString(StringRender.font24, fileInfo.get(i), 120, 120 + (i * 25),
+//                        (i == selectedIndex ? Color.red : Color.white));
+//            }
+//        }
+//
+//        @Override
+//        public void destroy() {
+//            // no-op
+//        }
     }
 }

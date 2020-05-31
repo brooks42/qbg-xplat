@@ -38,65 +38,65 @@ public class CampaignScreen extends AbstractAppState {
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-        background = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("game_map"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-
-        campaign_areas = new ArrayList<PSprite>();
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 428, 426, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 337, 300, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 152, 205, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 246, 46, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 421, 81, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 516, 122, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 500, 192, 68, 50)));
-        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("battle_flag"), 627, 334, 68, 50)));
-
-        moneyDisplay = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("campaign_gui"), -100, 0, 214, 61));
-
-        upgradesBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("upgrade_btn"), 665, 0, 135, 50)), new Texture[]{
-                    ImageManager.getImage("upgrade_btn"),
-                    ImageManager.getImage("upgrade_hover_btn"),
-                    ImageManager.getImage("upgrade_hover_btn")
-                }) {
-            @Override
-            public void onButtonClicked() {
-                super.onButtonClicked();
-
-                showUpgradesInlay();
-            }
-        };
-
-        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
-                    ImageManager.getImage("exit_game_btn"),
-                    ImageManager.getImage("exit_game_btn"),
-                    ImageManager.getImage("exit_game_btn")
-                }) {
-            @Override
-            public void onButtonClicked() {
-                super.onButtonClicked();
-                GameStateController.setState(GameStateController.MAIN_SCREEN);
-            }
-        };
-
-        inlay = new UpgradesInlay();
-
-        // save the current Save Game
-        if (SaveGame.gamedata == null) {
-            SaveGame.gamedata = SaveGame.getDefaultSave();
-        }
-        SaveGame.exportToFile();
-        money = Integer.parseInt(SaveGame.gamedata.get("money"));
+//        background = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("game_map"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
+//
+//        campaign_areas = new ArrayList<PSprite>();
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 428, 426, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 337, 300, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 152, 205, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 246, 46, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 421, 81, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 516, 122, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 500, 192, 68, 50)));
+//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("battle_flag"), 627, 334, 68, 50)));
+//
+//        moneyDisplay = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("campaign_gui"), -100, 0, 214, 61));
+//
+//        upgradesBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("upgrade_btn"), 665, 0, 135, 50)), new Texture[]{
+//                    ImageManager.getImage("upgrade_btn"),
+//                    ImageManager.getImage("upgrade_hover_btn"),
+//                    ImageManager.getImage("upgrade_hover_btn")
+//                }) {
+//            @Override
+//            public void onButtonClicked() {
+//                super.onButtonClicked();
+//
+//                showUpgradesInlay();
+//            }
+//        };
+//
+//        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
+//                    ImageManager.getImage("exit_game_btn"),
+//                    ImageManager.getImage("exit_game_btn"),
+//                    ImageManager.getImage("exit_game_btn")
+//                }) {
+//            @Override
+//            public void onButtonClicked() {
+//                super.onButtonClicked();
+//                GameStateController.setState(GameStateController.MAIN_SCREEN);
+//            }
+//        };
+//
+//        inlay = new UpgradesInlay();
+//
+//        // save the current Save Game
+//        if (SaveGame.gamedata == null) {
+//            SaveGame.gamedata = SaveGame.getDefaultSave();
+//        }
+//        SaveGame.exportToFile();
+//        money = Integer.parseInt(SaveGame.gamedata.get("money"));
     }
 
 //    @Override
@@ -120,33 +120,33 @@ public class CampaignScreen extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        if (!showingInlay) {
-            for (int i = 0; i < campaign_areas.size(); i++) {
-                campaign_areas.get(i).update(tpf);
-            }
-            moneyDisplay.update(tpf);
-            upgradesBtn.update(tpf);
-            exitBtn.update(tpf);
-        } else {
-            inlay.update(tpf);
-        }
+//        if (!showingInlay) {
+//            for (int i = 0; i < campaign_areas.size(); i++) {
+//                campaign_areas.get(i).update(tpf);
+//            }
+//            moneyDisplay.update(tpf);
+//            upgradesBtn.update(tpf);
+//            exitBtn.update(tpf);
+//        } else {
+//            inlay.update(tpf);
+//        }
     }
 
     @Override
     public void render(RenderManager rm) {
 
-        background.render();
-        for (int i = 0; i < campaign_areas.size(); i++) {
-            campaign_areas.get(i).render();
-        }
-        moneyDisplay.render();
-        StringRender.drawString(StringRender.font24, "$" + money, 20, 20, Color.yellow);
-        upgradesBtn.render();
-        exitBtn.render();
-
-        if (showingInlay) {
-            inlay.render();
-        }
+//        background.render();
+//        for (int i = 0; i < campaign_areas.size(); i++) {
+//            campaign_areas.get(i).render();
+//        }
+//        moneyDisplay.render();
+//        StringRender.drawString(StringRender.font24, "$" + money, 20, 20, Color.yellow);
+//        upgradesBtn.render();
+//        exitBtn.render();
+//
+//        if (showingInlay) {
+//            inlay.render();
+//        }
     }
 
     /**
@@ -191,141 +191,141 @@ public class CampaignScreen extends AbstractAppState {
 
         @Override
         public void setup() {
-            overlay = new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("inlay"), 100, 100, 600, 450));
-
-            upgradeHPButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("upgradeHP"), 105, 105, 100, 100)), new Texture[]{
-                        ImageManager.getImage("upgradeHP"),
-                        ImageManager.getImage("upgradeHP"),
-                        ImageManager.getImage("upgradeHP")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    System.out.println("going");
-                    upgradeHP();
-                }
-            };
-
-            upgradeManaButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("upgradeMana"), 105, 210, 100, 100)), new Texture[]{
-                        ImageManager.getImage("upgradeMana"),
-                        ImageManager.getImage("upgradeMana"),
-                        ImageManager.getImage("upgradeMana")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    upgradeMana();
-                }
-            };
-
-            upgradeManaRegButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("upgradeManaReg"), 105, 315, 100, 100)), new Texture[]{
-                        ImageManager.getImage("upgradeManaReg"),
-                        ImageManager.getImage("upgradeManaReg"),
-                        ImageManager.getImage("upgradeManaReg")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    upgradeManaReg();
-                }
-            };
-
-            upgradeKnightsButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_knight_display"), 300, 105, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_knight_display"),
-                        ImageManager.getImage("human_knight_display"),
-                        ImageManager.getImage("human_knight_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    upgradeKnights();
-                }
-            };
-
-            upgradeSpearmenButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_spearman_display"), 300, 210, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_spearman_display"),
-                        ImageManager.getImage("human_spearman_display"),
-                        ImageManager.getImage("human_spearman_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    upgradeSpearmen();
-                }
-            };
-
-            upgradeArcherButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_archer_display"), 300, 315, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_archer_display"),
-                        ImageManager.getImage("human_archer_display"),
-                        ImageManager.getImage("human_archer_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    upgradeArchers();
-                }
-            };
-
-            upgradeUnlockPaladinButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_paladin_display"), 495, 105, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_paladin_display"),
-                        ImageManager.getImage("human_paladin_display"),
-                        ImageManager.getImage("human_paladin_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    unlockOrUpgradePaladin();
-                }
-            };
-
-            upgradeUnlockWizardButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_wizard_display"), 495, 210, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_wizard_display"),
-                        ImageManager.getImage("human_wizard_display"),
-                        ImageManager.getImage("human_wizard_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    unlockOrUpgradeWizard();
-                }
-            };
-
-            upgradeUnlockAssassinButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("human_assassin_display"), 495, 315, 100, 100)), new Texture[]{
-                        ImageManager.getImage("human_assassin_display"),
-                        ImageManager.getImage("human_assassin_display"),
-                        ImageManager.getImage("human_assassin_display")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    unlockOrUpgradeAssassin();
-                }
-            };
-
-            closeButton = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("close_inlay"), 669, 100, 31, 33)), new Texture[]{
-                        ImageManager.getImage("close_inlay"),
-                        ImageManager.getImage("close_inlay"),
-                        ImageManager.getImage("close_inlay")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-                    dismissInlay();
-                }
-            };
-
-            loadCosts();
+//            overlay = new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("inlay"), 100, 100, 600, 450));
+//
+//            upgradeHPButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("upgradeHP"), 105, 105, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("upgradeHP"),
+//                        ImageManager.getImage("upgradeHP"),
+//                        ImageManager.getImage("upgradeHP")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    System.out.println("going");
+//                    upgradeHP();
+//                }
+//            };
+//
+//            upgradeManaButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("upgradeMana"), 105, 210, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("upgradeMana"),
+//                        ImageManager.getImage("upgradeMana"),
+//                        ImageManager.getImage("upgradeMana")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    upgradeMana();
+//                }
+//            };
+//
+//            upgradeManaRegButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("upgradeManaReg"), 105, 315, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("upgradeManaReg"),
+//                        ImageManager.getImage("upgradeManaReg"),
+//                        ImageManager.getImage("upgradeManaReg")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    upgradeManaReg();
+//                }
+//            };
+//
+//            upgradeKnightsButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_knight_display"), 300, 105, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_knight_display"),
+//                        ImageManager.getImage("human_knight_display"),
+//                        ImageManager.getImage("human_knight_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    upgradeKnights();
+//                }
+//            };
+//
+//            upgradeSpearmenButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_spearman_display"), 300, 210, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_spearman_display"),
+//                        ImageManager.getImage("human_spearman_display"),
+//                        ImageManager.getImage("human_spearman_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    upgradeSpearmen();
+//                }
+//            };
+//
+//            upgradeArcherButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_archer_display"), 300, 315, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_archer_display"),
+//                        ImageManager.getImage("human_archer_display"),
+//                        ImageManager.getImage("human_archer_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    upgradeArchers();
+//                }
+//            };
+//
+//            upgradeUnlockPaladinButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_paladin_display"), 495, 105, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_paladin_display"),
+//                        ImageManager.getImage("human_paladin_display"),
+//                        ImageManager.getImage("human_paladin_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    unlockOrUpgradePaladin();
+//                }
+//            };
+//
+//            upgradeUnlockWizardButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_wizard_display"), 495, 210, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_wizard_display"),
+//                        ImageManager.getImage("human_wizard_display"),
+//                        ImageManager.getImage("human_wizard_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    unlockOrUpgradeWizard();
+//                }
+//            };
+//
+//            upgradeUnlockAssassinButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("human_assassin_display"), 495, 315, 100, 100)), new Texture[]{
+//                        ImageManager.getImage("human_assassin_display"),
+//                        ImageManager.getImage("human_assassin_display"),
+//                        ImageManager.getImage("human_assassin_display")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    unlockOrUpgradeAssassin();
+//                }
+//            };
+//
+//            closeButton = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("close_inlay"), 669, 100, 31, 33)), new Texture[]{
+//                        ImageManager.getImage("close_inlay"),
+//                        ImageManager.getImage("close_inlay"),
+//                        ImageManager.getImage("close_inlay")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//                    dismissInlay();
+//                }
+//            };
+//
+//            loadCosts();
         }
 
         @Override
@@ -334,44 +334,44 @@ public class CampaignScreen extends AbstractAppState {
 
         @Override
         public void update(float tpf) {
-            overlay.update(tpf);
-            upgradeManaButton.update(tpf);
-            upgradeManaRegButton.update(tpf);
-            upgradeHPButton.update(tpf);
-            upgradeKnightsButton.update(tpf);
-            closeButton.update(tpf);
-            upgradeSpearmenButton.update(tpf);
-            upgradeArcherButton.update(tpf);
-            upgradeUnlockPaladinButton.update(tpf);
-            upgradeUnlockWizardButton.update(tpf);
-            upgradeUnlockAssassinButton.update(tpf);
+//            overlay.update(tpf);
+//            upgradeManaButton.update(tpf);
+//            upgradeManaRegButton.update(tpf);
+//            upgradeHPButton.update(tpf);
+//            upgradeKnightsButton.update(tpf);
+//            closeButton.update(tpf);
+//            upgradeSpearmenButton.update(tpf);
+//            upgradeArcherButton.update(tpf);
+//            upgradeUnlockPaladinButton.update(tpf);
+//            upgradeUnlockWizardButton.update(tpf);
+//            upgradeUnlockAssassinButton.update(tpf);
         }
 
         @Override
         public void render() {
-            overlay.render();
-
-            // now draw buttons
-            upgradeHPButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeHP, 210, 145, Color.yellow);
-            upgradeManaButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeMana, 210, 250, Color.yellow);
-            upgradeManaRegButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeManaReg, 210, 355, Color.yellow);
-            upgradeKnightsButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeKnights, 405, 145, Color.yellow);
-            upgradeSpearmenButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeSpearmen, 405, 250, Color.yellow);
-            upgradeArcherButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeArchers, 405, 355, Color.yellow);
-            upgradeUnlockPaladinButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradePaladins, 600, 145, Color.yellow);
-            upgradeUnlockWizardButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeWizards, 600, 250, Color.yellow);
-            upgradeUnlockAssassinButton.render();
-            StringRender.drawString(StringRender.font24, "$" + upgradeAssassins, 600, 355, Color.yellow);
-
-            closeButton.render();
+//            overlay.render();
+//
+//            // now draw buttons
+//            upgradeHPButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeHP, 210, 145, Color.yellow);
+//            upgradeManaButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeMana, 210, 250, Color.yellow);
+//            upgradeManaRegButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeManaReg, 210, 355, Color.yellow);
+//            upgradeKnightsButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeKnights, 405, 145, Color.yellow);
+//            upgradeSpearmenButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeSpearmen, 405, 250, Color.yellow);
+//            upgradeArcherButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeArchers, 405, 355, Color.yellow);
+//            upgradeUnlockPaladinButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradePaladins, 600, 145, Color.yellow);
+//            upgradeUnlockWizardButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeWizards, 600, 250, Color.yellow);
+//            upgradeUnlockAssassinButton.render();
+//            StringRender.drawString(StringRender.font24, "$" + upgradeAssassins, 600, 355, Color.yellow);
+//
+//            closeButton.render();
         }
 
         // inlay-specific code to perform upgrades 

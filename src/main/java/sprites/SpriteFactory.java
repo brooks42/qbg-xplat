@@ -4,57 +4,51 @@
  */
 package sprites;
 
-import com.jme3.texture.Texture;
+import com.jme3.asset.AssetManager;
+import com.jme3.scene.Node;
+import com.jme3.texture.Texture2D;
+import com.jme3.ui.Picture;
 import utilities.ImageManager;
 
 /**
- *
  * @author User
  */
 public class SpriteFactory {
 
-    /**
-     * Returns a Sprite based on the Image of the passed ID and the passed (x,y)
-     *
-     * @param ID
-     * @param x
-     * @param y
-     * @return
-     */
-    public static Sprite getSprite(String ID, int x, int y, int x2, int y2) {
-        try {
-            return new Sprite(ImageManager.getImage(ID), x, y, x2, y2);
-        } catch (NullPointerException e) {
-            System.out.println("ImageManager cannot find image: " + ID);
-            return null;
-        }
+    private final AssetManager assetManager;
+
+    public SpriteFactory(AssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 
-    /**
-     * Returns a Sprite based on the Image of the passed ID and the passed (x,y)
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public static Sprite getSprite(Texture text, int x, int y, int x2, int y2) {
-        return new Sprite(text, x, y, x2, y2);
+    public Node getSprite(Texture2D text, int x, int y, int x2, int y2) {
+        return constructNodeForTextureAndBounds(text, x, y, x2, y2);
     }
-    
-    /**
-     * Returns a Sprite based on the Image of the passed ID and the passed (x,y)
-     *
-     * @param ID
-     * @param x
-     * @param y
-     * @return
-     */
-    /*public static Sprite getSprite(String ID, Color color, int x, int y, int x2, int y2) {
-     try {
-     return new Sprite(getImage(ID, color), x, y, x2, y2);
-     } catch (NullPointerException e) {
-     System.out.println("ImageManager.getSprite() Cannot find image: " + ID);
-     return null;
-     }
-     }*/
+
+    private Node constructNodeForTextureAndBounds(Texture2D texture, int x, int y, int x2, int y2) {
+        Node node = new Node("test");
+
+        Picture pic = getSpritePicture(texture, x2 - x, y2 - y);
+
+        // TODO: uh oh I don't actually have any of this since I'm not using JME
+//        Material picMat = new Material(assetManager, "Common/MatDefs/Gui/Gui.j3md");
+//        picMat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.AlphaAdditive);
+//        node.setMaterial(picMat);
+
+        node.attachChild(pic);
+        node.move(x, y, 0);
+        return node;
+    }
+
+    private Picture getSpritePicture(Texture2D texture, int width, int height) {
+
+        Picture pic = new Picture("test");
+        pic.setTexture(assetManager, texture, true);
+
+        pic.setWidth(width);
+        pic.setHeight(height);
+        pic.move(-width / 2f, -height / 2f, 0);
+
+        return pic;
+    }
 }

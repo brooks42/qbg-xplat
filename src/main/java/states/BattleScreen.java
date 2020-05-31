@@ -66,73 +66,73 @@ public class BattleScreen extends AbstractAppState {
         won = false;
         showingInlay = false;
 
-        background = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("background"), -100, -200, 1000, 1000));
-        arena = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("arena"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-        summonCircle = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("summon_circle"), 0, 0, 196, 96));
-        abilityCircle = new PSprite(SpriteFactory.getSprite(
-                ImageManager.getImage("summon_circle_dark"), 0, 0, 196, 96));
-
-        units = new ArrayList<Unit>();
-        lightning = new ArrayList<Unit>(); // lightnings are neutral units that just show up and then leave
-        enemyUnits = new ArrayList<Unit>();
-
-        healthBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("health_bar"), 8, 6, healthBoxWidth, 22));
-        oppHealthBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("health_bar"), 512, 6, healthBoxWidth, 22));
-        manaBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("mana_bar"), 8, 38, healthBoxWidth, 22));
-
-        summonBox = new Polygon();
-        summonBox.addPoint(78, 248);
-        summonBox.addPoint(155, 248);
-        summonBox.addPoint(104, 518);
-        summonBox.addPoint(7, 518);
-
-        enemySummonBox = new Polygon();
-        enemySummonBox.addPoint(644, 249);
-        enemySummonBox.addPoint(721, 249);
-        enemySummonBox.addPoint(790, 518);
-        enemySummonBox.addPoint(698, 518);
-
-        arenaBox = new Polygon();
-        arenaBox.addPoint(155, 248);
-        arenaBox.addPoint(640, 248);
-        arenaBox.addPoint(693, 518);
-        arenaBox.addPoint(104, 518);
-
-        loadStats();
-
-        random = new Random();
-
-        knightDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_knight_display"),
-                unit_bar_start_at, 130, 50, 50));
-        spearDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_spearman_display"),
-                unit_bar_start_at + 55, 130, 50, 50));
-        archerDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_archer_display"),
-                unit_bar_start_at + 110, 130, 50, 50));
-        paladinDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
-                unit_bar_start_at + 165, 130, 50, 50));
-        wizDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
-                unit_bar_start_at + 220, 130, 50, 50));
-        assDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
-                unit_bar_start_at + 275, 130, 50, 50));
-        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
-                unit_bar_start_at, 130, 50, 50));
-
-        // set the textures for unlocked units
-        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_PALADINS)) {
-            paladinDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_paladin_display"),
-                    unit_bar_start_at + 165, 130, 50, 50));
-        }
-        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_WIZARDS)) {
-            wizDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_wizard_display"),
-                    unit_bar_start_at + 220, 130, 50, 50));
-        }
-        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_ASSASSINS)) {
-            assDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_assassin_display"),
-                    unit_bar_start_at + 275, 130, 50, 50));
-        }
+//        background = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("background"), -100, -200, 1000, 1000));
+//        arena = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("arena"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
+//        summonCircle = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("summon_circle"), 0, 0, 196, 96));
+//        abilityCircle = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("summon_circle_dark"), 0, 0, 196, 96));
+//
+//        units = new ArrayList<Unit>();
+//        lightning = new ArrayList<Unit>(); // lightnings are neutral units that just show up and then leave
+//        enemyUnits = new ArrayList<Unit>();
+//
+//        healthBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("health_bar"), 8, 6, healthBoxWidth, 22));
+//        oppHealthBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("health_bar"), 512, 6, healthBoxWidth, 22));
+//        manaBar = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("mana_bar"), 8, 38, healthBoxWidth, 22));
+//
+//        summonBox = new Polygon();
+//        summonBox.addPoint(78, 248);
+//        summonBox.addPoint(155, 248);
+//        summonBox.addPoint(104, 518);
+//        summonBox.addPoint(7, 518);
+//
+//        enemySummonBox = new Polygon();
+//        enemySummonBox.addPoint(644, 249);
+//        enemySummonBox.addPoint(721, 249);
+//        enemySummonBox.addPoint(790, 518);
+//        enemySummonBox.addPoint(698, 518);
+//
+//        arenaBox = new Polygon();
+//        arenaBox.addPoint(155, 248);
+//        arenaBox.addPoint(640, 248);
+//        arenaBox.addPoint(693, 518);
+//        arenaBox.addPoint(104, 518);
+//
+//        loadStats();
+//
+//        random = new Random();
+//
+//        knightDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_knight_display"),
+//                unit_bar_start_at, 130, 50, 50));
+//        spearDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_spearman_display"),
+//                unit_bar_start_at + 55, 130, 50, 50));
+//        archerDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_archer_display"),
+//                unit_bar_start_at + 110, 130, 50, 50));
+//        paladinDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
+//                unit_bar_start_at + 165, 130, 50, 50));
+//        wizDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
+//                unit_bar_start_at + 220, 130, 50, 50));
+//        assDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("cannot_select_display"),
+//                unit_bar_start_at + 275, 130, 50, 50));
+//        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
+//                unit_bar_start_at, 130, 50, 50));
+//
+//        // set the textures for unlocked units
+//        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_PALADINS)) {
+//            paladinDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_paladin_display"),
+//                    unit_bar_start_at + 165, 130, 50, 50));
+//        }
+//        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_WIZARDS)) {
+//            wizDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_wizard_display"),
+//                    unit_bar_start_at + 220, 130, 50, 50));
+//        }
+//        if (SaveGame.gamedata.containsKey(SaveGame.UNLOCKED_ASSASSINS)) {
+//            assDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_assassin_display"),
+//                    unit_bar_start_at + 275, 130, 50, 50));
+//        }
     }
 
     public void loadStats() {
@@ -232,137 +232,137 @@ public class BattleScreen extends AbstractAppState {
     @Override
     public void update(float tpf) {
 
-        if (!showingInlay) {
-            rot += 0.25f;
-            background.setRotation(rot);
-
-            // first update the players' mana pools
-            this.playerMana += playerManaRegen * tpf;
-            this.oppMana += oppManaRegen * tpf;
-            // top them off if appropriate
-            if (playerMana > playerManaMax) {
-                playerMana = playerManaMax;
-            }
-            if (oppMana > oppManaMax) {
-                oppMana = oppManaMax;
-            }
-
-            // now layout the circle if appropriate
-            summonCircle.setX(10000);
-            abilityCircle.setX(10000);
-            if (summonBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
-                summonCircle.setX(Mouse.getX() - 98);
-                summonCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
-
-                if (Mouse.isButtonDown(0)) {
-                    if (!clicked) {
-                        int spent_mana = (int) Math.min(12, playerMana);
-                        int summon_units = (spent_mana / 4);
-                        spent_mana = summon_units * 4;
-                        // summon up to 3 units
-                        for (int i = 0; i < summon_units; i++) {
-                            createUnit(selected_summon, Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY());
-                        }
-                        playerMana -= spent_mana;
-                        clicked = true;
-                    }
-                } else {
-                    clicked = false;
-                }
-            } else if (arenaBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
-                abilityCircle.setX(Mouse.getX() - 98);
-                abilityCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
-
-                // maybe use abilities if appropriate
-                if (Mouse.isButtonDown(0)) {
-                    if (!clicked) {
-                        for (int i = 0; i < units.size(); i++) {
-                            if (units.get(i).sprite.hittest(abilityCircle)) {
-                                activateAbility(units.get(i));
-                                playerMana--;
-
-                                // costs 1 mana to use abilities; if you have no more 
-                                // mana, stop
-                                if (playerMana <= 0) {
-                                    break;
-                                }
-                            }
-                        }
-                        clicked = true;
-                    }
-                } else {
-                    clicked = false;
-                }
-            }
-
-            // go through and kill lightning if appropriate
-            for (int i = 0; i < lightning.size(); i++) {
-                lightning.get(i).update(tpf);
-                if (lightning.get(i).def <= 0) {
-                    lightning.remove(i);
-                }
-            }
-
-            knightDisp.update(tpf);
-            spearDisp.update(tpf);
-            archerDisp.update(tpf);
-            paladinDisp.update(tpf);
-            wizDisp.update(tpf);
-            assDisp.update(tpf);
-            selectedDisp.update(tpf);
-
-            updateUnits(tpf);
-            doAI();
-            this.doHealthAndManaWidthCalc();
-        } else {
-            inlay.update(tpf);
-        }
+//        if (!showingInlay) {
+//            rot += 0.25f;
+//            background.setRotation(rot);
+//
+//            // first update the players' mana pools
+//            this.playerMana += playerManaRegen * tpf;
+//            this.oppMana += oppManaRegen * tpf;
+//            // top them off if appropriate
+//            if (playerMana > playerManaMax) {
+//                playerMana = playerManaMax;
+//            }
+//            if (oppMana > oppManaMax) {
+//                oppMana = oppManaMax;
+//            }
+//
+//            // now layout the circle if appropriate
+//            summonCircle.setX(10000);
+//            abilityCircle.setX(10000);
+//            if (summonBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
+//                summonCircle.setX(Mouse.getX() - 98);
+//                summonCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
+//
+//                if (Mouse.isButtonDown(0)) {
+//                    if (!clicked) {
+//                        int spent_mana = (int) Math.min(12, playerMana);
+//                        int summon_units = (spent_mana / 4);
+//                        spent_mana = summon_units * 4;
+//                        // summon up to 3 units
+//                        for (int i = 0; i < summon_units; i++) {
+//                            createUnit(selected_summon, Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY());
+//                        }
+//                        playerMana -= spent_mana;
+//                        clicked = true;
+//                    }
+//                } else {
+//                    clicked = false;
+//                }
+//            } else if (arenaBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
+//                abilityCircle.setX(Mouse.getX() - 98);
+//                abilityCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
+//
+//                // maybe use abilities if appropriate
+//                if (Mouse.isButtonDown(0)) {
+//                    if (!clicked) {
+//                        for (int i = 0; i < units.size(); i++) {
+//                            if (units.get(i).sprite.hittest(abilityCircle)) {
+//                                activateAbility(units.get(i));
+//                                playerMana--;
+//
+//                                // costs 1 mana to use abilities; if you have no more
+//                                // mana, stop
+//                                if (playerMana <= 0) {
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        clicked = true;
+//                    }
+//                } else {
+//                    clicked = false;
+//                }
+//            }
+//
+//            // go through and kill lightning if appropriate
+//            for (int i = 0; i < lightning.size(); i++) {
+//                lightning.get(i).update(tpf);
+//                if (lightning.get(i).def <= 0) {
+//                    lightning.remove(i);
+//                }
+//            }
+//
+//            knightDisp.update(tpf);
+//            spearDisp.update(tpf);
+//            archerDisp.update(tpf);
+//            paladinDisp.update(tpf);
+//            wizDisp.update(tpf);
+//            assDisp.update(tpf);
+//            selectedDisp.update(tpf);
+//
+//            updateUnits(tpf);
+//            doAI();
+//            this.doHealthAndManaWidthCalc();
+//        } else {
+//            inlay.update(tpf);
+//        }
     }
 
     @Override
     public void render(RenderManager rm) {
 
-        background.render();
-        arena.render();        
-        
-        // draw lightning behind things
-        for (int i = 0; i < lightning.size(); i++) {
-            lightning.get(i).sprite.render();
-        }
-        
-        summonCircle.render();
-        abilityCircle.render();
-
-        for (int i = 0; i < units.size(); i++) {
-            units.get(i).sprite.render();
-        }
-        for (int i = 0; i < enemyUnits.size(); i++) {
-            enemyUnits.get(i).sprite.render();
-        }
-
-        healthBar.render();
-        oppHealthBar.render();
-        manaBar.render();
-
-        StringRender.getInstance();
-        StringRender.drawString(StringRender.font24, "Health: "
-                + (int) this.playerHealth + "/" + (int) this.playerHealthMax, 11, 3, Color.white);
-        StringRender.drawString(StringRender.font24, "Mana: "
-                + (int) this.playerMana + "/" + (int) this.playerManaMax, 11, 35, Color.white);
-        StringRender.drawString(StringRender.font24, "Health: "
-                + (int) this.oppHealth + "/" + (int) this.oppHealthMax, 511, 3, Color.white);
-
-        knightDisp.render();
-        spearDisp.render();
-        archerDisp.render();
-        paladinDisp.render();
-        wizDisp.render();
-        assDisp.render();
-        selectedDisp.render();
-
-        if (showingInlay) {
-            inlay.render();
-        }
+//        background.render();
+//        arena.render();
+//
+//        // draw lightning behind things
+//        for (int i = 0; i < lightning.size(); i++) {
+//            lightning.get(i).sprite.render();
+//        }
+//
+//        summonCircle.render();
+//        abilityCircle.render();
+//
+//        for (int i = 0; i < units.size(); i++) {
+//            units.get(i).sprite.render();
+//        }
+//        for (int i = 0; i < enemyUnits.size(); i++) {
+//            enemyUnits.get(i).sprite.render();
+//        }
+//
+//        healthBar.render();
+//        oppHealthBar.render();
+//        manaBar.render();
+//
+//        StringRender.getInstance();
+//        StringRender.drawString(StringRender.font24, "Health: "
+//                + (int) this.playerHealth + "/" + (int) this.playerHealthMax, 11, 3, Color.white);
+//        StringRender.drawString(StringRender.font24, "Mana: "
+//                + (int) this.playerMana + "/" + (int) this.playerManaMax, 11, 35, Color.white);
+//        StringRender.drawString(StringRender.font24, "Health: "
+//                + (int) this.oppHealth + "/" + (int) this.oppHealthMax, 511, 3, Color.white);
+//
+//        knightDisp.render();
+//        spearDisp.render();
+//        archerDisp.render();
+//        paladinDisp.render();
+//        wizDisp.render();
+//        assDisp.render();
+//        selectedDisp.render();
+//
+//        if (showingInlay) {
+//            inlay.render();
+//        }
     }
 
     //
@@ -377,8 +377,8 @@ public class BattleScreen extends AbstractAppState {
      */
     public void selectUnitType(int num) {
         selected_summon = num;
-        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
-                unit_bar_start_at + (num * 55), 130, 50, 50));
+//        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
+//                unit_bar_start_at + (num * 55), 130, 50, 50));
     }
 
     /**
@@ -391,16 +391,16 @@ public class BattleScreen extends AbstractAppState {
     public void createUnit(int type, int x, int y) {
         // creates a unit centered at the (x, y) where the screen was clicked
         // values range inside of the spawn circle
-        while (true) {
-            int x_diff = random.nextInt(140) - 70;
-            int y_diff = random.nextInt(80) - 40;
-
-            Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
-            if (summonBox.contains(unit.sprite.getBounds())) {
-                units.add(unit);
-                return;
-            }
-        }
+//        while (true) {
+//            int x_diff = random.nextInt(140) - 70;
+//            int y_diff = random.nextInt(80) - 40;
+//
+//            Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
+//            if (summonBox.contains(unit.sprite.getBounds())) {
+//                units.add(unit);
+//                return;
+//            }
+//        }
     }
 
     /**
@@ -455,76 +455,76 @@ public class BattleScreen extends AbstractAppState {
     public void updateUnits(float tpf) {
 
         //
-        for (int i = 0; i < units.size(); i++) {
-            // if the unit is dead, remove it
-            if (units.get(i).def <= 0) {
-                units.remove(i);
-                Sounds.playSoundEffect("bounce");
-                continue;
-            }
-
-            // else update it
-            units.get(i).update(tpf);
-            if (enemySummonBox.intersects(units.get(i).sprite.getBounds())) {
-                if (units.get(i).counts) {
-                    this.oppHealth--;
-                }
-
-                if (oppHealth <= 0) {
-                    win();
-                }
-                units.remove(i);
-                continue;
-            }
-
-            // just in case
-            if (units.get(i).sprite.getX() > 1000) {
-                units.remove(i);
-            }
-        }
-
-        // update enemy units
-        for (int i = 0; i < enemyUnits.size(); i++) {
-            // if the unit is dead, remove it
-            if (enemyUnits.get(i).def <= 0) {
-                SaveGame.incrementMoney();
-                enemyUnits.remove(i);
-                Sounds.playSoundEffect("bounce");
-                continue;
-            }
-
-            // else update it
-            enemyUnits.get(i).update(tpf);
-            if (summonBox.intersects(enemyUnits.get(i).sprite.getBounds())) {
-                this.playerHealth--;
-                if (playerHealth <= 0) {
-                    lose();
-                }
-                enemyUnits.remove(i);
-                continue;
-            }
-
-            // just in case
-            if (enemyUnits.get(i).sprite.getX() < -100) {
-                enemyUnits.remove(i);
-            }
-        }
-
-        // do hit detection
-        for (Unit unit : units) {
-            for (Unit enemyUnit : enemyUnits) {
-                if (unit.sprite.hittest(enemyUnit.sprite)) {
-
-                    // first bounce the units that are hitting eachother
-                    unit.bounce(enemyUnit.push);
-                    enemyUnit.bounce(unit.push);
-
-                    // then decide about damage
-                    unit.def -= enemyUnit.atk;
-                    enemyUnit.def -= unit.atk;
-                }
-            }
-        }
+//        for (int i = 0; i < units.size(); i++) {
+//            // if the unit is dead, remove it
+//            if (units.get(i).def <= 0) {
+//                units.remove(i);
+//                Sounds.playSoundEffect("bounce");
+//                continue;
+//            }
+//
+//            // else update it
+//            units.get(i).update(tpf);
+//            if (enemySummonBox.intersects(units.get(i).sprite.getBounds())) {
+//                if (units.get(i).counts) {
+//                    this.oppHealth--;
+//                }
+//
+//                if (oppHealth <= 0) {
+//                    win();
+//                }
+//                units.remove(i);
+//                continue;
+//            }
+//
+//            // just in case
+////            if (units.get(i).sprite.getX() > 1000) {
+////                units.remove(i);
+////            }
+//        }
+//
+//        // update enemy units
+//        for (int i = 0; i < enemyUnits.size(); i++) {
+//            // if the unit is dead, remove it
+//            if (enemyUnits.get(i).def <= 0) {
+//                SaveGame.incrementMoney();
+//                enemyUnits.remove(i);
+//                Sounds.playSoundEffect("bounce");
+//                continue;
+//            }
+//
+//            // else update it
+//            enemyUnits.get(i).update(tpf);
+//            if (summonBox.intersects(enemyUnits.get(i).sprite.getBounds())) {
+//                this.playerHealth--;
+//                if (playerHealth <= 0) {
+//                    lose();
+//                }
+//                enemyUnits.remove(i);
+//                continue;
+//            }
+//
+//            // just in case
+////            if (enemyUnits.get(i).sprite.getX() < -100) {
+////                enemyUnits.remove(i);
+////            }
+//        }
+//
+//        // do hit detection
+//        for (Unit unit : units) {
+//            for (Unit enemyUnit : enemyUnits) {
+//                if (unit.sprite.hittest(enemyUnit.sprite)) {
+//
+//                    // first bounce the units that are hitting eachother
+//                    unit.bounce(enemyUnit.push);
+//                    enemyUnit.bounce(unit.push);
+//
+//                    // then decide about damage
+//                    unit.def -= enemyUnit.atk;
+//                    enemyUnit.def -= unit.atk;
+//                }
+//            }
+//        }
     }
 
     /**
@@ -540,12 +540,12 @@ public class BattleScreen extends AbstractAppState {
      * Calculates the width of the health and mana bars for the game.
      */
     public void doHealthAndManaWidthCalc() {
-        float barwidth = this.healthBoxWidth * (playerHealth / playerHealthMax);
-        this.healthBar.setWidth((int) Math.floor(barwidth));
-        barwidth = this.healthBoxWidth * (playerMana / playerManaMax);
-        this.manaBar.setWidth((int) Math.floor(barwidth));
-        barwidth = this.healthBoxWidth * (oppHealth / oppHealthMax);
-        this.oppHealthBar.setWidth((int) Math.floor(barwidth));
+//        float barwidth = this.healthBoxWidth * (playerHealth / playerHealthMax);
+//        this.healthBar.setWidth((int) Math.floor(barwidth));
+//        barwidth = this.healthBoxWidth * (playerMana / playerManaMax);
+//        this.manaBar.setWidth((int) Math.floor(barwidth));
+//        barwidth = this.healthBoxWidth * (oppHealth / oppHealthMax);
+//        this.oppHealthBar.setWidth((int) Math.floor(barwidth));
     }
 
     ///
@@ -582,34 +582,34 @@ public class BattleScreen extends AbstractAppState {
         @Override
         public void setup() {
             // set up the sprite to display victory/defeat
-            if (won) {
-                winlosesprite = new PSprite(SpriteFactory.getSprite(
-                        ImageManager.getImage("youwin"),
-                        208, 340, 384, 63));
-            } else {
-                winlosesprite = new PSprite(SpriteFactory.getSprite(
-                        ImageManager.getImage("youlose"),
-                        177, 340, 446, 63));
-            }
-
-            // set up the continue button to move back to the Campaign Screen
-            continueBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-                    ImageManager.getImage("continue"), 339, 410, 122, 21)), new Texture[]{
-                        ImageManager.getImage("continue"),
-                        ImageManager.getImage("continue"),
-                        ImageManager.getImage("continue")
-                    }) {
-                @Override
-                public void onButtonClicked() {
-                    super.onButtonClicked();
-
-                    if (Unit.ENEMY_DIFFICULTY >= 6) {
-                        GameStateController.setState(GameStateController.GAME_END_SCREEN);
-                    } else {
-                        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN);
-                    }
-                }
-            };
+//            if (won) {
+//                winlosesprite = new PSprite(SpriteFactory.getSprite(
+//                        ImageManager.getImage("youwin"),
+//                        208, 340, 384, 63));
+//            } else {
+//                winlosesprite = new PSprite(SpriteFactory.getSprite(
+//                        ImageManager.getImage("youlose"),
+//                        177, 340, 446, 63));
+//            }
+//
+//            // set up the continue button to move back to the Campaign Screen
+//            continueBtn = new PButton(new PSprite(SpriteFactory.getSprite(
+//                    ImageManager.getImage("continue"), 339, 410, 122, 21)), new Texture[]{
+//                        ImageManager.getImage("continue"),
+//                        ImageManager.getImage("continue"),
+//                        ImageManager.getImage("continue")
+//                    }) {
+//                @Override
+//                public void onButtonClicked() {
+//                    super.onButtonClicked();
+//
+//                    if (Unit.ENEMY_DIFFICULTY >= 6) {
+//                        GameStateController.setState(GameStateController.GAME_END_SCREEN);
+//                    } else {
+//                        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN);
+//                    }
+//                }
+//            };
         }
 
         @Override
@@ -618,14 +618,14 @@ public class BattleScreen extends AbstractAppState {
 
         @Override
         public void update(float tpf) {
-            winlosesprite.update(tpf);
-            continueBtn.update(tpf);
+//            winlosesprite.update(tpf);
+//            continueBtn.update(tpf);
         }
 
         @Override
         public void render() {
-            winlosesprite.render();
-            continueBtn.render();
+//            winlosesprite.render();
+//            continueBtn.render();
         }
     }
 }
