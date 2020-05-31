@@ -23,6 +23,9 @@ dependencies {
     implementation "org.jmonkeyengine:jme3-desktop:3.3.2-stable"
     implementation "org.jmonkeyengine:jme3-lwjgl:3.3.2-stable"
 
+    // JSON
+    implementation "com.github.cliftonlabs:json-simple:3.1.1"
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
