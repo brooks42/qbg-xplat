@@ -15,6 +15,7 @@ import com.jme3.ui.Picture
  * @author brooks42
  */
 class SpriteFactory(private val assetManager: AssetManager) {
+    
     fun getSprite(text: Texture2D, x: Int, y: Int, x2: Int, y2: Int): Node {
         return constructNodeForTextureAndBounds(text, x, y, x2, y2)
     }
