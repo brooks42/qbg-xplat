@@ -115,8 +115,6 @@ public class SaveGame {
 
     /**
      * Exports the current save game to a file.
-     *
-     * @param info
      */
     public static void exportToFile() {
 

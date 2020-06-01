@@ -3,16 +3,11 @@
  */
 package world;
 
-import animation.Animation;
 import java.util.Random;
 
 import com.jme3.texture.Texture;
-import sounds.Sounds;
 import sprites.PSprite;
-import sprites.SpriteFactory;
 import states.BattleScreen;
-import utilities.ImageManager;
-import utilities.SaveGame;
 
 /**
  *

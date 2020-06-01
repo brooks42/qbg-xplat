@@ -5,23 +5,24 @@
  * 
  * Basically this is a static wrapper for the java Random class.
  */
-package utilities;
+package utilities
+
+import java.util.Random
 
 /**
  *
  * @author brooks42
  */
-public class Random {
-    
+object Random {
     // the static Random instance
-    private static java.util.Random random;
-    
+    private var random: Random? = null
+
     /**
      * Creates this Random object with the passed seed.
-     * 
-     * @param seed 
+     *
+     * @param seed
      */
-    public static void setSeed(long seed){
-        random = new java.util.Random(seed);
+    fun setSeed(seed: Long) {
+        random = Random(seed)
     }
 }

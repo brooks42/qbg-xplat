@@ -15,7 +15,7 @@ class QbgApplication : SimpleApplication() {
     lateinit var spriteFactory: SpriteFactory
 
     override fun simpleInitApp() {
-        
+
         cam.isParallelProjection = true
         cam.location = Vector3f(0F, 0F, 0.5f)
         flyByCamera.isEnabled = false

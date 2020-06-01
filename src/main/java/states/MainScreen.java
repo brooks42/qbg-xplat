@@ -8,34 +8,24 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.RenderManager;
-import com.jme3.texture.Texture;
-import engine.GameDisplay;
 import gui.PButton;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.lwjgl.input.Mouse;
-import sounds.Sounds;
 import sprites.PSprite;
-import sprites.SpriteFactory;
-import utilities.ImageManager;
 import utilities.SaveGame;
-import utilities.Settings;
-import utilities.StringRender;
 
 /**
  *
- * @author User
+ * @author brooks42
  */
 public class MainScreen extends AbstractAppState {
 
