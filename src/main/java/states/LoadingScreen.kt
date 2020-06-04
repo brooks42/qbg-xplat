@@ -16,7 +16,7 @@ import utilities.Settings
  */
 class LoadingScreen : BaseAppState() {
 
-    private val doneLoading = false
+    var doneLoading = false
 
     lateinit var background: Node
 
@@ -27,6 +27,7 @@ class LoadingScreen : BaseAppState() {
 
         background = application.spriteFactory.getSprite(application.imageManager.quickLoadImage("title.png")!!,
                 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
+        doneLoading = true
     }
 
     override fun onEnable() {
@@ -41,7 +42,7 @@ class LoadingScreen : BaseAppState() {
 
     override fun update(tpf: Float) {
         if (doneLoading) {
-            application.goToMainMenuScreen()
+            application.goToMainMenuAppState()
         }
     }
 }

@@ -3,8 +3,11 @@ package desktop
 import com.jme3.app.SimpleApplication
 import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
+import com.simsilica.lemur.GuiGlobals
+import com.simsilica.lemur.style.BaseStyles
 import sprites.SpriteFactory
 import states.LoadingScreen
+import states.MainMenuAppState
 import utilities.ImageManager
 import utilities.Settings
 
@@ -23,6 +26,11 @@ class QbgApplication : SimpleApplication() {
         imageManager = ImageManager(assetManager)
         spriteFactory = SpriteFactory(assetManager)
 
+        // setup Lemur
+        GuiGlobals.initialize(this)
+        BaseStyles.loadGlassStyle()
+        GuiGlobals.getInstance().styles.defaultStyle = "glass"
+
         val loadingScreenState = LoadingScreen()
         stateManager.attach(loadingScreenState)
     }
@@ -31,9 +39,11 @@ class QbgApplication : SimpleApplication() {
         //TODO: add update code
     }
 
-    fun goToMainMenuScreen() {
+    fun goToMainMenuAppState() {
+        stateManager.detach(stateManager.getState(LoadingScreen::class.java))
 
-//        stateManager.detach(LoadingScreen.class);
+        val mainGameState = MainMenuAppState()
+        stateManager.attach(mainGameState)
     }
 
     companion object {
