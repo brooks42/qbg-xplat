@@ -6,11 +6,11 @@ package states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.math.Vector2f
 import com.jme3.renderer.RenderManager
-import com.simsilica.lemur.Button
-import com.simsilica.lemur.Command
-import com.simsilica.lemur.Container
-import com.simsilica.lemur.Label
+import com.simsilica.lemur.*
+import com.simsilica.lemur.component.IconComponent
+import com.simsilica.lemur.core.GuiComponent
 import desktop.QbgApplication
 import gui.PButton
 import org.json.simple.JSONObject
@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser
 import org.json.simple.parser.ParseException
 import sprites.PSprite
 import utilities.SaveGame
+import utilities.Settings
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileReader
@@ -30,45 +31,40 @@ import java.util.*
  */
 class MainMenuAppState : BaseAppState() {
 
-    val showLoadGameInlay = false
-    val background: PSprite? = null
-    val skirmishBtn: PButton? = null
-    val campaignBtn: PButton? = null
-    val exitBtn: PButton? = null
-    val volumeBtn: PButton? = null
-//    val loadGameMenu: LoadGameInlay? = null
+    lateinit var window: Container
+    lateinit var skirmishButton: Button
+    lateinit var campaignButton: Button
+    lateinit var exitButton: Button
+    lateinit var volumeButton: Button
 
     lateinit var application: QbgApplication
 
     //    lateinit val application: Application
     public override fun initialize(app: Application) {
+
         application = app as QbgApplication
 
-//        showLoadGameInlay = false;
-//
-//        background = new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("title"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-//        skirmishBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("skirmish_btn"), 100, 525, 168, 27)), new Texture[]{
-//                    ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn"), ImageManager.getImage("skirmish_btn")
-//                }) {
-//            @Override
-//            public void onButtonClicked() {
-//                super.onButtonClicked();
-//
-//                dismissInlay();
-//                // go to the skirmish screen?
-//                System.out.println("Skirmish!");
-//            }
-//        };
-//        campaignBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("campaign_btn"), 500, 525, 185, 27)), new Texture[]{
-//                    ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn"), ImageManager.getImage("campaign_btn")
-//                }) {
-//            @Override
-//            public void onButtonClicked() {
-//                super.onButtonClicked();
-//
+        window = Container()
+
+        window.setLocalTranslation(300F, 300F, 0F)
+
+        val background = IconComponent("title.png")
+        background.iconSize = Vector2f(64F, 64F)
+//        window.addChild(background)
+
+        skirmishButton = window.addChild(Button(null))
+        skirmishButton.background = IconComponent("skirmish_btn.png")
+        skirmishButton.addClickCommands(object : Command<Button?> {
+            override fun execute(source: Button?) {
+                println("Skirmish")
+            }
+        })
+
+        campaignButton = window.addChild(Button("Campaign"))
+        campaignButton.addClickCommands(object : Command<Button?> {
+            override fun execute(source: Button?) {
+                println("Campaign")
+
 //                // if there are any save games, show the load screen
 //                if (SaveGame.getListOfFiles().length > 0) {
 //                    showInlay();
@@ -76,94 +72,50 @@ class MainMenuAppState : BaseAppState() {
 //                    // if there's no save game file, start a new campaign
 //                    startNewCampaign();
 //                }
-//            }
-//        };
-//
-//        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
-//                    ImageManager.getImage("exit_game_btn"),
-//                    ImageManager.getImage("exit_game_btn"),
-//                    ImageManager.getImage("exit_game_btn")
-//                }) {
-//            @Override
-//            public void onButtonClicked() {
-//                super.onButtonClicked();
-//                GameDisplay.end();
-//            }
-//        };
-//
-//        if (Sounds.volume < 1) {
-//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
-//                        ImageManager.getImage("volume_off"),
-//                        ImageManager.getImage("volume_on"),
-//                        ImageManager.getImage("volume_on")
-//                    }) {
-//                @Override
-//                public void onButtonClicked() {
-//                    super.onButtonClicked();
-//
-//                    toggleMute();
-//                    // go to the skirmish screen?
-//                    System.out.println("Skirmish!");
-//                }
-//            };
-//        } else {
-//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                    ImageManager.getImage("volume_on"), 750, 550, 50, 50)), new Texture[]{
-//                        ImageManager.getImage("volume_on"),
-//                        ImageManager.getImage("volume_off"),
-//                        ImageManager.getImage("volume_off")
-//                    }) {
-//                @Override
-//                public void onButtonClicked() {
-//                    super.onButtonClicked();
-//
-//                    toggleMute();
-//                    // go to the skirmish screen?
-//                    System.out.println("Skirmish!");
-//                }
-//            };
-//        }
-//
-//        Sounds.playMusic("song_one");
+            }
+        })
+
+        exitButton = window.addChild(Button("Exit"))
+        exitButton.addClickCommands(object : Command<Button?> {
+            override fun execute(source: Button?) {
+                println("Exit")
+
+                application.stop()
+            }
+        })
+
+        volumeButton = window.addChild(Button("Volume"))
+        volumeButton.addClickCommands(object : Command<Button?> {
+            override fun execute(source: Button?) {
+                println("Mute/Unmute")
+
+                // toggleMute()
+            }
+        })
+
+//        background = new PSprite(SpriteFactory.getSprite(
+//                ImageManager.getImage("title"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
     }
 
     override fun onEnable() {
+        application.guiNode.attachChild(window)
 
-        val myWindow = Container()
-        application.guiNode.attachChild(myWindow)
-
-        myWindow.setLocalTranslation(300F, 300F, 0F)
-
-        myWindow.addChild(Label("Hello, World."))
-        val clickMe: Button = myWindow.addChild(Button("Click Me"))
-        clickMe.addClickCommands(object : Command<Button?> {
-            override fun execute(source: Button?) {
-                println("The world is yours.")
-            }
-        })
+//        Sounds.playMusic("song_one")
     }
 
     override fun onDisable() {
-
+        application.guiNode.detachChild(window)
     }
-//
-//    /**
-//     * Starts a new Campaign.
-//     */
-//    fun startNewCampaign() {
+
+    fun startNewCampaign() {
 //        // TODO: After the Story Screen is finished, go there instead
 //        GameStateController.setState(GameStateController.STORY_SCREEN)
-//    }
-//
-//    fun startCampaign() {
+    }
+
+    fun startCampaign() {
 //        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN)
-//    }
-//
-//    /**
-//     * Has this MenuScreen load the passed file as a saved game
-//     */
+    }
+
 //    fun loadGame(file: File): Boolean {
 //        println("Loading game...")
 //        val parser = JSONParser()
@@ -239,12 +191,7 @@ class MainMenuAppState : BaseAppState() {
 
     }
 
-    /**
-     * An InlayMenu used to show the player any available used games and then
-     * allow them to load a game.
-     *
-     * @author brooks42
-     */
+    // TODO: this should be a separate BaseGameState instance
     internal inner class LoadGameInlay : InlayMenu() {
         override fun setup() {}
         override fun destroy() {}

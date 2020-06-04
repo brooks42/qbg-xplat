@@ -1,6 +1,7 @@
 package desktop
 
 import com.jme3.app.SimpleApplication
+import com.jme3.asset.plugins.FileLocator
 import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
@@ -18,6 +19,11 @@ class QbgApplication : SimpleApplication() {
     lateinit var spriteFactory: SpriteFactory
 
     override fun simpleInitApp() {
+
+        // register sources for finding images and other resources
+        // TODO: this should just be able to point to a place in the current directory...
+        // TODO: for some reason the "root directory" doesn't actually mean root, it means "only one I look at" :/ need to recurse or something...
+        assetManager.registerLocator("/Users/cbrooks/dev/QuickBounceGameKotlin/assets/main/images/skins/default", FileLocator::class.java)
 
         cam.isParallelProjection = true
         cam.location = Vector3f(0F, 0F, 0.5f)

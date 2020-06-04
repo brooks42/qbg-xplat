@@ -32,7 +32,6 @@ class ImageManager(private val assetManager: AssetManager) {
 
     fun quickLoadImage(assetName: String?): Texture2D? {
         val loaded: Texture2D
-        assetManager.registerLocator("/Users/cbrooks/dev/QuickBounceGameKotlin/assets", FileLocator::class.java)
         val textureKey = TextureKey(assetName)
         loaded = assetManager.loadAsset(textureKey) as Texture2D
         return loaded
