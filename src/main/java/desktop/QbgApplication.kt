@@ -35,8 +35,6 @@ class QbgApplication : SimpleApplication() {
 
         // setup Lemur
         GuiGlobals.initialize(this)
-        BaseStyles.loadGlassStyle()
-        GuiGlobals.getInstance().styles.defaultStyle = "glass"
 
         val loadingScreenState = LoadingScreen()
         stateManager.attach(loadingScreenState)

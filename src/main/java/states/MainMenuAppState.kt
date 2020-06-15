@@ -9,6 +9,7 @@ import com.jme3.app.state.BaseAppState
 import com.jme3.math.Vector2f
 import com.jme3.renderer.RenderManager
 import com.simsilica.lemur.*
+import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
 import com.simsilica.lemur.core.GuiComponent
 import desktop.QbgApplication
@@ -32,6 +33,7 @@ import java.util.*
 class MainMenuAppState : BaseAppState() {
 
     lateinit var window: Container
+    lateinit var menu: Container
     lateinit var skirmishButton: Button
     lateinit var campaignButton: Button
     lateinit var exitButton: Button
@@ -39,20 +41,26 @@ class MainMenuAppState : BaseAppState() {
 
     lateinit var application: QbgApplication
 
-    //    lateinit val application: Application
     public override fun initialize(app: Application) {
 
         application = app as QbgApplication
 
         window = Container()
 
-        window.setLocalTranslation(300F, 300F, 0F)
+        window.background = IconComponent("title.png")
 
-        val background = IconComponent("title.png")
-        background.iconSize = Vector2f(64F, 64F)
-//        window.addChild(background)
+        // TODO: this sucks and should be changed ASAP when I build in rendering UI for different resolutions
+        val height = application.guiViewPort.camera.height.toFloat()
 
-        skirmishButton = window.addChild(Button(null))
+        window.setLocalTranslation(0F, height, 0F)
+
+        menu = Container()
+        val boxLayout = BoxLayout(Axis.X, FillMode.None)
+
+        menu.layout = boxLayout
+        menu.setLocalTranslation(100F, 100F, 0F)
+
+        skirmishButton = menu.addChild(Button(null))
         skirmishButton.background = IconComponent("skirmish_btn.png")
         skirmishButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
@@ -60,7 +68,10 @@ class MainMenuAppState : BaseAppState() {
             }
         })
 
-        campaignButton = window.addChild(Button("Campaign"))
+        menu.addChild(Label("-|-"))
+
+        campaignButton = menu.addChild(Button(null))
+        campaignButton.background = IconComponent("campaign_btn.png")
         campaignButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 println("Campaign")
@@ -75,7 +86,10 @@ class MainMenuAppState : BaseAppState() {
             }
         })
 
-        exitButton = window.addChild(Button("Exit"))
+        menu.addChild(Label("-|-"))
+
+        exitButton = menu.addChild(Button(null))
+        exitButton.background = IconComponent("exit_game_btn.png")
         exitButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 println("Exit")
@@ -84,7 +98,10 @@ class MainMenuAppState : BaseAppState() {
             }
         })
 
-        volumeButton = window.addChild(Button("Volume"))
+        menu.addChild(Label("-|-"))
+
+        volumeButton = menu.addChild(Button(null))
+        volumeButton.background = IconComponent("volume_on.png")
         volumeButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 println("Mute/Unmute")
@@ -92,19 +109,18 @@ class MainMenuAppState : BaseAppState() {
                 // toggleMute()
             }
         })
-
-//        background = new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("title"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
     }
 
     override fun onEnable() {
         application.guiNode.attachChild(window)
+        application.guiNode.attachChild(menu)
 
 //        Sounds.playMusic("song_one")
     }
 
     override fun onDisable() {
         application.guiNode.detachChild(window)
+        application.guiNode.detachChild(menu)
     }
 
     fun startNewCampaign() {
