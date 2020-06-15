@@ -14,4 +14,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # because I'm on a mac
-*.DS_Store
+.DS_Store
