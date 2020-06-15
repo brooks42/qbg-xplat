@@ -23,7 +23,8 @@ class QbgApplication : SimpleApplication() {
         // register sources for finding images and other resources
         // TODO: this should just be able to point to a place in the current directory...
         // TODO: for some reason the "root directory" doesn't actually mean root, it means "only one I look at" :/ need to recurse or something...
-        assetManager.registerLocator("/Users/cbrooks/dev/QuickBounceGameKotlin/assets/main/images/skins/default", FileLocator::class.java)
+        val executionPath = System.getProperty("user.dir")
+        assetManager.registerLocator("${executionPath}/assets/main/images/skins/default", FileLocator::class.java)
 
         cam.isParallelProjection = true
         cam.location = Vector3f(0F, 0F, 0.5f)
