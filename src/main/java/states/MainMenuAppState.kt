@@ -6,25 +6,13 @@ package states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
-import com.jme3.math.Vector2f
-import com.jme3.renderer.RenderManager
+import com.jme3.audio.AudioData
+import com.jme3.audio.AudioNode
 import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
-import com.simsilica.lemur.core.GuiComponent
 import desktop.QbgApplication
-import gui.PButton
-import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
-import org.json.simple.parser.ParseException
-import sprites.PSprite
-import utilities.SaveGame
-import utilities.Settings
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.IOException
-import java.util.*
+
 
 /**
  *
@@ -41,9 +29,19 @@ class MainMenuAppState : BaseAppState() {
 
     lateinit var application: QbgApplication
 
+    lateinit var clickSound: AudioNode
+
+    lateinit var menuSound: AudioNode
+
     public override fun initialize(app: Application) {
 
         application = app as QbgApplication
+
+        initMenu()
+        initSounds()
+    }
+
+    private fun initMenu() {
 
         window = Container()
 
@@ -65,6 +63,7 @@ class MainMenuAppState : BaseAppState() {
         skirmishButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 println("Skirmish")
+                clickSound.playInstance()
             }
         })
 
@@ -83,6 +82,7 @@ class MainMenuAppState : BaseAppState() {
 //                    // if there's no save game file, start a new campaign
 //                    startNewCampaign();
 //                }
+                clickSound.playInstance()
             }
         })
 
@@ -94,6 +94,7 @@ class MainMenuAppState : BaseAppState() {
             override fun execute(source: Button?) {
                 println("Exit")
 
+                clickSound.playInstance()
                 application.stop()
             }
         })
@@ -105,22 +106,40 @@ class MainMenuAppState : BaseAppState() {
         volumeButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 println("Mute/Unmute")
+                clickSound.playInstance()
 
-                // toggleMute()
+                 toggleMute()
             }
         })
+    }
+
+    private fun initSounds() {
+
+        clickSound = AudioNode(application.assetManager, "click.wav", AudioData.DataType.Buffer)
+        clickSound.isPositional = false
+        clickSound.isLooping = false
+        clickSound.volume = 1F
+
+        menuSound = AudioNode(application.assetManager, "song_one.ogg", AudioData.DataType.Stream)
+        menuSound.isPositional = false
+        menuSound.isLooping = true
+        menuSound.volume = 1F
     }
 
     override fun onEnable() {
         application.guiNode.attachChild(window)
         application.guiNode.attachChild(menu)
+        application.guiNode.attachChild(clickSound)
+        application.guiNode.attachChild(menuSound)
 
-//        Sounds.playMusic("song_one")
+        menuSound.play()
     }
 
     override fun onDisable() {
         application.guiNode.detachChild(window)
         application.guiNode.detachChild(menu)
+        application.guiNode.detachChild(clickSound)
+        application.guiNode.detachChild(menuSound)
     }
 
     fun startNewCampaign() {
@@ -164,22 +183,18 @@ class MainMenuAppState : BaseAppState() {
      * Toggles whether the game sound is muted or not.
      */
     fun toggleMute() {
-//        if (Sounds.volume != 1) {
-//            // stop being muted and start playing the music again
-//            Sounds.volume = 1;
-//            volumeBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                    ImageManager.getImage("volume_off"), 750, 550, 50, 50)), new Texture[]{
-//                        ImageManager.getImage("volume_off"),
-//                        ImageManager.getImage("volume_on"),
-//                        ImageManager.getImage("volume_on")
-//                    }) {
-//                @Override
-//                public void onButtonClicked() {
-//                    super.onButtonClicked();
-//                    toggleMute();
-//                }
-//            };
-//
+
+        // if not muted
+
+//        volumeButton.background = IconComponent("volume_on.png")
+
+
+        // if muted
+//        volumeButton.background = IconComponent("volume_off.png")
+
+
+
+//        if (Sounds.volume != 1) {//
 //            Sounds.playMusic("song_one");
 //        } else {
 //            // mute
