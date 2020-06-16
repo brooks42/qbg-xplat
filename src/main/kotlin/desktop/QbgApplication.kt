@@ -5,7 +5,6 @@ import com.jme3.asset.plugins.FileLocator
 import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
-import com.simsilica.lemur.style.BaseStyles
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
