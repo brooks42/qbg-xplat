@@ -8,6 +8,7 @@ import com.simsilica.lemur.GuiGlobals
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
+import states.StoryScreen
 import utilities.ImageManager
 import utilities.Settings
 
@@ -49,6 +50,13 @@ class QbgApplication : SimpleApplication() {
 
         val mainGameState = MainMenuAppState()
         stateManager.attach(mainGameState)
+    }
+
+    fun goToStoryScreen() {
+        stateManager.detach(stateManager.getState(MainMenuAppState::class.java))
+
+        val storyScreen = StoryScreen()
+        stateManager.attach(storyScreen)
     }
 
     companion object {

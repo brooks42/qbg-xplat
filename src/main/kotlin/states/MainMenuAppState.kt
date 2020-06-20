@@ -12,6 +12,7 @@ import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
+import utilities.SaveGame
 
 /**
  *
@@ -83,6 +84,8 @@ class MainMenuAppState : BaseAppState() {
 //                    // if there's no save game file, start a new campaign
 //                    startNewCampaign();
 //                }
+
+                startNewCampaign()
             }
         })
 
@@ -144,11 +147,12 @@ class MainMenuAppState : BaseAppState() {
 
     fun startNewCampaign() {
 //        // TODO: After the Story Screen is finished, go there instead
-//        GameStateController.setState(GameStateController.STORY_SCREEN)
+
+        application.goToStoryScreen()
     }
 
-    fun startCampaign() {
-//        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN)
+    fun startCampaign(saveGame: SaveGame) {
+
     }
 
     /**

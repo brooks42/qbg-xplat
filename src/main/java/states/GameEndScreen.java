@@ -89,7 +89,7 @@ public class GameEndScreen extends AbstractAppState {
 //        skipButton.render();
     }
 
-    // skips the story, going straight to the campaign screen
+    // skips the story, going straight to the campaign map screen
     public void skip() {
         GameStateController.setState(GameStateController.MAIN_SCREEN);
     }

@@ -7,8 +7,17 @@ package states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.asset.plugins.FileLocator
+import com.simsilica.lemur.Button
+import com.simsilica.lemur.Command
+import com.simsilica.lemur.Container
+import com.simsilica.lemur.Label
+import com.simsilica.lemur.component.IconComponent
+import desktop.QbgApplication
 import gui.PButton
 import sprites.PSprite
+import java.io.BufferedReader
+import java.io.FileReader
 import java.util.*
 
 /**
@@ -16,48 +25,81 @@ import java.util.*
  * @author brooks42
  */
 class StoryScreen : BaseAppState() {
-    private val background1: PSprite? = null
-    private val background2: PSprite? = null
-    private val skipButton: PButton? = null
-    private val lines: ArrayList<String>? = null
-    private val scroll_speed = .15f
-    private val draw_starting = 0f
 
-    //        background1 = new PSprite(SpriteFactory.getSprite(
-    //                ImageManager.getImage("game_map"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-    //        background2 = new PSprite(SpriteFactory.getSprite(
-    //                ImageManager.getImage("inlay"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-    //
-    //        skipButton = new PButton(new PSprite(SpriteFactory.getSprite(
-    //                ImageManager.getImage("skip_button"), 727, 570, 73, 30)), new Texture[]{
-    //                    ImageManager.getImage("skip_button"),
-    //                    ImageManager.getImage("skip_button"),
-    //                    ImageManager.getImage("skip_button")
-    //                }) {
-    //            @Override
-    //            public void onButtonClicked() {
-    //                super.onButtonClicked();
-    //                skip();
-    //            }
-    //        };
-    //
-    //        try {
-    //            // load the story file
-    //            Scanner scanner = new Scanner(new BufferedReader(new FileReader("resources/scripts/storyline.checkem")));
-    //            lines = new ArrayList<String>();
-    //            while (scanner.hasNextLine()) {
-    //                lines.add(scanner.nextLine());
-    //            }
-    //        } catch (FileNotFoundException e) {
-    //            System.out.println("There was a problem loading the story file: " + e.getMessage());
-    //        }
-    // skips the story, going straight to the campaign screen
-    fun skip() {
-        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN)
+    lateinit var application: QbgApplication
+
+    lateinit var backgroundImage: Container
+    lateinit var scrollWindow: Container
+    lateinit var window: Container
+
+    lateinit var skipButton: Button
+
+    private val labels = ArrayList<Label>()
+    private val scrollSpeed = 15.0f
+
+    override fun initialize(app: Application) {
+
+        application = app as QbgApplication
+
+        val executionPath = System.getProperty("user.dir")
+        val scanner = Scanner(BufferedReader(FileReader("${executionPath}/assets/main/scripts/storyline.checkem")))
+
+        scanner.useDelimiter("\n")
+        scanner.forEachRemaining {
+            labels.add(Label(it))
+        }
+
+        // TODO: this sucks and should be changed ASAP when I build in rendering UI for different resolutions
+        val height = application.guiViewPort.camera.height.toFloat()
+
+        backgroundImage = Container()
+        scrollWindow = Container()
+        window = Container()
+
+        val background = IconComponent("game_map.png")
+        background.alpha = 0.5F
+        backgroundImage.background = background
+        backgroundImage.setLocalTranslation(0F, height, 0F)
+        
+        scrollWindow.setLocalTranslation(150F, 0F, 0F)
+
+        labels.forEach { label ->
+            scrollWindow.addChild(label)
+        }
+
+        skipButton = Button("Skip")
+        skipButton.addClickCommands(object : Command<Button?> {
+            override fun execute(source: Button?) {
+                skip()
+            }
+        })
+        skipButton.setLocalTranslation(600.0F, 100.0F, 0F)
+        window.addChild(skipButton)
     }
 
-    override fun initialize(app: Application) {}
     override fun cleanup(app: Application) {}
-    override fun onEnable() {}
-    override fun onDisable() {}
+
+    override fun onEnable() {
+        application.guiNode.attachChild(backgroundImage)
+
+        // reset the height of the scroll window
+        scrollWindow.setLocalTranslation(150F, 0F, 0F)
+        application.guiNode.attachChild(scrollWindow)
+
+        application.guiNode.attachChild(window)
+    }
+
+    override fun onDisable() {
+        application.guiNode.detachChild(backgroundImage)
+        application.guiNode.detachChild(scrollWindow)
+        application.guiNode.detachChild(window)
+    }
+
+    override fun update(tpf: Float) {
+        scrollWindow.setLocalTranslation(100F, scrollWindow.localTranslation.y + (tpf * scrollSpeed), 0F)
+    }
+
+    private fun skip() {
+//        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN)
+    }
 }
