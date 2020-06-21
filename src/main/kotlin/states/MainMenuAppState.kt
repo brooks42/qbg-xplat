@@ -31,8 +31,6 @@ class MainMenuAppState : BaseAppState() {
 
     lateinit var clickSound: AudioNode
 
-    lateinit var menuSound: AudioNode
-
     public override fun initialize(app: Application) {
 
         application = app as QbgApplication
@@ -122,27 +120,20 @@ class MainMenuAppState : BaseAppState() {
         clickSound.isPositional = false
         clickSound.isLooping = false
         clickSound.volume = 1F
-
-        menuSound = AudioNode(application.assetManager, "song_one.ogg", AudioData.DataType.Stream)
-        menuSound.isPositional = false
-        menuSound.isLooping = true
-        menuSound.volume = 1F
     }
 
     override fun onEnable() {
         application.guiNode.attachChild(window)
         application.guiNode.attachChild(menu)
-        application.guiNode.attachChild(clickSound)
-        application.guiNode.attachChild(menuSound)
 
-        menuSound.play()
+        application.audioNode.attachChild(clickSound)
     }
 
     override fun onDisable() {
         application.guiNode.detachChild(window)
         application.guiNode.detachChild(menu)
-        application.guiNode.detachChild(clickSound)
-        application.guiNode.detachChild(menuSound)
+
+        application.audioNode.detachChild(clickSound)
     }
 
     fun startNewCampaign() {

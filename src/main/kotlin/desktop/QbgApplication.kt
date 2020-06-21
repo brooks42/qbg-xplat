@@ -2,6 +2,8 @@ package desktop
 
 import com.jme3.app.SimpleApplication
 import com.jme3.asset.plugins.FileLocator
+import com.jme3.audio.AudioData
+import com.jme3.audio.AudioNode
 import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
@@ -17,6 +19,10 @@ class QbgApplication : SimpleApplication() {
     lateinit var imageManager: ImageManager
 
     lateinit var spriteFactory: SpriteFactory
+
+    lateinit var audioNode: AudioNode
+
+    lateinit var mainThemeSong: AudioNode
 
     override fun simpleInitApp() {
 
@@ -37,12 +43,19 @@ class QbgApplication : SimpleApplication() {
         // setup Lemur
         GuiGlobals.initialize(this)
 
+        audioNode = AudioNode()
+
         val loadingScreenState = LoadingScreen()
         stateManager.attach(loadingScreenState)
-    }
 
-    override fun simpleUpdate(tpf: Float) {
-        //TODO: add update code
+        mainThemeSong = AudioNode(assetManager, "song_one.ogg", AudioData.DataType.Stream)
+        mainThemeSong.isPositional = false
+        mainThemeSong.isLooping = true
+        mainThemeSong.volume = 1F
+
+        audioNode.attachChild(mainThemeSong)
+
+        mainThemeSong.play()
     }
 
     fun goToMainMenuAppState() {
@@ -57,6 +70,13 @@ class QbgApplication : SimpleApplication() {
 
         val storyScreen = StoryScreen()
         stateManager.attach(storyScreen)
+    }
+
+    fun goToCampaignScreen() {
+        stateManager.detach(stateManager.getState(StoryScreen::class.java))
+
+        // TODO: get the campaign map screen stuff working
+        goToMainMenuAppState()
     }
 
     companion object {

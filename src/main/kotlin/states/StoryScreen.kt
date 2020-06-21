@@ -14,6 +14,10 @@ import com.simsilica.lemur.Container
 import com.simsilica.lemur.Label
 import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
+import desktopkt.bottomAnchor
+import desktopkt.centerAnchor
+import desktopkt.rightAnchor
+import desktopkt.topAnchor
 import gui.PButton
 import sprites.PSprite
 import java.io.BufferedReader
@@ -49,9 +53,6 @@ class StoryScreen : BaseAppState() {
             labels.add(Label(it))
         }
 
-        // TODO: this sucks and should be changed ASAP when I build in rendering UI for different resolutions
-        val height = application.guiViewPort.camera.height.toFloat()
-
         backgroundImage = Container()
         scrollWindow = Container()
         window = Container()
@@ -59,7 +60,7 @@ class StoryScreen : BaseAppState() {
         val background = IconComponent("game_map.png")
         background.alpha = 0.5F
         backgroundImage.background = background
-        backgroundImage.setLocalTranslation(0F, height, 0F)
+        backgroundImage.setLocalTranslation(0F, topAnchor(), 0F)
         
         scrollWindow.setLocalTranslation(150F, 0F, 0F)
 
@@ -67,14 +68,14 @@ class StoryScreen : BaseAppState() {
             scrollWindow.addChild(label)
         }
 
-        skipButton = Button("Skip")
+        skipButton = window.addChild(Button("Skip"))
         skipButton.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
                 skip()
             }
         })
-        skipButton.setLocalTranslation(600.0F, 100.0F, 0F)
-        window.addChild(skipButton)
+        window.setLocalTranslation(rightAnchor() - 100, bottomAnchor() + 50, 0F)
+        skipButton.forceRefresh(true, true, true)
     }
 
     override fun cleanup(app: Application) {}
@@ -83,7 +84,7 @@ class StoryScreen : BaseAppState() {
         application.guiNode.attachChild(backgroundImage)
 
         // reset the height of the scroll window
-        scrollWindow.setLocalTranslation(150F, 0F, 0F)
+        scrollWindow.setLocalTranslation(150F, bottomAnchor(), 0F)
         application.guiNode.attachChild(scrollWindow)
 
         application.guiNode.attachChild(window)
@@ -100,6 +101,6 @@ class StoryScreen : BaseAppState() {
     }
 
     private fun skip() {
-//        GameStateController.setState(GameStateController.CAMPAIGN_SCREEN)
+        application.goToCampaignScreen()
     }
 }
