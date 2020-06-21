@@ -5,8 +5,8 @@
 package states;
 
 import com.jme3.app.Application;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.app.state.BaseAppState;
 import com.jme3.renderer.RenderManager;
 import gui.PButton;
 
@@ -15,14 +15,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import sprites.PSprite;
-import desktopkt.utilities.SaveGame;
 import world.Unit;
 
 /**
  *
  * @author brooks42
  */
-public class BattleScreen extends AbstractAppState {
+public class BattleScreen extends BaseAppState {
 
     private PSprite knightDisp, spearDisp, archerDisp, paladinDisp, wizDisp,
             assDisp, selectedDisp;
@@ -54,7 +53,7 @@ public class BattleScreen extends AbstractAppState {
     private int selected_summon = 0;
 
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
+    protected void initialize(Application app) {
 
         won = false;
         showingInlay = false;
@@ -128,37 +127,52 @@ public class BattleScreen extends AbstractAppState {
 //        }
     }
 
+    @Override
+    protected void cleanup(Application app) {
+
+    }
+
+    @Override
+    protected void onEnable() {
+
+    }
+
+    @Override
+    protected void onDisable() {
+
+    }
+
     public void loadStats() {
         // hp first
-        this.playerHealth = 20;
-        try {
-            playerHealth += Integer.parseInt(SaveGame.gamedata.get(SaveGame.UPGRADE_HP)) * 5;
-        } catch (Exception e) {
-            // oh well
-        }
-        this.playerHealthMax = playerHealth;
-
-        this.oppHealth = 20 + Unit.ENEMY_DIFFICULTY * 10;
-        this.oppHealthMax = oppHealth;
-
-        // mana time
-        this.playerMana = 100;
-        try {
-            playerMana += Integer.parseInt(SaveGame.gamedata.get(SaveGame.UPGRADE_MANA)) * 10;
-        } catch (Exception e) {
-            // oh well
-        }
-        this.playerManaMax = playerMana;
-        this.playerManaRegen = .005f;
-        try {
-            playerManaRegen += Float.parseFloat(SaveGame.gamedata.get(SaveGame.UPGRADE_MANAREG)) * .0025;
-        } catch (Exception e) {
-            // oh well
-        }
-
-        this.oppMana = 0 + Unit.ENEMY_DIFFICULTY * 10;
-        this.oppManaMax = 50 + Unit.ENEMY_DIFFICULTY * 20;
-        this.oppManaRegen = .005f + (float) Unit.ENEMY_DIFFICULTY / 100;
+//        this.playerHealth = 20;
+//        try {
+//            playerHealth += Integer.parseInt(SaveGame.gamedata.get(SaveGame.UPGRADE_HP)) * 5;
+//        } catch (Exception e) {
+//            // oh well
+//        }
+//        this.playerHealthMax = playerHealth;
+//
+//        this.oppHealth = 20 + Unit.ENEMY_DIFFICULTY * 10;
+//        this.oppHealthMax = oppHealth;
+//
+//        // mana time
+//        this.playerMana = 100;
+//        try {
+//            playerMana += Integer.parseInt(SaveGame.gamedata.get(SaveGame.UPGRADE_MANA)) * 10;
+//        } catch (Exception e) {
+//            // oh well
+//        }
+//        this.playerManaMax = playerMana;
+//        this.playerManaRegen = .005f;
+//        try {
+//            playerManaRegen += Float.parseFloat(SaveGame.gamedata.get(SaveGame.UPGRADE_MANAREG)) * .0025;
+//        } catch (Exception e) {
+//            // oh well
+//        }
+//
+//        this.oppMana = 0 + Unit.ENEMY_DIFFICULTY * 10;
+//        this.oppManaMax = 50 + Unit.ENEMY_DIFFICULTY * 20;
+//        this.oppManaRegen = .005f + (float) Unit.ENEMY_DIFFICULTY / 100;
     }
 
 //    @Override
@@ -546,7 +560,6 @@ public class BattleScreen extends AbstractAppState {
     ///
     public void win() {
         won = true;
-        SaveGame.incrementWins();
         showInlay();
     }
 
