@@ -6,11 +6,21 @@ package desktopkt.states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.math.Vector2f
+import com.jme3.math.Vector3f
+import com.jme3.scene.Node
+import com.simsilica.lemur.Container
 import desktop.QbgApplication
+import desktopkt.bottomAnchor
+import desktopkt.height
+import desktopkt.rightAnchor
 import gui.PButton
 import sprites.PSprite
 import states.InlayMenu
 import desktopkt.utilities.SaveGame
+import desktopkt.width
+import sprites.SpriteFactory
+import utilities.ImageManager
 
 /**
  *
@@ -20,9 +30,13 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
     lateinit var application: QbgApplication
 
-//    private val background: PSprite? = null
+    lateinit var mapNode: Node
+
+    lateinit var hudNode: Container
+
+    private var campaignAreas = ArrayList<Node>()
+
 //    private val moneyDisplay: PSprite? = null
-//    private val campaign_areas: ArrayList<PSprite>? = null
 //    private val mouse_was_down = false
 //    private val upgradesBtn: PButton? = null
 //    private val exitBtn: PButton? = null
@@ -32,54 +46,19 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
     override fun initialize(app: Application?) {
         application = app as QbgApplication
 
+        app.camera.isParallelProjection = true
+        app.camera.location = Vector3f(0F, 0F, -10F)
 
+        initHud()
+        initMapView()
+        initSounds()
     }
 
-    fun initHud() {
+    private fun initHud() {
 
-    }
+        hudNode = Container()
 
-    fun initMapView() {
 
-    }
-
-    fun initSounds() {
-
-    }
-
-    override fun onEnable() {
-
-    }
-
-    override fun onDisable() {
-
-    }
-
-    override fun cleanup(app: Application?) {
-
-    }
-
-//        background = new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("game_map"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
-//
-//        campaign_areas = new ArrayList<PSprite>();
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 428, 426, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 337, 300, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 152, 205, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 246, 46, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 421, 81, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 516, 122, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 500, 192, 68, 50)));
-//        campaign_areas.add(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("battle_flag"), 627, 334, 68, 50)));
-//
 //        moneyDisplay = new PSprite(SpriteFactory.getSprite(
 //                ImageManager.getImage("campaign_gui"), -100, 0, 214, 61));
 //
@@ -111,13 +90,71 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 //        };
 //
 //        inlay = new UpgradesInlay();
-//
-//        // save the current Save Game
-//        if (SaveGame.gamedata == null) {
-//            SaveGame.gamedata = SaveGame.getDefaultSave();
-//        }
-//        SaveGame.exportToFile();
-//        money = Integer.parseInt(SaveGame.gamedata.get("money"));
+    }
+
+    private fun initMapView() {
+
+        val mapImage = application.imageManager.getImage("game_map.png")
+        val battleFlagImage = application.imageManager.getImage("battle_flag.png")
+
+        if (mapImage != null) {
+            mapNode = application.spriteFactory.getSprite(mapImage, 0, 0, width().toInt(), height().toInt())
+        }
+
+        // this is pretty jank but shows the battle flags on each fight
+        if (battleFlagImage != null) {
+            campaignLocations.forEach {
+                val yLoc = (height() - it.y).toInt() - 50
+                campaignAreas.add(application.spriteFactory.getSprite(battleFlagImage, it.x.toInt(), yLoc, it.x.toInt() + 68, yLoc + 50))
+            }
+        }
+    }
+
+    private fun initSounds() {
+
+    }
+
+    private val campaignLocations =
+            arrayListOf(
+                    Vector2f(428F, 426F),
+                    Vector2f(337F, 300F),
+                    Vector2f(152F, 205F),
+                    Vector2f(246F, 46F),
+                    Vector2f(421F, 81F),
+                    Vector2f(516F, 122F),
+                    Vector2f(500F, 192F),
+                    Vector2f(627F, 334F)
+            )
+
+    override fun onEnable() {
+        application.guiNode.attachChild(hudNode)
+        application.guiNode.attachChild(mapNode)
+
+        campaignAreas.forEach {
+            application.guiNode.attachChild(it)
+        }
+    }
+
+    override fun onDisable() {
+        application.guiNode.detachChild(hudNode)
+        application.guiNode.detachChild(mapNode)
+
+        campaignAreas.forEach {
+            application.guiNode.detachChild(it)
+        }
+    }
+
+    override fun update(tpf: Float) {
+        super.update(tpf)
+    }
+
+    override fun cleanup(app: Application?) {
+
+    }
+
+    fun saveGame() {
+
+    }
 
     //    @Override
     //    public void input() {
@@ -129,13 +166,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
     //                    }
     //                }
     //            }
-    //
-    //            if (Mouse.isButtonDown(0)) {
-    //                mouse_was_down = true;
-    //            } else {
-    //                mouse_was_down = false;
-    //            }
-    //        }
     //    }
 
     /**
@@ -336,8 +366,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         }
 
         override fun render() {
-//            overlay.render();
-//
 //            // now draw buttons
 //            upgradeHPButton.render();
 //            StringRender.drawString(StringRender.font24, "$" + upgradeHP, 210, 145, Color.yellow);
@@ -360,7 +388,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 //
 //            closeButton.render();
         }
-//
+
 //        fun loadCosts() {
 //            var bonus = 0f
 //            try {

@@ -7,6 +7,8 @@ import com.jme3.audio.AudioNode
 import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
+import desktopkt.states.CampaignScreen
+import desktopkt.utilities.SaveGame
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
@@ -72,11 +74,11 @@ class QbgApplication : SimpleApplication() {
         stateManager.attach(storyScreen)
     }
 
-    fun goToCampaignScreen() {
+    fun goToCampaignScreen(saveGame: SaveGame? = null) {
         stateManager.detach(stateManager.getState(StoryScreen::class.java))
 
-        // TODO: get the campaign map screen stuff working
-        goToMainMenuAppState()
+        val campaignScreen = CampaignScreen(saveGame ?: SaveGame.defaultSave)
+        stateManager.attach(campaignScreen)
     }
 
     companion object {
