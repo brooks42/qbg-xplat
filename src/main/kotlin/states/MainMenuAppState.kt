@@ -12,7 +12,7 @@ import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
-import utilities.SaveGame
+import desktopkt.utilities.SaveGame
 
 /**
  *
