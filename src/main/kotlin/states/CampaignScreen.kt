@@ -6,23 +6,24 @@ package desktopkt.states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.math.ColorRGBA
 import com.jme3.math.Vector2f
 import com.jme3.math.Vector3f
 import com.jme3.scene.Node
+import com.simsilica.lemur.Button
 import com.simsilica.lemur.Container
+import com.simsilica.lemur.Label
+import com.simsilica.lemur.Panel
+import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
-import desktopkt.bottomAnchor
 import desktopkt.height
-import desktopkt.rightAnchor
 import gui.PButton
 import sprites.PSprite
-import states.InlayMenu
 import desktopkt.utilities.SaveGame
 import desktopkt.width
-import sprites.SpriteFactory
-import utilities.ImageManager
 
 /**
+ * The campaign screen where a player starts new battles and manages their empire
  *
  * @author brooks42
  */
@@ -36,18 +37,17 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
     private var campaignAreas = ArrayList<Node>()
 
-//    private val moneyDisplay: PSprite? = null
-//    private val mouse_was_down = false
-//    private val upgradesBtn: PButton? = null
-//    private val exitBtn: PButton? = null
-//    private val inlay: UpgradesInlay? = null
-//    private var showingInlay = false
+    lateinit var moneyDisplayBack: Panel
+    lateinit var moneyDisplayLabel: Label
+
+    lateinit var upgradesButton: Button
+
+    lateinit var exitButton: Button
 
     override fun initialize(app: Application?) {
         application = app as QbgApplication
 
         app.camera.isParallelProjection = true
-        app.camera.location = Vector3f(0F, 0F, -10F)
 
         initHud()
         initMapView()
@@ -58,38 +58,21 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
         hudNode = Container()
 
+        moneyDisplayBack = Panel()
+        moneyDisplayBack.background = IconComponent("campaign_gui.png")
+        moneyDisplayLabel = Label("$---")
+        moneyDisplayLabel.color = ColorRGBA.Black
 
-//        moneyDisplay = new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("campaign_gui"), -100, 0, 214, 61));
-//
-//        upgradesBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("upgrade_btn"), 665, 0, 135, 50)), new Texture[]{
-//                    ImageManager.getImage("upgrade_btn"),
-//                    ImageManager.getImage("upgrade_hover_btn"),
-//                    ImageManager.getImage("upgrade_hover_btn")
-//                }) {
-//            @Override
-//            public void onButtonClicked() {
-//                super.onButtonClicked();
-//
-//                showUpgradesInlay();
-//            }
-//        };
-//
-//        exitBtn = new PButton(new PSprite(SpriteFactory.getSprite(
-//                ImageManager.getImage("exit_game_btn"), 361, 573, 78, 27)), new Texture[]{
-//                    ImageManager.getImage("exit_game_btn"),
-//                    ImageManager.getImage("exit_game_btn"),
-//                    ImageManager.getImage("exit_game_btn")
-//                }) {
-//            @Override
-//            public void onButtonClicked() {
-//                super.onButtonClicked();
-//                GameStateController.setState(GameStateController.MAIN_SCREEN);
-//            }
-//        };
-//
-//        inlay = new UpgradesInlay();
+        moneyDisplayBack.setLocalTranslation(-100F, height() - 61F, 0F) // -100, 0, 214, 61
+        moneyDisplayLabel.setLocalTranslation(50F, height() - 90F, 0F) // -100, 0, 214, 61
+
+        upgradesButton = Button("")
+        upgradesButton.background = IconComponent("upgrade_btn.png")
+        upgradesButton.setLocalTranslation(665F, height() - 100, 0F) //  665, 0, 135, 50
+
+        exitButton = Button("")
+        exitButton.background = IconComponent("exit_game_btn.png")
+        exitButton.setLocalTranslation(361F, height() - 573F, 0F) //  361, 573, 78, 27
     }
 
     private fun initMapView() {
@@ -130,6 +113,11 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.attachChild(hudNode)
         application.guiNode.attachChild(mapNode)
 
+        application.guiNode.attachChild(moneyDisplayBack)
+        application.guiNode.attachChild(moneyDisplayLabel)
+        application.guiNode.attachChild(upgradesButton)
+        application.guiNode.attachChild(exitButton)
+
         campaignAreas.forEach {
             application.guiNode.attachChild(it)
         }
@@ -139,6 +127,11 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.detachChild(hudNode)
         application.guiNode.detachChild(mapNode)
 
+        application.guiNode.detachChild(moneyDisplayBack)
+        application.guiNode.detachChild(moneyDisplayLabel)
+        application.guiNode.detachChild(upgradesButton)
+        application.guiNode.detachChild(exitButton)
+
         campaignAreas.forEach {
             application.guiNode.detachChild(it)
         }
@@ -146,6 +139,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
     override fun update(tpf: Float) {
         super.update(tpf)
+
+        moneyDisplayLabel.text = "$${saveGame.money}"
     }
 
     override fun cleanup(app: Application?) {
@@ -197,7 +192,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
      * The Upgrades Inlay that allow the user to upgrade himself and his units,
      * and unlock existing units.
      */
-    internal inner class UpgradesInlay : InlayMenu() {
+    internal inner class UpgradesInlay : BaseAppState() {
+
         var overlay: PSprite? = null
         var upgradeKnightsButton: PButton? = null
         var upgradeSpearmenButton: PButton? = null
@@ -221,7 +217,10 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         var mustUnlockPaladins = false
         var mustUnlockWizards = false
         var mustUnlockAssassins = true
-        override fun setup() {
+
+        override fun initialize(app: Application?) {
+
+        }
 //            overlay = new PSprite(SpriteFactory.getSprite(
 //                    ImageManager.getImage("inlay"), 100, 100, 600, 450));
 //
@@ -357,15 +356,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 //            };
 //
 //            loadCosts();
-        }
 
-        override fun destroy() {}
-
-        override fun update(tpf: Float) {
-
-        }
-
-        override fun render() {
+//        override fun render() {
 //            // now draw buttons
 //            upgradeHPButton.render();
 //            StringRender.drawString(StringRender.font24, "$" + upgradeHP, 210, 145, Color.yellow);
@@ -387,7 +379,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 //            StringRender.drawString(StringRender.font24, "$" + upgradeAssassins, 600, 355, Color.yellow);
 //
 //            closeButton.render();
-        }
+//        }
 
 //        fun loadCosts() {
 //            var bonus = 0f
@@ -475,5 +467,17 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 //                true
 //            }
 //        }
+
+        override fun onEnable() {
+
+        }
+
+        override fun onDisable() {
+
+        }
+
+        override fun cleanup(app: Application?) {
+
+        }
     }
 }

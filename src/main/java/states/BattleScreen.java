@@ -579,13 +579,12 @@ public class BattleScreen extends BaseAppState {
      * The WinLoseInlay that displays whether the player won or lost, and allows
      * the player to continue back to the CampaignScreen
      */
-    class WinLoseInlay extends InlayMenu {
+    class WinLoseInlay {
 
         private PSprite winlosesprite;
         private PButton continueBtn;
         public boolean won;
 
-        @Override
         public void setup() {
             // set up the sprite to display victory/defeat
 //            if (won) {
@@ -616,22 +615,6 @@ public class BattleScreen extends BaseAppState {
 //                    }
 //                }
 //            };
-        }
-
-        @Override
-        public void destroy() {
-        }
-
-        @Override
-        public void update(float tpf) {
-//            winlosesprite.update(tpf);
-//            continueBtn.update(tpf);
-        }
-
-        @Override
-        public void render() {
-//            winlosesprite.render();
-//            continueBtn.render();
         }
     }
 }
