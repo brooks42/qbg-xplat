@@ -5,7 +5,7 @@
  * This class should maybe be redesigned to handle all the settings stuff
  * statically? Meh
  */
-package utilities;
+package models;
 
 import java.io.File;
 import java.io.FileNotFoundException;

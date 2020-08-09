@@ -13,8 +13,8 @@ import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
 import states.StoryScreen
-import utilities.ImageManager
-import utilities.Settings
+import models.ImageManager
+import models.Settings
 
 class QbgApplication : SimpleApplication() {
 

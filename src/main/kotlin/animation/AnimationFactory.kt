@@ -5,7 +5,7 @@
 package animation
 
 import com.jme3.texture.Texture
-import utilities.ImageManager
+import models.ImageManager
 
 /**
  *

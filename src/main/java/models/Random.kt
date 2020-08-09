@@ -5,7 +5,7 @@
  * 
  * Basically this is a static wrapper for the java Random class.
  */
-package utilities
+package models
 
 import java.util.Random
 

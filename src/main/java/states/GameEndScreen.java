@@ -9,20 +9,13 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.RenderManager;
-import com.jme3.texture.Texture;
 import gui.PButton;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 import sprites.PSprite;
-import sprites.SpriteFactory;
-import utilities.ImageManager;
-import utilities.Settings;
-import utilities.StringRender;
+import models.StringRender;
 
 /**
  *

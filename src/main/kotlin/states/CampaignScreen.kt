@@ -97,6 +97,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
     }
 
+    // these are the locations for the spots where users click to go to the next fight
     private val campaignLocations =
             arrayListOf(
                     Vector2f(428F, 426F),
@@ -167,9 +168,10 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
      * Starts a fight of the passed number (number is for difficulty)
      */
     fun startFight(fightnum: Int) {
-//        println("Starting fight: $fightnum")
+        println("Starting fight: $fightnum")
 //        Unit.ENEMY_DIFFICULTY = fightnum
 //        GameStateController.setState(GameStateController.BATTLE_SCREEN)
+
     }
 
     /**

@@ -1,13 +1,11 @@
 /*
  * The ImageManager class recursively loads all the images in a passed directory.
  */
-package utilities
+package models
 
 import com.jme3.asset.AssetManager
 import com.jme3.asset.TextureKey
-import com.jme3.asset.plugins.FileLocator
 import com.jme3.texture.Texture2D
-import java.net.URL
 import java.util.*
 
 /**

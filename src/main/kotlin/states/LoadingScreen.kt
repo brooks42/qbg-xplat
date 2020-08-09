@@ -7,12 +7,8 @@ package states
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
 import com.jme3.scene.Node
-import com.simsilica.lemur.Button
-import com.simsilica.lemur.Command
-import com.simsilica.lemur.Container
-import com.simsilica.lemur.Label
 import desktop.QbgApplication
-import utilities.Settings
+import models.Settings
 
 /**
  *

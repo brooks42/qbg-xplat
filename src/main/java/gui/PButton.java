@@ -5,14 +5,6 @@
  */
 package gui;
 
-import com.jme3.texture.Texture;
-import interfaces.HitDetectible;
-import java.awt.Rectangle;
-import org.lwjgl.input.Mouse;
-import sounds.Sounds;
-import sprites.PSprite;
-import utilities.Settings;
-
 /**
  *
  * @author brooks42
