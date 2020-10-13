@@ -8,7 +8,7 @@ import com.jme3.math.Vector3f
 import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
 import desktopkt.states.CampaignScreen
-import desktopkt.utilities.SaveGame
+import desktopkt.models.SaveGame
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
@@ -55,9 +55,10 @@ class QbgApplication : SimpleApplication() {
         mainThemeSong.isLooping = true
         mainThemeSong.volume = 1F
 
-        audioNode.attachChild(mainThemeSong)
+        // disable main song for now
+//        audioNode.attachChild(mainThemeSong)
 
-        mainThemeSong.play()
+//        mainThemeSong.play()
     }
 
     fun goToMainMenuAppState() {

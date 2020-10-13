@@ -6,21 +6,29 @@ package desktopkt.states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.collision.Collidable
+import com.jme3.collision.CollisionResults
+import com.jme3.input.MouseInput
+import com.jme3.input.controls.ActionListener
+import com.jme3.input.controls.MouseButtonTrigger
 import com.jme3.math.ColorRGBA
+import com.jme3.math.Ray
 import com.jme3.math.Vector2f
 import com.jme3.math.Vector3f
 import com.jme3.scene.Node
 import com.simsilica.lemur.Button
+import com.simsilica.lemur.Command
 import com.simsilica.lemur.Container
 import com.simsilica.lemur.Label
 import com.simsilica.lemur.Panel
 import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
 import desktopkt.height
+import desktopkt.models.SaveGame
+import desktopkt.width
 import gui.PButton
 import sprites.PSprite
-import desktopkt.utilities.SaveGame
-import desktopkt.width
+
 
 /**
  * The campaign screen where a player starts new battles and manages their empire
@@ -44,13 +52,39 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
     lateinit var exitButton: Button
 
+    // these are the locations for the spots where users click to go to the next fight
+    private val campaignLocations =
+            mapOf(
+                    Pair("one", Vector2f(428F, 426F)),
+                    Pair("two", Vector2f(337F, 300F)),
+                    Pair("three", Vector2f(152F, 205F)),
+                    Pair("four", Vector2f(246F, 46F)),
+                    Pair("five", Vector2f(421F, 81F)),
+                    Pair("six", Vector2f(516F, 122F)),
+                    Pair("seven", Vector2f(500F, 192F)),
+                    Pair("eight", Vector2f(627F, 334F))
+            )
+
+    private val fightNameToNumbers =
+            mapOf(
+                    Pair("one", 1),
+                    Pair("two", 2),
+                    Pair("three", 3),
+                    Pair("four", 4),
+                    Pair("five", 5),
+                    Pair("six", 6),
+                    Pair("seven", 7),
+                    Pair("eight", 8)
+            )
+
     override fun initialize(app: Application?) {
         application = app as QbgApplication
 
-        app.camera.isParallelProjection = true
+        application.camera.isParallelProjection = true
 
         initHud()
         initMapView()
+        initInput()
         initSounds()
     }
 
@@ -69,6 +103,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         upgradesButton = Button("")
         upgradesButton.background = IconComponent("upgrade_btn.png")
         upgradesButton.setLocalTranslation(665F, height() - 100, 0F) //  665, 0, 135, 50
+        upgradesButton.addClickCommands(Command { println("sup") })
 
         exitButton = Button("")
         exitButton.background = IconComponent("exit_game_btn.png")
@@ -80,35 +115,38 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         val mapImage = application.imageManager.getImage("game_map.png")
         val battleFlagImage = application.imageManager.getImage("battle_flag.png")
 
-        if (mapImage != null) {
-            mapNode = application.spriteFactory.getSprite(mapImage, 0, 0, width().toInt(), height().toInt())
+        mapImage?.let {
+            mapNode = application.spriteFactory.getSprite(it, 0, 0, width().toInt(), height().toInt())
         }
 
         // this is pretty jank but shows the battle flags on each fight
         if (battleFlagImage != null) {
             campaignLocations.forEach {
-                val yLoc = (height() - it.y).toInt() - 50
-                campaignAreas.add(application.spriteFactory.getSprite(battleFlagImage, it.x.toInt(), yLoc, it.x.toInt() + 68, yLoc + 50))
+                val yLoc = (height() - it.value.y).toInt() - 50
+                val fightNode = application.spriteFactory
+                        .getSprite(battleFlagImage, it.value.x.toInt(), yLoc, it.value.x.toInt() + 68, yLoc + 50)
+                fightNode.name = it.key
+                campaignAreas.add(fightNode)
             }
         }
+
+        campaignAreas.forEach {
+            mapNode.attachChild(it)
+        }
+    }
+
+    private fun initInput() {
+
+        application.inputManager.addMapping(click, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
+        application.inputManager.addMapping(rClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
+        application.inputManager.addListener(clickListener, click)
+        application.inputManager.addListener(clickListener, rClick)
+
     }
 
     private fun initSounds() {
 
     }
-
-    // these are the locations for the spots where users click to go to the next fight
-    private val campaignLocations =
-            arrayListOf(
-                    Vector2f(428F, 426F),
-                    Vector2f(337F, 300F),
-                    Vector2f(152F, 205F),
-                    Vector2f(246F, 46F),
-                    Vector2f(421F, 81F),
-                    Vector2f(516F, 122F),
-                    Vector2f(500F, 192F),
-                    Vector2f(627F, 334F)
-            )
 
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
@@ -118,10 +156,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.attachChild(moneyDisplayLabel)
         application.guiNode.attachChild(upgradesButton)
         application.guiNode.attachChild(exitButton)
-
-        campaignAreas.forEach {
-            application.guiNode.attachChild(it)
-        }
     }
 
     override fun onDisable() {
@@ -132,10 +166,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.detachChild(moneyDisplayLabel)
         application.guiNode.detachChild(upgradesButton)
         application.guiNode.detachChild(exitButton)
-
-        campaignAreas.forEach {
-            application.guiNode.detachChild(it)
-        }
     }
 
     override fun update(tpf: Float) {
@@ -151,18 +181,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
     fun saveGame() {
 
     }
-
-    //    @Override
-    //    public void input() {
-    //        if (!showingInlay) {
-    //            for (int i = 0; i < campaign_areas.size(); i++) {
-    //                if (campaign_areas.get(i).hittest(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
-    //                    if (!Mouse.isButtonDown(0) && mouse_was_down) {
-    //                        startFight(i);
-    //                    }
-    //                }
-    //            }
-    //    }
 
     /**
      * Starts a fight of the passed number (number is for difficulty)
@@ -188,6 +206,25 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
     fun dismissInlay() {
 //        showingInlay = false
 //        SaveGame.exportToFile()
+    }
+
+    private val clickListener = ActionListener { name, mouseDown, _ ->
+        // only respond on mouse up events
+        if (mouseDown) {
+            return@ActionListener
+        }
+
+        val cursorPosition = application.inputManager.cursorPosition
+        val cursorPosition3f = Vector3f(cursorPosition.x, cursorPosition.y, 0F)
+
+        if (name == click) {
+            campaignAreas.forEach {
+                println("$cursorPosition3f <=> ${it.worldBound}")
+                if (it.worldBound.intersects(cursorPosition3f)) {
+                    println("hit ${it.name}")
+                }
+            }
+        }
     }
 
     /**
@@ -481,5 +518,11 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         override fun cleanup(app: Application?) {
 
         }
+    }
+
+    companion object {
+
+        val click = "click"
+        val rClick = "rClick"
     }
 }

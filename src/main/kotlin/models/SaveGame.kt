@@ -1,11 +1,9 @@
 /*
  * The SaveGame class stores information for the current save game
  */
-package desktopkt.utilities
+package desktopkt.models
 
 import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
-import org.json.simple.parser.ParseException
 import java.io.*
 import java.text.DateFormat
 import java.util.*
@@ -308,7 +306,7 @@ class SaveGame(private val gameData: HashMap<String, Any?>) {
          */
         val listOfFiles: Array<File?>
             get() {
-                val dir = File(SaveGame.SAVE_LOC)
+                val dir = File(SAVE_LOC)
                 if (dir.exists() && dir.isDirectory) {
                     val checkem = dir.listFiles()
                     Arrays.sort(checkem)
