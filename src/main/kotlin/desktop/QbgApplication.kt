@@ -9,6 +9,8 @@ import com.jme3.system.AppSettings
 import com.simsilica.lemur.GuiGlobals
 import desktopkt.states.CampaignScreen
 import desktopkt.models.SaveGame
+import desktopkt.states.FightScreen
+import desktopkt.states.fight.Fight
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
@@ -80,6 +82,14 @@ class QbgApplication : SimpleApplication() {
 
         val campaignScreen = CampaignScreen(saveGame ?: SaveGame.defaultSave)
         stateManager.attach(campaignScreen)
+    }
+
+    fun startFight(fightNum: Int) {
+        println("starting fight number $fightNum")
+        stateManager.detach(stateManager.getState(CampaignScreen::class.java))
+
+        val fightScreen = FightScreen()
+        stateManager.attach(fightScreen)
     }
 
     companion object {

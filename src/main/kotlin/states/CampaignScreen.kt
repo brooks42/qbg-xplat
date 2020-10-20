@@ -141,7 +141,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.inputManager.addMapping(rClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
         application.inputManager.addListener(clickListener, click)
         application.inputManager.addListener(clickListener, rClick)
-
     }
 
     private fun initSounds() {
@@ -187,9 +186,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
      */
     fun startFight(fightnum: Int) {
         println("Starting fight: $fightnum")
-//        Unit.ENEMY_DIFFICULTY = fightnum
-//        GameStateController.setState(GameStateController.BATTLE_SCREEN)
-
+        application.startFight(fightnum)
     }
 
     /**
@@ -222,6 +219,9 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
                 println("$cursorPosition3f <=> ${it.worldBound}")
                 if (it.worldBound.intersects(cursorPosition3f)) {
                     println("hit ${it.name}")
+                    fightNameToNumbers[it.name]?.apply {
+                        startFight(this)
+                    }
                 }
             }
         }

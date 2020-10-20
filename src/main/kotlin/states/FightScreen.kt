@@ -33,7 +33,7 @@ class FightScreen : BaseAppState() {
     }
 
     private fun initHud() {
-
+        hudNode = Container()
     }
 
     private fun initArena() {
