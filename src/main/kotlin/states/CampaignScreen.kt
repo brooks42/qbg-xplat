@@ -161,6 +161,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.detachChild(hudNode)
         application.guiNode.detachChild(mapNode)
 
+        application.inputManager.clearMappings()
+
         application.guiNode.detachChild(moneyDisplayBack)
         application.guiNode.detachChild(moneyDisplayLabel)
         application.guiNode.detachChild(upgradesButton)

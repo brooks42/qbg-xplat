@@ -3,8 +3,14 @@ package desktopkt.states
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
 import com.jme3.input.controls.ActionListener
+import com.jme3.material.Material
+import com.jme3.math.ColorRGBA
+import com.jme3.math.Vector3f
+import com.jme3.scene.Geometry
+import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
+
 
 /**
  * The FightScreen is so that users can battle on a pseudo-3d plane
@@ -38,6 +44,19 @@ class FightScreen : BaseAppState() {
 
     private fun initArena() {
 
+        val b = Box(1F, 1F, 1F)
+        val geom = Geometry("Box", b)
+
+        val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
+        mat.setColor("Color", ColorRGBA.Blue)
+        geom.material = mat
+        geom.setLocalTranslation(0F, 0F, 10F)
+
+        application.flyByCamera.isEnabled = true
+
+        application.rootNode.apply {
+            this.attachChild(geom)
+        }
     }
 
     private fun initSounds() {
