@@ -6,13 +6,10 @@ package desktopkt.states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
-import com.jme3.collision.Collidable
-import com.jme3.collision.CollisionResults
 import com.jme3.input.MouseInput
 import com.jme3.input.controls.ActionListener
 import com.jme3.input.controls.MouseButtonTrigger
 import com.jme3.math.ColorRGBA
-import com.jme3.math.Ray
 import com.jme3.math.Vector2f
 import com.jme3.math.Vector3f
 import com.jme3.scene.Node
@@ -84,7 +81,6 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
 
         initHud()
         initMapView()
-        initInput()
         initSounds()
     }
 
@@ -135,7 +131,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         }
     }
 
-    private fun initInput() {
+    private fun attachInput() {
 
         application.inputManager.addMapping(click, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
         application.inputManager.addMapping(rClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
@@ -151,6 +147,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.attachChild(hudNode)
         application.guiNode.attachChild(mapNode)
 
+        attachInput()
+
         application.guiNode.attachChild(moneyDisplayBack)
         application.guiNode.attachChild(moneyDisplayLabel)
         application.guiNode.attachChild(upgradesButton)
@@ -161,7 +159,8 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
         application.guiNode.detachChild(hudNode)
         application.guiNode.detachChild(mapNode)
 
-        application.inputManager.clearMappings()
+        application.inputManager.deleteMapping(click)
+        application.inputManager.deleteMapping(rClick)
 
         application.guiNode.detachChild(moneyDisplayBack)
         application.guiNode.detachChild(moneyDisplayLabel)
