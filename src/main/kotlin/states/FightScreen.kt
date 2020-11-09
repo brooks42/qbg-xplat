@@ -238,7 +238,7 @@ class FightScreen : BaseAppState() {
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
 
     val arenaHeight = 0.5F
-    val laneCount = 8
+    val laneCount = 16
     val laneHeight = arenaHeight / laneCount
 
     // projection matrix...
@@ -295,7 +295,7 @@ class FightScreen : BaseAppState() {
             laneIndex++
         }
 
-        setAxes()
+//        setAxes()
 
         application.inputManager.addMapping(leftClick, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
         application.inputManager.addMapping(rightClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
