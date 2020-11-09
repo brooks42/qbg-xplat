@@ -65,50 +65,58 @@ class FightScreen : BaseAppState() {
             return@ActionListener
         }
 
-        println("click")
+        // Reset results list.
+        val results = CollisionResults()
 
-        if (name == pick3d || name == pick2d) {
-            // Reset results list.
-            val results = CollisionResults()
+        println("----- click -----")
+        val cursorPosition = application.inputManager.cursorPosition
+        println("cursorPosition = $cursorPosition")
+        val rayOrigin = application.camera.getWorldCoordinates(cursorPosition, 0f).clone()
+        println("rayOrigin = $rayOrigin")
+        val dir = application.camera.getWorldCoordinates(cursorPosition, 1f)
+                .subtractLocal(rayOrigin).normalizeLocal()
+        println("dir = $dir")
+        // Aim the ray from the clicked spot forwards.
+        val ray = Ray(rayOrigin, dir);
+        println("ray = $ray")
 
-            if (name == pick2d) {
-                println("-----")
-                val cursorPosition = application.inputManager.cursorPosition
-                println("cursorPosition = $cursorPosition")
-                val rayOrigin = application.camera.getWorldCoordinates(cursorPosition, 0f).clone()
-                println("rayOrigin = $rayOrigin")
-                val dir = application.camera.getWorldCoordinates(cursorPosition, 1f)
-                        .subtractLocal(rayOrigin).normalizeLocal()
-                println("dir = $dir")
-                // Aim the ray from the clicked spot forwards.
-                val ray = Ray(rayOrigin, dir);
-                println("ray = $ray")
+        var collisionCount = application.guiNode.collideWith(ray, results)
+        println("collisionCount for gui collision == $collisionCount")
 
-                // for now we're only testing against the guinode since the map is part of the guinode
-                // in the future when the game has 3d parts to it like I want, this will be less consolidated
-                val collisionCount = application.guiNode.collideWith(ray, results)
-                println("collisionCount for 2d collision == $collisionCount")
-                println("-----")
+        val consumed = guiHitTest(name, results)
 
-            } else {
-                // Aim the ray from camera location in camera direction
-                // (assuming crosshairs in center of screen).
-                val ray = Ray(application.camera.location, application.camera.direction)
-                // Collect intersections between ray and all nodes in results list.
-                application.rootNode.collideWith(ray, results)
-                println("results.size() for 3d click == ${results.size()}")
-            }
-
-            // Print the results so we see what is going on
-            for (i in 0 until results.size()) {
-                // For each "hit", we know distance, impact point, geometry.
-                val collision = results.getCollision(i)
-                val dist = collision.distance
-                val pt = collision.contactPoint
-                val target = collision.geometry.name
-                println("Selection #$i: $target at $pt, $dist WU away.")
-            }
+        if (!consumed) {
+            collisionCount = application.rootNode.collideWith(ray, results)
+            println("collisionCount for root collision == $collisionCount")
         }
+        println("-----")
+
+        // Print the results so we see what is going on
+//        for (i in 0 until results.size()) {
+//            // For each "hit", we know distance, impact point, geometry.
+//            val collision = results.getCollision(i)
+//            val dist = collision.distance
+//            val pt = collision.contactPoint
+//            val target = collision.geometry.name
+//            println("Selection #$i: $target at $pt, $dist WU away.")
+//        }
+    }
+
+    // returns whether the click was consumed or not
+    private fun guiHitTest(name: String, collisionResults: CollisionResults): Boolean {
+        // TODO: iterate through all the GUI elements
+
+        for (i in 0 until collisionResults.size()) {
+            // For each "hit", we know distance, impact point, geometry.
+            val collision = collisionResults.getCollision(i)
+            val dist = collision.distance
+            val pt = collision.contactPoint
+            val target = collision.geometry.name
+            println("Selection #$i: $target at $pt, $dist WU away.")
+            return true
+        }
+
+        return false
     }
 
     private var arrayOfInputsBetweenEnters = arrayListOf<String>()
@@ -229,6 +237,10 @@ class FightScreen : BaseAppState() {
     private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
 
+    val arenaHeight = 0.5F
+    val laneCount = 8
+    val laneHeight = arenaHeight / laneCount
+
     // projection matrix...
     /*[
  2.0362442  3.5557518E-10  -0.0019885192  0.001988519
@@ -237,24 +249,39 @@ class FightScreen : BaseAppState() {
  -8.790573E-4  -0.435569  -0.90015495  1.2094089
 ]*/
 
+    private fun laneZPositions(): ArrayList<Float> {
+
+        var lanePositionArray = arrayListOf<Float>()
+
+        // lanes are 1/laneCount of the arena height
+        val initPos = -(arenaHeight / 2)
+
+        lanePositionArray.add(initPos)
+
+        for (lane in 1 until laneCount) {
+            lanePositionArray.add(initPos + (laneHeight * lane))
+        }
+
+        return lanePositionArray
+    }
+
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
 
 //        application.flyByCamera.isEnabled = true
-
+        application.setDisplayStatView(false)
         application.camera.isParallelProjection = false
         application.camera.location = defaultCameraPosition
         application.camera.frustumFar = 500F
         application.camera.lookAt(defaultCameraFacing, application.camera.up)
 
         // this way the lane is 1 unit long, could be helpful for speed calculations later on
-        val laneWidth = 0.5F
-        val laneHeight = 0.1F
-        val laneZPositions = arrayOf(-0.1F, 0F, 0.1F)
+        val laneWidth = 1F
+        var laneIndex = 0
 
-        laneZPositions.forEach {
-            val b = Box(laneWidth, 0F, laneHeight)
-            val geom = Geometry("Box($z)", b)
+        laneZPositions().forEach {
+            val b = Box(laneWidth / 2, 0F, laneHeight / 2)
+            val geom = Geometry("Lane($laneIndex)", b)
 
             val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
             mat.setColor("Color", ColorRGBA.randomColor())
@@ -264,12 +291,14 @@ class FightScreen : BaseAppState() {
             application.rootNode.apply {
                 this.attachChild(geom)
             }
+
+            laneIndex++
         }
 
         setAxes()
 
-        application.inputManager.addMapping(pick2d, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
-        application.inputManager.addMapping(pick3d, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
+        application.inputManager.addMapping(leftClick, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
+        application.inputManager.addMapping(rightClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
 
         application.inputManager.addMapping(resetPos, KeyTrigger(Keyboard.KEY_SPACE))
         application.inputManager.addMapping(one, KeyTrigger(Keyboard.KEY_1))
@@ -287,8 +316,8 @@ class FightScreen : BaseAppState() {
         application.inputManager.addMapping(y, KeyTrigger(Keyboard.KEY_Y))
         application.inputManager.addMapping(z, KeyTrigger(Keyboard.KEY_Z))
         application.inputManager.addMapping(printPos, KeyTrigger(Keyboard.KEY_LCONTROL))
-        application.inputManager.addListener(clickListener, pick2d)
-        application.inputManager.addListener(clickListener, pick3d)
+        application.inputManager.addListener(clickListener, leftClick)
+        application.inputManager.addListener(clickListener, rightClick)
         application.inputManager.addListener(keyListener, resetPos)
         application.inputManager.addListener(keyListener, one)
         application.inputManager.addListener(keyListener, two)
@@ -390,8 +419,9 @@ class FightScreen : BaseAppState() {
     override fun onDisable() {
         application.guiNode.detachChild(hudNode)
 
-        application.inputManager.deleteMapping(pick2d)
-        application.inputManager.deleteMapping(pick3d)
+        // TODO: gotta delete all the other mappings too
+        application.inputManager.deleteMapping(leftClick)
+        application.inputManager.deleteMapping(rightClick)
     }
 
     override fun cleanup(app: Application?) {
@@ -400,8 +430,8 @@ class FightScreen : BaseAppState() {
 
     companion object {
 
-        const val pick2d = "pick2d"
-        const val pick3d = "pick3d"
+        const val leftClick = "leftClick"
+        const val rightClick = "rightClick"
 
         const val resetPos = "resetPos"
         const val one = "one"
