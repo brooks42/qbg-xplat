@@ -4,7 +4,6 @@
  */
 package sprites;
 
-import interfaces.Updateable;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;

@@ -1,76 +1,114 @@
 /*
  * The Unit class acts as an animated unit moving across the battlefield.
  */
-package world;
+package world
 
-import java.util.Random;
-
-import com.jme3.texture.Texture;
-import sprites.PSprite;
-import states.BattleScreen;
+import com.jme3.texture.Texture
+import sprites.PSprite
+import states.BattleScreen
+import java.util.*
 
 /**
  *
  * @author brooks42
  */
-public class Unit {
-    
-    public static final int HUMAN_KNIGHT = 0;
-    public static final int HUMAN_SPEARMAN = 1;
-    public static final int HUMAN_ARCHER = 2;
-    public static final int HUMAN_PALADIN = 3;
-    public static final int HUMAN_WIZARD = 4;
-    public static final int HUMAN_ASSASSIN = 5;
-    public static final int ORK_KNIGHT = 6;
-    public static final int ORK_SPEARMAN = 7;
-    public static final int ORK_ARCHER = 8;
-    public static final int ORK_PALADIN = 9;
-    public static final int ORK_WIZARD = 10;
-    public static final int ORK_ASSASSIN = 11;
-    // special "units" used for abilities
-    public static final int HUMAN_ARROW = 12;
-    public static final int HUMAN_LIGHTNING = 13;
-    // the Sprite representing this Unit
-    public PSprite sprite;
-    public float atk, def, push, speed;
-    public float bounce = 0;
-    public float friction = .1f;
-    public Texture[] anim;
-    int current_frame = 0;
-    int frame_switch = 10;
-    public boolean counts = true;
-    int MAX_FRAME_TIME_ANIM = 10;
-    public static int ENEMY_DIFFICULTY = 0;
-    private static Random random;
+class Unit
 
-    /**
-     *
-     * @param sprite
-     * @param atk
-     * @param def
-     * @param push
-     * @param speed
-     */
-    protected Unit(PSprite sprite, Texture[] default_anim, float atk, float def, float push, float speed) {
-        this.sprite = sprite;
-        this.atk = atk;
-        this.def = def;
-        this.push = push;
-        this.speed = speed;
-        this.anim = default_anim;
+/**
+ *
+ * @param sprite
+ * @param atk
+ * @param def
+ * @param push
+ * @param speed
+ */
+protected constructor(var sprite: PSprite,
+                      var anim: Array<Texture>,
+                      var atk: Float,
+                      var def: Float,
+                      var push: Float,
+                      var speed: Float) {
+    var bounce = 0f
+    var friction = .1f
+    var current_frame = 0
+    var frame_switch = 10
+    var counts = true
+    var MAX_FRAME_TIME_ANIM = 10
+    fun update(tpf: Float) {
+//        sprite.update(tpf);
+//        sprite.setX(sprite.getX() + (speed * tpf) + bounce);
+//
+//        // this bounce stuff might be a little wonky
+//        // basically if the speed is negative the bounce will be positive and vice versa
+//        // so if the speed is negative the bounce would do -friction, if < 0 == 0
+//        // and if the speed is positive, the other way applies
+//        if (bounce != 0) {
+//            // simple bounce calculation to approach zero
+//            if (bounce < 0) {
+//                bounce += friction;
+//            } else {
+//                bounce -= friction;
+//            }
+//        }
+//
+//        // now update the animation
+//        this.frame_switch--;
+//        if (frame_switch <= 0) {
+//            this.current_frame++;
+//            if (current_frame >= anim.length) {
+//                current_frame = 0;
+//            }
+//            sprite.setTexture(anim[current_frame]);
+//            frame_switch = MAX_FRAME_TIME_ANIM;
+//        }
     }
 
     /**
-     * Returns a Unit of the passed type, with the passed (x, y) as its
-     * position.
+     * Sets this unit's Bounce value, making it "bounce" in a direction
      *
-     * @param unittype
-     * @param x
-     * @param y
-     * @return
+     * @param amount
      */
-    public static Unit getUnit(int unittype, int x, int y) {
-        
+    fun bounce(amount: Float) {
+        bounce = amount
+    }
+
+    /**
+     * Uses the unit's ability.
+     */
+    fun useAbility(screen: BattleScreen?) {}
+
+    companion object {
+        const val HUMAN_KNIGHT = 0
+        const val HUMAN_SPEARMAN = 1
+        const val HUMAN_ARCHER = 2
+        const val HUMAN_PALADIN = 3
+        const val HUMAN_WIZARD = 4
+        const val HUMAN_ASSASSIN = 5
+        const val ORK_KNIGHT = 6
+        const val ORK_SPEARMAN = 7
+        const val ORK_ARCHER = 8
+        const val ORK_PALADIN = 9
+        const val ORK_WIZARD = 10
+        const val ORK_ASSASSIN = 11
+
+        // special "units" used for abilities
+        const val HUMAN_ARROW = 12
+        const val HUMAN_LIGHTNING = 13
+        var ENEMY_DIFFICULTY = 0
+        private val random: Random? = null
+
+        /**
+         * Returns a Unit of the passed type, with the passed (x, y) as its
+         * position.
+         *
+         * @param unittype
+         * @param x
+         * @param y
+         * @return
+         */
+        @JvmStatic
+        fun getUnit(unittype: Int, x: Int, y: Int): Unit? {
+
 //        switch (unittype) {
 //            case HUMAN_KNIGHT:
 //                float upgrade = 0.0f;
@@ -317,51 +355,7 @@ public class Unit {
 //            default:
 //                return null;
 //        }
-        return null;
-        
-    }
-
-    public void update(float tpf) {
-//        sprite.update(tpf);
-//        sprite.setX(sprite.getX() + (speed * tpf) + bounce);
-//
-//        // this bounce stuff might be a little wonky
-//        // basically if the speed is negative the bounce will be positive and vice versa
-//        // so if the speed is negative the bounce would do -friction, if < 0 == 0
-//        // and if the speed is positive, the other way applies
-//        if (bounce != 0) {
-//            // simple bounce calculation to approach zero
-//            if (bounce < 0) {
-//                bounce += friction;
-//            } else {
-//                bounce -= friction;
-//            }
-//        }
-//
-//        // now update the animation
-//        this.frame_switch--;
-//        if (frame_switch <= 0) {
-//            this.current_frame++;
-//            if (current_frame >= anim.length) {
-//                current_frame = 0;
-//            }
-//            sprite.setTexture(anim[current_frame]);
-//            frame_switch = MAX_FRAME_TIME_ANIM;
-//        }
-    }
-
-    /**
-     * Sets this unit's Bounce value, making it "bounce" in a direction
-     *
-     * @param amount
-     */
-    public void bounce(float amount) {
-        bounce = amount;
-    }
-
-    /**
-     * Uses the unit's ability.
-     */
-    public void useAbility(BattleScreen screen) {
+            return null
+        }
     }
 }

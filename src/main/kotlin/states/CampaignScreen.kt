@@ -23,7 +23,6 @@ import desktop.QbgApplication
 import desktopkt.height
 import desktopkt.models.SaveGame
 import desktopkt.width
-import gui.PButton
 import sprites.PSprite
 
 
@@ -235,16 +234,16 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
     internal inner class UpgradesInlay : BaseAppState() {
 
         var overlay: PSprite? = null
-        var upgradeKnightsButton: PButton? = null
-        var upgradeSpearmenButton: PButton? = null
-        var upgradeArcherButton: PButton? = null
-        var upgradeUnlockPaladinButton: PButton? = null
-        var upgradeUnlockWizardButton: PButton? = null
-        var upgradeUnlockAssassinButton: PButton? = null
-        var upgradeManaButton: PButton? = null
-        var upgradeManaRegButton: PButton? = null
-        var upgradeHPButton: PButton? = null
-        var closeButton: PButton? = null
+//        var upgradeKnightsButton: PButton? = null
+//        var upgradeSpearmenButton: PButton? = null
+//        var upgradeArcherButton: PButton? = null
+//        var upgradeUnlockPaladinButton: PButton? = null
+//        var upgradeUnlockWizardButton: PButton? = null
+//        var upgradeUnlockAssassinButton: PButton? = null
+//        var upgradeManaButton: PButton? = null
+//        var upgradeManaRegButton: PButton? = null
+//        var upgradeHPButton: PButton? = null
+//        var closeButton: PButton? = null
         var upgradeHP = 0
         var upgradeMana = 0
         var upgradeManaReg = 0

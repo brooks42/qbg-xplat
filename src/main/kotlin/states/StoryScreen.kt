@@ -7,7 +7,6 @@ package states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
-import com.jme3.asset.plugins.FileLocator
 import com.simsilica.lemur.Button
 import com.simsilica.lemur.Command
 import com.simsilica.lemur.Container
@@ -15,11 +14,8 @@ import com.simsilica.lemur.Label
 import com.simsilica.lemur.component.IconComponent
 import desktop.QbgApplication
 import desktopkt.bottomAnchor
-import desktopkt.centerAnchor
 import desktopkt.rightAnchor
 import desktopkt.topAnchor
-import gui.PButton
-import sprites.PSprite
 import java.io.BufferedReader
 import java.io.FileReader
 import java.util.*

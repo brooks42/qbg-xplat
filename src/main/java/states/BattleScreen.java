@@ -8,7 +8,6 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.renderer.RenderManager;
-import gui.PButton;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -581,8 +580,6 @@ public class BattleScreen extends BaseAppState {
      */
     class WinLoseInlay {
 
-        private PSprite winlosesprite;
-        private PButton continueBtn;
         public boolean won;
 
         public void setup() {

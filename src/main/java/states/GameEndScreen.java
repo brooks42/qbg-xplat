@@ -9,7 +9,6 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.RenderManager;
-import gui.PButton;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import models.StringRender;
 public class GameEndScreen extends AbstractAppState {
 
     private PSprite background1, background2;
-    private PButton skipButton;
     private ArrayList<String> lines;
     private float scroll_speed = .15f;
     private float draw_starting = 0f;

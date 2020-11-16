@@ -17,6 +17,7 @@ import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
 import desktopkt.Base3dQbgState
+import desktopkt.states.fight.Fight
 import org.lwjgl.input.Keyboard
 
 
@@ -33,6 +34,8 @@ class FightScreen : Base3dQbgState() {
 
     lateinit var hudNode: Container
 
+    lateinit var fight: Fight
+
     override fun initialize(app: Application?) {
         super.initialize(app)
 
@@ -40,6 +43,10 @@ class FightScreen : Base3dQbgState() {
         initArena()
         initSounds()
         initPlayers()
+    }
+
+    private fun startFight(singlePlayer: Boolean, fight: Fight) {
+        this.fight = fight
     }
 
     private fun initHud() {
@@ -108,6 +115,7 @@ class FightScreen : Base3dQbgState() {
         return false
     }
 
+    // this is some debug code that can be removed in the future...
     private var arrayOfInputsBetweenEnters = arrayListOf<String>()
     private var betweenEnters = false
 
