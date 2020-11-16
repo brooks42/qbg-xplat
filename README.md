@@ -30,8 +30,6 @@ You can pull the code and submit PRs. If you do, please name your branch `[initi
 
 Project is still relatively young so there's lots of work to do with Github Actions to do builds, adding issues to the tracker etc. I'm in desperate need of an artist that isn't me, so if you know any artists willing to do some art please have them contact me.
 
-If you like the game you can always subscribe to my Patreon for this project and others:
-
-<a href="https://www.patreon.com/bePatron?u=884446" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+If you like the game you can always subscribe to <a href="https://www.patreon.com/bePatron?u=884446" data-patreon-widget-type="become-patron-button">my Patreon</a> for this project and others.
 
 
