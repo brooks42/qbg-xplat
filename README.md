@@ -1,5 +1,4 @@
-# qbg-xplat
-### (QuickBounceGame Multi-plat)
+# QuickBounceGame (working title) Multi-platform
 OpenSource version of the simple QBG game, trying to make it work on all platforms using IntelliJ and kotlin.
 
 ### Game Info
