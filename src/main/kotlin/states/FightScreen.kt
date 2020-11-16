@@ -16,6 +16,7 @@ import com.jme3.scene.Geometry
 import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
+import desktopkt.Base3dQbgState
 import org.lwjgl.input.Keyboard
 
 
@@ -28,14 +29,12 @@ import org.lwjgl.input.Keyboard
  *
  * At the end of the fight if the player loses it's game over or something
  */
-class FightScreen : BaseAppState() {
-
-    lateinit var application: QbgApplication
+class FightScreen : Base3dQbgState() {
 
     lateinit var hudNode: Container
 
     override fun initialize(app: Application?) {
-        application = app as QbgApplication
+        super.initialize(app)
 
         initHud()
         initArena()
@@ -90,16 +89,6 @@ class FightScreen : BaseAppState() {
             println("collisionCount for root collision == $collisionCount")
         }
         println("-----")
-
-        // Print the results so we see what is going on
-//        for (i in 0 until results.size()) {
-//            // For each "hit", we know distance, impact point, geometry.
-//            val collision = results.getCollision(i)
-//            val dist = collision.distance
-//            val pt = collision.contactPoint
-//            val target = collision.geometry.name
-//            println("Selection #$i: $target at $pt, $dist WU away.")
-//        }
     }
 
     // returns whether the click was consumed or not
@@ -295,7 +284,9 @@ class FightScreen : BaseAppState() {
             laneIndex++
         }
 
+        // if (DEBUG) {
 //        setAxes()
+        // }
 
         application.inputManager.addMapping(leftClick, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
         application.inputManager.addMapping(rightClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
@@ -334,86 +325,6 @@ class FightScreen : BaseAppState() {
         application.inputManager.addListener(keyListener, y)
         application.inputManager.addListener(keyListener, z)
         application.inputManager.addListener(keyListener, printPos)
-    }
-
-    private fun setAxes() {
-        // x axis
-        var b = Box(100F, 0.02F, 0.02F)
-        var geom = Geometry("x axis line", b)
-
-        var mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-        mat.setColor("Color", ColorRGBA.Red)
-        geom.material = mat
-
-        application.rootNode.apply {
-            this.attachChild(geom)
-        }
-
-        for (x in -50..50) {
-            var b = Box(0.03F, 0.03F, 0.03F)
-            var geom = Geometry("tickBox x($x)", b)
-
-            var mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-            mat.setColor("Color", ColorRGBA.Gray)
-            geom.material = mat
-            geom.setLocalTranslation(x.toFloat(), 0F, 0F)
-
-            application.rootNode.apply {
-                this.attachChild(geom)
-            }
-        }
-
-        // y axis
-        b = Box(0.02F, 100F, 0.02F)
-        geom = Geometry("y axis line", b)
-
-        mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-        mat.setColor("Color", ColorRGBA.Green)
-        geom.material = mat
-
-        application.rootNode.apply {
-            this.attachChild(geom)
-        }
-
-        for (y in -50..50) {
-            var b = Box(0.03F, 0.03F, 0.03F)
-            var geom = Geometry("tickBox y($y)", b)
-
-            var mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-            mat.setColor("Color", ColorRGBA.Gray)
-            geom.material = mat
-            geom.setLocalTranslation(0F, y.toFloat(), 0F)
-
-            application.rootNode.apply {
-                this.attachChild(geom)
-            }
-        }
-
-        // z axis
-        b = Box(0.02F, 0.02F, 100F)
-        geom = Geometry("z axis line", b)
-
-        mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-        mat.setColor("Color", ColorRGBA.Blue)
-        geom.material = mat
-
-        application.rootNode.apply {
-            this.attachChild(geom)
-        }
-
-        for (z in -50..50) {
-            var b = Box(0.03F, 0.03F, 0.03F)
-            var geom = Geometry("tickBox z($z)", b)
-
-            var mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-            mat.setColor("Color", ColorRGBA.Gray)
-            geom.material = mat
-            geom.setLocalTranslation(0F, 0F, z.toFloat())
-
-            application.rootNode.apply {
-                this.attachChild(geom)
-            }
-        }
     }
 
     override fun onDisable() {
