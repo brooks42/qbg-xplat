@@ -18,6 +18,10 @@ import com.simsilica.lemur.Container
 import desktop.QbgApplication
 import desktopkt.Base3dQbgState
 import desktopkt.states.fight.Fight
+import desktopkt.states.fight.UnitFactory
+import desktopkt.states.fight.UnitType
+import desktopkt.states.fight.UnitView
+import models.ImageManager
 import org.lwjgl.input.Keyboard
 
 
@@ -36,8 +40,14 @@ class FightScreen : Base3dQbgState() {
 
     lateinit var fight: Fight
 
-    override fun initialize(app: Application?) {
+    lateinit var unitFactory: UnitFactory
+
+    var unitList = arrayListOf<UnitView>()
+
+    override fun initialize(app: Application) {
         super.initialize(app)
+
+        unitFactory = UnitFactory(application, ImageManager(application.assetManager))
 
         initHud()
         initArena()
@@ -94,6 +104,24 @@ class FightScreen : Base3dQbgState() {
         if (!consumed) {
             collisionCount = application.rootNode.collideWith(ray, results)
             println("collisionCount for root collision == $collisionCount")
+
+            if (collisionCount > 0) {
+                for (result in results) {
+                    if (result.geometry.name.startsWith("Lane(")) {
+
+                        print("spawn")
+
+                        val hitLocation = result.contactPoint
+
+                        val unit = unitFactory.nodeForUnit(hitLocation, UnitType.HumanKnight)
+
+                        unitList.add(unit)
+                        application.rootNode.apply {
+                            this.attachChild(unit.geom)
+                        }
+                    }
+                }
+            }
         }
         println("-----")
     }
@@ -343,8 +371,12 @@ class FightScreen : Base3dQbgState() {
         application.inputManager.deleteMapping(rightClick)
     }
 
-    override fun cleanup(app: Application?) {
+    override fun cleanup(app: Application) {
 
+    }
+
+    override fun update(tpf: Float) {
+        unitList.forEach { it.update(tpf) }
     }
 
     companion object {

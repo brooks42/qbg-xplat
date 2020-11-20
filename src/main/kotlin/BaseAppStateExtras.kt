@@ -45,11 +45,11 @@ open class BaseQbgState: BaseAppState() {
 
     lateinit var application: QbgApplication
 
-    override fun initialize(app: Application?) {
+    override fun initialize(app: Application) {
         application = app as QbgApplication
     }
 
-    override fun cleanup(p0: Application?) {
+    override fun cleanup(p0: Application) {
 
     }
 

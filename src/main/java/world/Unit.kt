@@ -12,28 +12,19 @@ import java.util.*
  *
  * @author brooks42
  */
-class Unit
-
-/**
- *
- * @param sprite
- * @param atk
- * @param def
- * @param push
- * @param speed
- */
-protected constructor(var sprite: PSprite,
-                      var anim: Array<Texture>,
-                      var atk: Float,
-                      var def: Float,
-                      var push: Float,
-                      var speed: Float) {
+class Unit(var sprite: PSprite,
+           var anim: Array<Texture>,
+           var atk: Float,
+           var def: Float,
+           var push: Float,
+           var speed: Float) {
     var bounce = 0f
     var friction = .1f
     var current_frame = 0
     var frame_switch = 10
     var counts = true
     var MAX_FRAME_TIME_ANIM = 10
+
     fun update(tpf: Float) {
 //        sprite.update(tpf);
 //        sprite.setX(sprite.getX() + (speed * tpf) + bounce);

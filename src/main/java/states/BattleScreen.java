@@ -22,40 +22,40 @@ import world.Unit;
  */
 public class BattleScreen extends BaseAppState {
 
-    private PSprite knightDisp, spearDisp, archerDisp, paladinDisp, wizDisp,
-            assDisp, selectedDisp;
-    private PSprite background;
-    private PSprite arena;
-    private PSprite healthBar, oppHealthBar, manaBar;
-    private PSprite summonCircle;
-    private PSprite abilityCircle;
-    private Polygon summonBox;
-    private Polygon enemySummonBox;
-    private Polygon arenaBox;
-    float rot = 0f;
-    // various stats for the player and opponent
-    int healthBoxWidth = 280;
-    float playerManaMax, playerMana, playerManaRegen;
-    float playerHealthMax, playerHealth;
-    float oppManaMax, oppMana, oppManaRegen;
-    float oppHealthMax, oppHealth;
-    public ArrayList<Unit> units, enemyUnits;
-    public ArrayList<Unit> lightning;
-    private boolean clicked = false;
-    private Random random;
-    private WinLoseInlay inlay;
-    private boolean showingInlay = false;
-    // on completion this will be passed to the Inlay and, it true, will
-    // count as a win in the save file
-    private boolean won = false;
-    private int unit_bar_start_at = 237;
-    private int selected_summon = 0;
+//    private PSprite knightDisp, spearDisp, archerDisp, paladinDisp, wizDisp,
+//            assDisp, selectedDisp;
+//    private PSprite background;
+//    private PSprite arena;
+//    private PSprite healthBar, oppHealthBar, manaBar;
+//    private PSprite summonCircle;
+//    private PSprite abilityCircle;
+//    private Polygon summonBox;
+//    private Polygon enemySummonBox;
+//    private Polygon arenaBox;
+//    float rot = 0f;
+//    // various stats for the player and opponent
+//    int healthBoxWidth = 280;
+//    float playerManaMax, playerMana, playerManaRegen;
+//    float playerHealthMax, playerHealth;
+//    float oppManaMax, oppMana, oppManaRegen;
+//    float oppHealthMax, oppHealth;
+//    public ArrayList<Unit> units, enemyUnits;
+//    public ArrayList<Unit> lightning;
+//    private boolean clicked = false;
+//    private Random random;
+//    private WinLoseInlay inlay;
+//    private boolean showingInlay = false;
+//    // on completion this will be passed to the Inlay and, it true, will
+//    // count as a win in the save file
+//    private boolean won = false;
+//    private int unit_bar_start_at = 237;
+//    private int selected_summon = 0;
 
     @Override
     protected void initialize(Application app) {
 
-        won = false;
-        showingInlay = false;
+//        won = false;
+//        showingInlay = false;
 
 //        background = new PSprite(SpriteFactory.getSprite(
 //                ImageManager.getImage("background"), -100, -200, 1000, 1000));
@@ -382,7 +382,7 @@ public class BattleScreen extends BaseAppState {
      * @param num
      */
     public void selectUnitType(int num) {
-        selected_summon = num;
+//        selected_summon = num;
 //        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
 //                unit_bar_start_at + (num * 55), 130, 50, 50));
     }
@@ -416,43 +416,43 @@ public class BattleScreen extends BaseAppState {
      * @param x
      * @param y
      */
-    public void createEnemyUnit(int type, int x, int y) {
-        System.out.println("Creating enemy unit at (" + x + ", " + y + ")");
-        // creates a unit centered at the (x, y) with a small random offset
-        int x_diff = random.nextInt(140) - 70;
-        int y_diff = random.nextInt(80) - 40;
-
-        // if it isn't in bounds, then remove the x_ and y_diffs
-        if (!enemySummonBox.contains(x + x_diff, y + y_diff)) {
-            x_diff = 0;
-            y_diff = 0;
-        }
-        Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
-        enemyUnits.add(unit);
-    }
+//    public void createEnemyUnit(int type, int x, int y) {
+//        System.out.println("Creating enemy unit at (" + x + ", " + y + ")");
+//        // creates a unit centered at the (x, y) with a small random offset
+//        int x_diff = random.nextInt(140) - 70;
+//        int y_diff = random.nextInt(80) - 40;
+//
+//        // if it isn't in bounds, then remove the x_ and y_diffs
+//        if (!enemySummonBox.contains(x + x_diff, y + y_diff)) {
+//            x_diff = 0;
+//            y_diff = 0;
+//        }
+//        Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
+//        enemyUnits.add(unit);
+//    }
 
     /**
      * Performs the AI tasks (mostly summoning orks)
      */
-    public void doAI() {
-        int spent_mana = (int) Math.min(12, oppMana);
-        int summon_units = (spent_mana / 4);
-        spent_mana = summon_units * 4;
-
-        if (summon_units != 0) {
-            // summon up to 3 units
-            int x = random.nextInt(enemySummonBox.getBounds().width) + enemySummonBox.getBounds().x;
-            int y = random.nextInt(enemySummonBox.getBounds().height) + enemySummonBox.getBounds().y - 20;
-            System.out.println("Testing (" + x + ", " + y + ") against " + enemySummonBox.toString());
-
-            if (enemySummonBox.contains(x, y)) {
-                for (int i = 0; i < summon_units; i++) {
-                    createEnemyUnit(Unit.ORK_KNIGHT, x, y);
-                }
-            }
-        }
-        oppMana -= spent_mana;
-    }
+//    public void doAI() {
+//        int spent_mana = (int) Math.min(12, oppMana);
+//        int summon_units = (spent_mana / 4);
+//        spent_mana = summon_units * 4;
+//
+//        if (summon_units != 0) {
+//            // summon up to 3 units
+//            int x = random.nextInt(enemySummonBox.getBounds().width) + enemySummonBox.getBounds().x;
+//            int y = random.nextInt(enemySummonBox.getBounds().height) + enemySummonBox.getBounds().y - 20;
+//            System.out.println("Testing (" + x + ", " + y + ") against " + enemySummonBox.toString());
+//
+//            if (enemySummonBox.contains(x, y)) {
+//                for (int i = 0; i < summon_units; i++) {
+//                    createEnemyUnit(Unit.ORK_KNIGHT, x, y);
+//                }
+//            }
+//        }
+//        oppMana -= spent_mana;
+//    }
 
     /**
      * Updates the units on the board, doing hit detection and bouncing them if
@@ -557,22 +557,22 @@ public class BattleScreen extends BaseAppState {
     ///
     /// METHODS FOR WINNING/LOSING AND DISPLAYING APPROPRIATE INLAY
     ///
-    public void win() {
-        won = true;
-        showInlay();
-    }
-
-    public void lose() {
-        won = false;
-        showInlay();
-    }
-
-    public void showInlay() {
-        inlay = new WinLoseInlay();
-        inlay.won = won;
-        inlay.setup();
-        showingInlay = true;
-    }
+//    public void win() {
+//        won = true;
+//        showInlay();
+//    }
+//
+//    public void lose() {
+//        won = false;
+//        showInlay();
+//    }
+//
+//    public void showInlay() {
+//        inlay = new WinLoseInlay();
+//        inlay.won = won;
+//        inlay.setup();
+//        showingInlay = true;
+//    }
 
     /**
      * The WinLoseInlay that displays whether the player won or lost, and allows
