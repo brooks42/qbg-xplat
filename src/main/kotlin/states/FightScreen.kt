@@ -2,6 +2,7 @@ package desktopkt.states
 
 import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
+import com.jme3.asset.AssetManager
 import com.jme3.collision.CollisionResults
 import com.jme3.input.MouseInput
 import com.jme3.input.controls.ActionListener
@@ -44,6 +45,8 @@ class FightScreen : Base3dQbgState() {
 
     var unitList = arrayListOf<UnitView>()
 
+    var lanes = arrayListOf<SummonLane>()
+
     override fun initialize(app: Application) {
         super.initialize(app)
 
@@ -65,6 +68,9 @@ class FightScreen : Base3dQbgState() {
 
     private fun initArena() {
 
+        SummonLane.laneZPositions.forEachIndexed { index, _ ->
+            lanes.add(SummonLane(index, application.assetManager))
+        }
     }
 
     private fun initSounds() {
@@ -262,10 +268,6 @@ class FightScreen : Base3dQbgState() {
     private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
 
-    val arenaHeight = 0.5F
-    val laneCount = 16
-    val laneHeight = arenaHeight / laneCount
-
     // projection matrix...
     /*[
  2.0362442  3.5557518E-10  -0.0019885192  0.001988519
@@ -273,22 +275,6 @@ class FightScreen : Base3dQbgState() {
  -8.825806E-4  -0.43731478  -0.9037628  -0.78975177
  -8.790573E-4  -0.435569  -0.90015495  1.2094089
 ]*/
-
-    private fun laneZPositions(): ArrayList<Float> {
-
-        var lanePositionArray = arrayListOf<Float>()
-
-        // lanes are 1/laneCount of the arena height
-        val initPos = -(arenaHeight / 2)
-
-        lanePositionArray.add(initPos)
-
-        for (lane in 1 until laneCount) {
-            lanePositionArray.add(initPos + (laneHeight * lane))
-        }
-
-        return lanePositionArray
-    }
 
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
@@ -300,24 +286,8 @@ class FightScreen : Base3dQbgState() {
         application.camera.frustumFar = 500F
         application.camera.lookAt(defaultCameraFacing, application.camera.up)
 
-        // this way the lane is 1 unit long, could be helpful for speed calculations later on
-        val laneWidth = 1F
-        var laneIndex = 0
-
-        laneZPositions().forEach {
-            val b = Box(laneWidth / 2, 0F, laneHeight / 2)
-            val geom = Geometry("Lane($laneIndex)", b)
-
-            val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-            mat.setColor("Color", ColorRGBA.randomColor())
-            geom.material = mat
-            geom.setLocalTranslation(0F, 0F, it)
-
-            application.rootNode.apply {
-                this.attachChild(geom)
-            }
-
-            laneIndex++
+        lanes.forEach {
+            application.rootNode.attachChild(it.geometry)
         }
 
         // if (DEBUG) {
@@ -369,6 +339,10 @@ class FightScreen : Base3dQbgState() {
         // TODO: gotta delete all the other mappings too
         application.inputManager.deleteMapping(leftClick)
         application.inputManager.deleteMapping(rightClick)
+
+        lanes.forEach {
+            application.rootNode.detachChild(it.geometry)
+        }
     }
 
     override fun cleanup(app: Application) {
@@ -400,5 +374,47 @@ class FightScreen : Base3dQbgState() {
         const val y = "y"
         const val z = "z"
         const val printPos = "printPos"
+    }
+}
+
+class SummonLane(val index: Int, private val assetManager: AssetManager) {
+
+    val geometry: Geometry
+
+    val box: Box
+
+    init {
+        box = Box(laneWidth / 2, 0F, laneHeight / 2)
+        geometry = Geometry("Lane($index)", box)
+
+        val mat = Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
+        mat.setColor("Color", ColorRGBA.randomColor())
+        geometry.material = mat
+        geometry.setLocalTranslation(0F, 0F, laneZPositions[index])
+    }
+
+    companion object {
+
+        // this way the lane is 1 unit long, could be helpful for speed calculations later on
+        val laneWidth = 1F
+
+        val arenaHeight = 0.5F
+        val laneCount = 16
+        val laneHeight = arenaHeight / laneCount
+
+        val laneZPositions: ArrayList<Float> by lazy {
+            var lanePositionArray = arrayListOf<Float>()
+
+                // lanes are 1/laneCount of the arena height
+                val initPos = -(arenaHeight / 2)
+
+                lanePositionArray.add(initPos)
+
+                for (lane in 1 until laneCount) {
+                    lanePositionArray.add(initPos + (laneHeight * lane))
+                }
+
+            lanePositionArray
+        }
     }
 }
