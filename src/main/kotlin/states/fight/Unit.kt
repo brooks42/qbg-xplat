@@ -27,7 +27,6 @@ enum class UnitType {
 class UnitFactory(val application: Application, val imageManager: ImageManager) {
 
     fun nodeForUnit(location: Vector3f, type: UnitType): UnitView {
-        val node = Node()
         val box = Box(defaultUnitBound, defaultUnitBound, 0.0F)
         val geom = Geometry("unit", box)
 

@@ -112,24 +112,31 @@ class FightScreen : Base3dQbgState() {
             println("collisionCount for root collision == $collisionCount")
 
             if (collisionCount > 0) {
-                for (result in results) {
-                    if (result.geometry.name.startsWith("Lane(")) {
 
-                        print("spawn")
-
-                        val hitLocation = result.contactPoint
-
-                        val unit = unitFactory.nodeForUnit(hitLocation, UnitType.HumanKnight)
-
-                        unitList.add(unit)
-                        application.rootNode.apply {
-                            this.attachChild(unit.geom)
+                pickHitsForPick(results).forEach {
+                    // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
+                    for (lane in lanes) {
+                        if (lane.geometry == it.geometry) {
+                            spawnKnightOnLane(lane)
                         }
                     }
                 }
             }
         }
         println("-----")
+    }
+
+    // returns a list of all the unique geometries hit by the collision results, in the
+    // reversed order that they were struck (so this returns the closest hits for each geometry)
+    private fun pickHitsForPick(results: CollisionResults): List<PickHit> {
+
+        val uniqueGeometryHitMap = mutableMapOf<Geometry, PickHit>()
+
+        results.reversed().forEach {
+            uniqueGeometryHitMap[it.geometry] = PickHit(it.geometry, it.contactPoint, it.contactNormal)
+        }
+
+        return uniqueGeometryHitMap.values.toList()
     }
 
     // returns whether the click was consumed or not
@@ -147,6 +154,19 @@ class FightScreen : Base3dQbgState() {
         }
 
         return false
+    }
+
+    // quick iterating function to spawn a knight
+    private fun spawnKnightOnLane(lane: SummonLane) {
+
+        print("spawn")
+
+        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.HumanKnight)
+
+        unitList.add(unit)
+        application.rootNode.apply {
+            this.attachChild(unit.geom)
+        }
     }
 
     // this is some debug code that can be removed in the future...
@@ -418,3 +438,7 @@ class SummonLane(val index: Int, private val assetManager: AssetManager) {
         }
     }
 }
+
+data class PickHit(val geometry: Geometry,
+                   val hitLocation: Vector3f,
+                   val hitNormal: Vector3f)
