@@ -14,6 +14,7 @@ import com.jme3.math.FastMath
 import com.jme3.math.Ray
 import com.jme3.math.Vector3f
 import com.jme3.scene.Geometry
+import com.jme3.scene.Node
 import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
@@ -38,6 +39,10 @@ import org.lwjgl.input.Keyboard
 class FightScreen : Base3dQbgState() {
 
     lateinit var hudNode: Container
+
+    lateinit var unitNode: Node
+
+    lateinit var arenaNode: Node
 
     lateinit var fight: Fight
 
@@ -67,6 +72,9 @@ class FightScreen : Base3dQbgState() {
     }
 
     private fun initArena() {
+
+        arenaNode = Node()
+        unitNode = Node()
 
         SummonLane.laneZPositions.forEachIndexed { index, _ ->
             lanes.add(SummonLane(index, application.assetManager))
@@ -164,7 +172,7 @@ class FightScreen : Base3dQbgState() {
         val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.HumanKnight)
 
         unitList.add(unit)
-        application.rootNode.apply {
+        unitNode.apply {
             this.attachChild(unit.geom)
         }
     }
@@ -298,6 +306,8 @@ class FightScreen : Base3dQbgState() {
 
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
+        application.rootNode.attachChild(arenaNode)
+        application.rootNode.attachChild(unitNode)
 
 //        application.flyByCamera.isEnabled = true
         application.setDisplayStatView(false)
@@ -307,7 +317,7 @@ class FightScreen : Base3dQbgState() {
         application.camera.lookAt(defaultCameraFacing, application.camera.up)
 
         lanes.forEach {
-            application.rootNode.attachChild(it.geometry)
+            arenaNode.attachChild(it.geometry)
         }
 
         // if (DEBUG) {
@@ -355,14 +365,11 @@ class FightScreen : Base3dQbgState() {
 
     override fun onDisable() {
         application.guiNode.detachChild(hudNode)
+        application.rootNode.detachAllChildren()
 
         // TODO: gotta delete all the other mappings too
         application.inputManager.deleteMapping(leftClick)
         application.inputManager.deleteMapping(rightClick)
-
-        lanes.forEach {
-            application.rootNode.detachChild(it.geometry)
-        }
     }
 
     override fun cleanup(app: Application) {

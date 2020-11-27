@@ -34,6 +34,7 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
         mat.setTexture("ColorMap", imageManager.quickLoadImage("human_knight_1.png"))
         geom.material = mat
         geom.localTranslation = location
+        geom.localTranslation.y += defaultUnitBound / 2
 
         val unitView = UnitView(type, geom)
 
@@ -41,7 +42,7 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
     }
 
     companion object {
-        const val defaultUnitBound = 0.012F
+        const val defaultUnitBound = 0.018F
     }
 }
 
