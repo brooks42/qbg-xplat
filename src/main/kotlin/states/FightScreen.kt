@@ -236,6 +236,12 @@ class FightScreen : Base3dQbgState() {
                 printPos -> {
                     printCameraInfo()
                 }
+                upArrow -> {
+                    application.camera.frustumNear += 0.1F
+                }
+                downArrow -> {
+                    application.camera.frustumNear -= 0.1F
+                }
             }
         }
     }
@@ -313,7 +319,7 @@ class FightScreen : Base3dQbgState() {
         application.setDisplayStatView(false)
         application.camera.isParallelProjection = false
         application.camera.location = defaultCameraPosition
-        application.camera.frustumFar = 500F
+        application.camera.frustumNear = 0.9F
         application.camera.lookAt(defaultCameraFacing, application.camera.up)
 
         lanes.forEach {
@@ -343,6 +349,8 @@ class FightScreen : Base3dQbgState() {
         application.inputManager.addMapping(y, KeyTrigger(Keyboard.KEY_Y))
         application.inputManager.addMapping(z, KeyTrigger(Keyboard.KEY_Z))
         application.inputManager.addMapping(printPos, KeyTrigger(Keyboard.KEY_LCONTROL))
+        application.inputManager.addMapping(upArrow, KeyTrigger(Keyboard.KEY_UP))
+        application.inputManager.addMapping(downArrow, KeyTrigger(Keyboard.KEY_DOWN))
         application.inputManager.addListener(clickListener, leftClick)
         application.inputManager.addListener(clickListener, rightClick)
         application.inputManager.addListener(keyListener, resetPos)
@@ -361,6 +369,8 @@ class FightScreen : Base3dQbgState() {
         application.inputManager.addListener(keyListener, y)
         application.inputManager.addListener(keyListener, z)
         application.inputManager.addListener(keyListener, printPos)
+        application.inputManager.addListener(keyListener, upArrow)
+        application.inputManager.addListener(keyListener, downArrow)
     }
 
     override fun onDisable() {
@@ -400,6 +410,8 @@ class FightScreen : Base3dQbgState() {
         const val x = "x"
         const val y = "y"
         const val z = "z"
+        const val upArrow = "upArrow"
+        const val downArrow = "downArrow"
         const val printPos = "printPos"
     }
 }
