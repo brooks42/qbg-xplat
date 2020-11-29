@@ -2,8 +2,10 @@ package desktopkt.states.fight
 
 import com.jme3.app.Application
 import com.jme3.material.Material
+import com.jme3.material.RenderState
 import com.jme3.math.ColorRGBA
 import com.jme3.math.Vector3f
+import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Geometry
 import com.jme3.scene.Node
 import com.jme3.scene.shape.Box
@@ -32,9 +34,12 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
 
         val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
         mat.setTexture("ColorMap", imageManager.quickLoadImage("human_knight_1.png"))
+        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        
         geom.material = mat
         geom.localTranslation = location
-        geom.localTranslation.y += defaultUnitBound / 2
+        geom.localTranslation.y += defaultUnitBound // so the feet touch the floor
+        geom.setQueueBucket(RenderQueue.Bucket.Transparent);
 
         val unitView = UnitView(type, geom)
 
@@ -60,6 +65,10 @@ class UnitView(val type: UnitType,
     var MAX_FRAME_TIME_ANIM = 10
 
     var speed = 0.03f
+
+    var location: Vector3f
+    get() { return geom.localTranslation }
+    set(value) { geom.localTranslation = value }
 
     fun update(tpf: Float) {
 

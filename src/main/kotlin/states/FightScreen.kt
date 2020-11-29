@@ -170,6 +170,7 @@ class FightScreen : Base3dQbgState() {
         print("spawn")
 
         val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.HumanKnight)
+        unit.location.x -= SummonLane.laneWidth / 2
 
         unitList.add(unit)
         unitNode.apply {
