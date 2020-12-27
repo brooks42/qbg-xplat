@@ -33,17 +33,26 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
         val geom = Geometry("unit", box)
 
         val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
-        mat.setTexture("ColorMap", imageManager.quickLoadImage("human_knight_1.png"))
-        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        
+
+        val unitTexture = when(type) {
+            UnitType.HumanKnight -> "human_knight_1.png"
+            UnitType.OrkKnight -> "ork_knight_1.png"
+            UnitType.HumanArcher -> "human_archer_1.png"
+            UnitType.HumanAssassin -> "human_assassin_1.png"
+            UnitType.HumanPaladin -> "human_paladin_1.png"
+            UnitType.HumanWizard -> "human_wizard_1.png"
+            UnitType.HumanSpearman -> "human_spearman_1.png"
+        }
+
+        mat.setTexture("ColorMap", imageManager.quickLoadImage(unitTexture))
+        mat.additionalRenderState.blendMode = RenderState.BlendMode.Alpha;
+
         geom.material = mat
         geom.localTranslation = location
         geom.localTranslation.y += defaultUnitBound // so the feet touch the floor
-        geom.setQueueBucket(RenderQueue.Bucket.Transparent);
+        geom.queueBucket = RenderQueue.Bucket.Transparent;
 
-        val unitView = UnitView(type, geom)
-
-        return unitView
+        return UnitView(type, geom)
     }
 
     companion object {
@@ -64,11 +73,19 @@ class UnitView(val type: UnitType,
     var counts = true
     var MAX_FRAME_TIME_ANIM = 10
 
-    var speed = 0.03f
+    var speed = when (type) {
+        UnitType.HumanKnight -> 0.03f
+        UnitType.OrkKnight -> -0.03f
+        else -> 0.02f
+    }
 
     var location: Vector3f
-    get() { return geom.localTranslation }
-    set(value) { geom.localTranslation = value }
+        get() {
+            return geom.localTranslation
+        }
+        set(value) {
+            geom.localTranslation = value
+        }
 
     fun update(tpf: Float) {
 

@@ -126,6 +126,7 @@ class FightScreen : Base3dQbgState() {
                     for (lane in lanes) {
                         if (lane.geometry == it.geometry) {
                             spawnKnightOnLane(lane)
+                            spawnOrcOnLane(lane) // TEST: for a little test, spawn an orc on the same lane for now
                         }
                     }
                 }
@@ -167,10 +168,24 @@ class FightScreen : Base3dQbgState() {
     // quick iterating function to spawn a knight
     private fun spawnKnightOnLane(lane: SummonLane) {
 
-        print("spawn")
+        print("spawn human")
 
         val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.HumanKnight)
         unit.location.x -= SummonLane.laneWidth / 2
+
+        unitList.add(unit)
+        unitNode.apply {
+            this.attachChild(unit.geom)
+        }
+    }
+
+    // quick iterating function to spawn a knight
+    private fun spawnOrcOnLane(lane: SummonLane) {
+
+        print("spawn orc")
+
+        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.OrkKnight)
+        unit.location.x += SummonLane.laneWidth / 2
 
         unitList.add(unit)
         unitNode.apply {
