@@ -1,7 +1,6 @@
 package desktopkt.states
 
 import com.jme3.app.Application
-import com.jme3.app.state.BaseAppState
 import com.jme3.asset.AssetManager
 import com.jme3.collision.CollisionResults
 import com.jme3.input.MouseInput
@@ -10,7 +9,6 @@ import com.jme3.input.controls.KeyTrigger
 import com.jme3.input.controls.MouseButtonTrigger
 import com.jme3.material.Material
 import com.jme3.math.ColorRGBA
-import com.jme3.math.FastMath
 import com.jme3.math.Ray
 import com.jme3.math.Vector3f
 import com.jme3.scene.Geometry
@@ -19,7 +17,9 @@ import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
 import desktopkt.Base3dQbgState
-import desktopkt.mutliplayer.MessageProcessor
+import desktopkt.multiplayer.Message
+import desktopkt.multiplayer.MessageProcessor
+import desktopkt.multiplayer.Server
 import desktopkt.states.fight.Fight
 import desktopkt.states.fight.UnitFactory
 import desktopkt.states.fight.UnitType
@@ -58,10 +58,19 @@ class FightScreen : Base3dQbgState() {
 
         unitFactory = UnitFactory(application, ImageManager(application.assetManager))
 
+        initServer()
         initHud()
         initArena()
         initSounds()
         initPlayers()
+    }
+
+    private fun initServer() {
+        val server = Server()
+        val processor = SummonMessageProc()
+        server.registerProcessor(processor, SummonMessage::class.java)
+
+        server.serverDidReceive(SummonMessage())
     }
 
     private fun startFight(singlePlayer: Boolean, fight: Fight) {
@@ -478,3 +487,15 @@ class SummonLane(val index: Int, private val assetManager: AssetManager) {
 data class PickHit(val geometry: Geometry,
                    val hitLocation: Vector3f,
                    val hitNormal: Vector3f)
+
+class SummonMessage: Message() {
+
+}
+
+class SummonMessageProc: MessageProcessor<SummonMessage> {
+
+    override fun process(message: SummonMessage) {
+        print("received message $message")
+        message.uid
+    }
+}
