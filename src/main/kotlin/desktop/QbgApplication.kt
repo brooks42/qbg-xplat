@@ -11,6 +11,7 @@ import desktopkt.states.CampaignScreen
 import desktopkt.models.SaveGame
 import desktopkt.states.FightScreen
 import desktopkt.states.fight.Fight
+import desktopkt.states.fight.Player
 import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
@@ -89,6 +90,10 @@ class QbgApplication : SimpleApplication() {
         stateManager.detach(stateManager.getState(CampaignScreen::class.java))
 
         val fightScreen = FightScreen()
+
+        val playerOne = Player("Player One")
+        val playerTwo = Player("Player Two")
+        fightScreen.startFight(fight = Fight(playerOne, playerTwo))
         stateManager.attach(fightScreen)
     }
 

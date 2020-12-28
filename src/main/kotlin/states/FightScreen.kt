@@ -20,10 +20,9 @@ import desktopkt.Base3dQbgState
 import desktopkt.multiplayer.Message
 import desktopkt.multiplayer.MessageProcessor
 import desktopkt.multiplayer.Server
-import desktopkt.states.fight.Fight
-import desktopkt.states.fight.UnitFactory
-import desktopkt.states.fight.UnitType
-import desktopkt.states.fight.UnitView
+import desktopkt.states.fight.*
+import desktopkt.states.fight.messages.SummonMessage
+import desktopkt.states.fight.messages.SummonMessageProcessor
 import models.ImageManager
 import org.lwjgl.input.Keyboard
 
@@ -51,6 +50,8 @@ class FightScreen : Base3dQbgState() {
 
     lateinit var server: Server
 
+    var selectedUnitType = UnitType.HumanKnight
+
     var unitList = arrayListOf<UnitView>()
 
     var lanes = arrayListOf<SummonLane>()
@@ -69,7 +70,7 @@ class FightScreen : Base3dQbgState() {
 
     private fun initServer() {
         server = Server()
-        val processor = SummonMessageProc()
+        val processor = SummonMessageProcessor(this)
 
         // register each of the message processor classes here, we'll need to unregister them later as well
         server.registerProcessor(processor, SummonMessage::class.java)
@@ -79,7 +80,7 @@ class FightScreen : Base3dQbgState() {
         server.unregisterProcessor(SummonMessage::class.java)
     }
 
-    private fun startFight(singlePlayer: Boolean, fight: Fight) {
+    fun startFight(singlePlayer: Boolean = true, fight: Fight) {
         this.fight = fight
     }
 
@@ -141,10 +142,7 @@ class FightScreen : Base3dQbgState() {
                     // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
                     for (lane in lanes) {
                         if (lane.geometry == it.geometry) {
-                            val message = SummonMessage(UnitType.HumanKnight, lane.index)
-
-                            spawnKnightOnLane(lane, UnitType.HumanKnight)
-                            spawnOrcOnLane(lane) // TEST: for a little test, spawn an orc on the same lane for now
+                            processSummon(lane)
                         }
                     }
                 }
@@ -184,30 +182,38 @@ class FightScreen : Base3dQbgState() {
     }
 
     // quick iterating function to spawn a knight
-    private fun spawnKnightOnLane(lane: SummonLane, unitType: UnitType) {
+    fun spawnKnightOnLane(lane: SummonLane, unitType: UnitType) {
 
         print("spawn human")
+        val unit = unitFactory.unit(unitType)
+        val unitView = unitFactory.nodeForUnit(lane.geometry.localTranslation, unit)
+        unitView.location.x -= SummonLane.laneWidth / 2
 
-        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, unitType)
-        unit.location.x -= SummonLane.laneWidth / 2
-
-        unitList.add(unit)
+        unitList.add(unitView)
         unitNode.apply {
-            this.attachChild(unit.geom)
+            this.attachChild(unitView.geom)
         }
     }
 
-    // quick iterating function to spawn a knight
-    private fun spawnOrcOnLane(lane: SummonLane) {
+    // quick iterating function to spawn an orc
+    fun spawnOrcOnLane(lane: SummonLane) {
 
         print("spawn orc")
+        val unit = unitFactory.unit(UnitType.OrkKnight)
+        val unitView = unitFactory.nodeForUnit(lane.geometry.localTranslation, unit)
+        unitView.location.x += SummonLane.laneWidth / 2
 
-        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.OrkKnight)
-        unit.location.x += SummonLane.laneWidth / 2
-
-        unitList.add(unit)
+        unitList.add(unitView)
         unitNode.apply {
-            this.attachChild(unit.geom)
+            this.attachChild(unitView.geom)
+        }
+    }
+
+    private fun processSummon(lane: SummonLane) {
+        if (fight.canPlayerOneAffordUnit(selectedUnitType)) {
+            // TODO: spend the mana
+            val message = SummonMessage(selectedUnitType, lane.index)
+            server.send(message)
         }
     }
 
@@ -417,7 +423,7 @@ class FightScreen : Base3dQbgState() {
     }
 
     override fun cleanup(app: Application) {
-
+        cleanupServer()
     }
 
     override fun update(tpf: Float) {
@@ -495,21 +501,3 @@ class SummonLane(val index: Int, assetManager: AssetManager) {
 data class PickHit(val geometry: Geometry,
                    val hitLocation: Vector3f,
                    val hitNormal: Vector3f)
-
-/**
- * Message sent when a new dude is summoned
- */
-class SummonMessage(val unitType: UnitType,
-                    val lane: Int): Message() {
-
-    override fun toString(): String {
-        return "SummonMessage($uid, unitType=$unitType, lane=$lane)"
-    }
-}
-
-class SummonMessageProc: MessageProcessor<SummonMessage> {
-
-    override fun process(message: SummonMessage) {
-        print("received message $message")
-    }
-}

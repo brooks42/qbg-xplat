@@ -14,6 +14,12 @@ import models.ImageManager
 
 class Unit(val type: UnitType) {
 
+    var speed = when(type) {
+        UnitType.HumanKnight -> 0.03f
+        UnitType.HumanAssassin -> 0.05f
+        UnitType.OrkKnight -> -0.03f
+        else -> 0.02f
+    }
 }
 
 enum class UnitType {
@@ -28,13 +34,18 @@ enum class UnitType {
 
 class UnitFactory(val application: Application, val imageManager: ImageManager) {
 
-    fun nodeForUnit(location: Vector3f, type: UnitType): UnitView {
+    fun unit(type: UnitType): Unit {
+        return Unit(type)
+    }
+
+    fun nodeForUnit(location: Vector3f, unit: Unit): UnitView {
         val box = Box(defaultUnitBound, defaultUnitBound, 0.0F)
         val geom = Geometry("unit", box)
 
         val mat = Material(application.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
 
-        val unitTexture = when(type) {
+        // TODO: need to replace this with an animation list instead
+        val unitTexture = when(unit.type) {
             UnitType.HumanKnight -> "human_knight_1.png"
             UnitType.OrkKnight -> "ork_knight_1.png"
             UnitType.HumanArcher -> "human_archer_1.png"
@@ -52,7 +63,7 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
         geom.localTranslation.y += defaultUnitBound // so the feet touch the floor
         geom.queueBucket = RenderQueue.Bucket.Transparent;
 
-        return UnitView(type, geom)
+        return UnitView(unit, geom)
     }
 
     companion object {
@@ -63,7 +74,7 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
 // a UnitView is a single unit in the game world
 // it wraps a Unit and acts as kind of an MVC style wrapper for units
 // where this is the view and the battle screen stuff is the controller
-class UnitView(val type: UnitType,
+class UnitView(val unit: Unit,
                val geom: Geometry) {
 
     var bounce = 0f
@@ -72,12 +83,6 @@ class UnitView(val type: UnitType,
     var frame_switch = 10
     var counts = true
     var MAX_FRAME_TIME_ANIM = 10
-
-    var speed = when (type) {
-        UnitType.HumanKnight -> 0.03f
-        UnitType.OrkKnight -> -0.03f
-        else -> 0.02f
-    }
 
     var location: Vector3f
         get() {
@@ -90,7 +95,7 @@ class UnitView(val type: UnitType,
     fun update(tpf: Float) {
 
         val loc = geom.localTranslation
-        loc.x = loc.x + (speed * tpf) + bounce
+        loc.x = loc.x + (unit.speed * tpf) + bounce
         geom.localTranslation = loc
 
         // this bounce stuff might be a little wonky
