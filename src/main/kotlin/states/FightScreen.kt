@@ -19,6 +19,7 @@ import com.jme3.scene.shape.Box
 import com.simsilica.lemur.Container
 import desktop.QbgApplication
 import desktopkt.Base3dQbgState
+import desktopkt.mutliplayer.MessageProcessor
 import desktopkt.states.fight.Fight
 import desktopkt.states.fight.UnitFactory
 import desktopkt.states.fight.UnitType
@@ -125,7 +126,7 @@ class FightScreen : Base3dQbgState() {
                     // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
                     for (lane in lanes) {
                         if (lane.geometry == it.geometry) {
-                            spawnKnightOnLane(lane)
+                            spawnKnightOnLane(lane, UnitType.HumanKnight)
                             spawnOrcOnLane(lane) // TEST: for a little test, spawn an orc on the same lane for now
                         }
                     }
@@ -166,11 +167,11 @@ class FightScreen : Base3dQbgState() {
     }
 
     // quick iterating function to spawn a knight
-    private fun spawnKnightOnLane(lane: SummonLane) {
+    private fun spawnKnightOnLane(lane: SummonLane, unitType: UnitType) {
 
         print("spawn human")
 
-        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, UnitType.HumanKnight)
+        val unit = unitFactory.nodeForUnit(lane.geometry.localTranslation, unitType)
         unit.location.x -= SummonLane.laneWidth / 2
 
         unitList.add(unit)

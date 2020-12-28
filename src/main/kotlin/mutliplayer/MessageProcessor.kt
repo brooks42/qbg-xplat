@@ -1,4 +1,6 @@
 package desktopkt.mutliplayer
 
-interface MessageProcessor {
+interface MessageProcessor<T: Message> {
+
+    fun process(message: T)
 }
