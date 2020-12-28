@@ -4,8 +4,13 @@ class Server: MessageTransport {
 
     private val registeredProcessors = mutableMapOf<Class<*>, MessageProcessor<Message>>()
 
+    @Suppress("UNCHECKED_CAST")
     fun <T: Message> registerProcessor(processor: MessageProcessor<T>, messageType: Class<T>) {
         registeredProcessors[messageType] = processor as MessageProcessor<Message>
+    }
+
+    fun <T: Message> unregisterProcessor(messageType: Class<T>) {
+        registeredProcessors.remove(messageType)
     }
 
     override fun send(message: Message) {
@@ -15,7 +20,7 @@ class Server: MessageTransport {
         serverDidReceive(message)
     }
 
-    fun <T: Message> serverDidReceive(message: T) {
+    private fun <T: Message> serverDidReceive(message: T) {
         registeredProcessors[message.javaClass]?.let {
             it.process(message)
         }

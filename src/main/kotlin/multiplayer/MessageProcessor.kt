@@ -1,6 +1,6 @@
 package desktopkt.multiplayer
 
-interface MessageProcessor<in T: Message> {
+interface MessageProcessor<T: Message> {
 
     fun process(message: T)
 }

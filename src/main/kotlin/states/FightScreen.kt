@@ -49,6 +49,8 @@ class FightScreen : Base3dQbgState() {
 
     lateinit var unitFactory: UnitFactory
 
+    lateinit var server: Server
+
     var unitList = arrayListOf<UnitView>()
 
     var lanes = arrayListOf<SummonLane>()
@@ -66,11 +68,15 @@ class FightScreen : Base3dQbgState() {
     }
 
     private fun initServer() {
-        val server = Server()
+        server = Server()
         val processor = SummonMessageProc()
-        server.registerProcessor(processor, SummonMessage::class.java)
 
-        server.serverDidReceive(SummonMessage())
+        // register each of the message processor classes here, we'll need to unregister them later as well
+        server.registerProcessor(processor, SummonMessage::class.java)
+    }
+
+    private fun cleanupServer() {
+        server.unregisterProcessor(SummonMessage::class.java)
     }
 
     private fun startFight(singlePlayer: Boolean, fight: Fight) {
@@ -135,6 +141,8 @@ class FightScreen : Base3dQbgState() {
                     // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
                     for (lane in lanes) {
                         if (lane.geometry == it.geometry) {
+                            val message = SummonMessage(UnitType.HumanKnight, lane.index)
+
                             spawnKnightOnLane(lane, UnitType.HumanKnight)
                             spawnOrcOnLane(lane) // TEST: for a little test, spawn an orc on the same lane for now
                         }
@@ -442,7 +450,7 @@ class FightScreen : Base3dQbgState() {
     }
 }
 
-class SummonLane(val index: Int, private val assetManager: AssetManager) {
+class SummonLane(val index: Int, assetManager: AssetManager) {
 
     val geometry: Geometry
 
@@ -488,14 +496,20 @@ data class PickHit(val geometry: Geometry,
                    val hitLocation: Vector3f,
                    val hitNormal: Vector3f)
 
-class SummonMessage: Message() {
+/**
+ * Message sent when a new dude is summoned
+ */
+class SummonMessage(val unitType: UnitType,
+                    val lane: Int): Message() {
 
+    override fun toString(): String {
+        return "SummonMessage($uid, unitType=$unitType, lane=$lane)"
+    }
 }
 
 class SummonMessageProc: MessageProcessor<SummonMessage> {
 
     override fun process(message: SummonMessage) {
         print("received message $message")
-        message.uid
     }
 }
