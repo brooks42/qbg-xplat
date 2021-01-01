@@ -4,15 +4,6 @@
  */
 package sprites;
 
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.*;
-import physics.Body;
-
 /**
  *
  * @author User

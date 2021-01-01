@@ -22,16 +22,6 @@ import world.Unit;
  */
 public class BattleScreen extends BaseAppState {
 
-//    private PSprite knightDisp, spearDisp, archerDisp, paladinDisp, wizDisp,
-//            assDisp, selectedDisp;
-//    private PSprite background;
-//    private PSprite arena;
-//    private PSprite healthBar, oppHealthBar, manaBar;
-//    private PSprite summonCircle;
-//    private PSprite abilityCircle;
-//    private Polygon summonBox;
-//    private Polygon enemySummonBox;
-//    private Polygon arenaBox;
 //    float rot = 0f;
 //    // various stats for the player and opponent
 //    int healthBoxWidth = 280;

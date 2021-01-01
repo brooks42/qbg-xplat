@@ -4,6 +4,8 @@ class Player(val name: String) {
 
     var mana: Float = defaultMana
 
+    var manaRegen: Float = defaultManaRegen
+
     var units = arrayListOf<Unit>()
 
     /*
@@ -41,9 +43,15 @@ class Player(val name: String) {
     }
      */
 
+    fun update(tpf: Float) {
+        mana += (manaRegen * tpf)
+    }
+
     companion object {
 
         val defaultMana = 10.0f
+
+        val defaultManaRegen = 0.005f
 
         val defaultHealth = 20
     }

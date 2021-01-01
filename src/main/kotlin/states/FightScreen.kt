@@ -14,11 +14,10 @@ import com.jme3.math.Vector3f
 import com.jme3.scene.Geometry
 import com.jme3.scene.Node
 import com.jme3.scene.shape.Box
-import com.simsilica.lemur.Container
-import desktop.QbgApplication
+import com.simsilica.lemur.*
+import com.simsilica.lemur.component.BoxLayout
+import com.simsilica.lemur.component.IconComponent
 import desktopkt.Base3dQbgState
-import desktopkt.multiplayer.Message
-import desktopkt.multiplayer.MessageProcessor
 import desktopkt.multiplayer.Server
 import desktopkt.states.fight.*
 import desktopkt.states.fight.messages.SummonMessage
@@ -49,6 +48,8 @@ class FightScreen : Base3dQbgState() {
     lateinit var unitFactory: UnitFactory
 
     lateinit var server: Server
+
+    lateinit var unitSummonView: UnitSummonView
 
     var selectedUnitType = UnitType.HumanKnight
 
@@ -86,6 +87,11 @@ class FightScreen : Base3dQbgState() {
 
     private fun initHud() {
         hudNode = Container()
+
+        val height = application.guiViewPort.camera.height.toFloat()
+        hudNode.setLocalTranslation(0F, height, 0F)
+
+        unitSummonView = UnitSummonView(hudNode, application)
     }
 
     private fun initArena() {
@@ -342,20 +348,15 @@ class FightScreen : Base3dQbgState() {
     private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
 
-    // projection matrix...
-    /*[
- 2.0362442  3.5557518E-10  -0.0019885192  0.001988519
- -0.0011548502  2.4439163  -1.1825665  -0.5526139
- -8.825806E-4  -0.43731478  -0.9037628  -0.78975177
- -8.790573E-4  -0.435569  -0.90015495  1.2094089
-]*/
-
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
         application.rootNode.attachChild(arenaNode)
         application.rootNode.attachChild(unitNode)
 
-//        application.flyByCamera.isEnabled = true
+        // TODO:
+        application.guiNode.attachChild(unitSummonView.window)
+        application.guiNode.attachChild(unitSummonView.menu)
+
         application.setDisplayStatView(false)
         application.camera.isParallelProjection = false
         application.camera.location = defaultCameraPosition
@@ -477,8 +478,8 @@ class SummonLane(val index: Int, assetManager: AssetManager) {
         // this way the lane is 1 unit long, could be helpful for speed calculations later on
         val laneWidth = 1F
 
-        val arenaHeight = 0.5F
-        val laneCount = 16
+        const val arenaHeight = 0.5F
+        const val laneCount = 16
         val laneHeight = arenaHeight / laneCount
 
         val laneZPositions: ArrayList<Float> by lazy {

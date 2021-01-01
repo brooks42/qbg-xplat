@@ -45,7 +45,6 @@ class MainMenuAppState : BaseAppState() {
 
         window.background = IconComponent("title.png")
 
-        // TODO: this sucks and should be changed ASAP when I build in rendering UI for different resolutions
         val height = application.guiViewPort.camera.height.toFloat()
 
         window.setLocalTranslation(0F, height, 0F)
