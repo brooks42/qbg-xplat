@@ -1,50 +1,39 @@
 package desktopkt.states.fight
 
-import com.jme3.scene.Node
+import com.jme3.math.Vector2f
 import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
-import desktop.QbgApplication
 
-class UnitSummonView(node: Container, application: QbgApplication) {
+class UnitSummonView: Container() {
 
-    val window = Container()
-
-    val menu = Container()
+    private val buttonList = mutableListOf<Button>()
 
     init {
-        setupAndAttachToNode(node, application)
+        val boxLayout = BoxLayout(Axis.X, FillMode.None)
+        layout = boxLayout
     }
 
-    private fun setupAndAttachToNode(node: Node, application: QbgApplication) {
+    fun addButton(unitType: UnitType, onClick: ()->kotlin.Unit) {
+        val button = addChild(Button(null))
+        buttonList.add(button)
 
-        val boxLayout = BoxLayout(Axis.X, FillMode.None)
-
-        menu.layout = boxLayout
-        menu.setLocalTranslation(100F, 200F, 0F)
-
-        val knightButton = menu.addChild(Button(null))
-        knightButton.background = IconComponent("human_knight_display.png")
-        knightButton.addClickCommands(object : Command<Button?> {
+        val buttonBackground = IconComponent(UnitFactory.displayTextureNameForUnitType(unitType))
+        buttonBackground.iconSize = Vector2f(50f, 50f)
+        button.background = buttonBackground
+        button.addClickCommands(object : Command<Button?> {
             override fun execute(source: Button?) {
-                println("tick")
+                onClick()
             }
         })
+    }
 
-        val assassinButton = menu.addChild(Button(null))
-        assassinButton.background = IconComponent("human_assassin_display.png")
-        assassinButton.addClickCommands(object : Command<Button?> {
-            override fun execute(source: Button?) {
-                println("tick2")
-            }
-        })
+    class Builder {
 
-        val archerButton = menu.addChild(Button(null))
-        archerButton.background = IconComponent("human_spearman_display.png")
-        archerButton.addClickCommands(object : Command<Button?> {
-            override fun execute(source: Button?) {
-                println("tick")
-            }
-        })
+        val view = UnitSummonView()
+
+        fun addButton(unitType: UnitType, onClick: ()->kotlin.Unit) {
+            view.addButton(unitType, onClick)
+        }
     }
 }

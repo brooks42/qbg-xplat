@@ -68,6 +68,18 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
 
     companion object {
         const val defaultUnitBound = 0.018F
+
+        fun displayTextureNameForUnitType(unitType: UnitType): String {
+            return when(unitType) {
+                UnitType.HumanKnight -> "human_knight_display.png"
+                UnitType.OrkKnight -> "ork_knight_display.png"
+                UnitType.HumanArcher -> "human_archer_display.png"
+                UnitType.HumanAssassin -> "human_assassin_display.png"
+                UnitType.HumanPaladin -> "human_paladin_display.png"
+                UnitType.HumanWizard -> "human_wizard_display.png"
+                UnitType.HumanSpearman -> "human_spearman_display.png"
+            }
+        }
     }
 }
 

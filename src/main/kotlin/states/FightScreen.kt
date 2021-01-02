@@ -15,8 +15,6 @@ import com.jme3.scene.Geometry
 import com.jme3.scene.Node
 import com.jme3.scene.shape.Box
 import com.simsilica.lemur.*
-import com.simsilica.lemur.component.BoxLayout
-import com.simsilica.lemur.component.IconComponent
 import desktopkt.Base3dQbgState
 import desktopkt.multiplayer.Server
 import desktopkt.states.fight.*
@@ -91,7 +89,18 @@ class FightScreen : Base3dQbgState() {
         val height = application.guiViewPort.camera.height.toFloat()
         hudNode.setLocalTranslation(0F, height, 0F)
 
-        unitSummonView = UnitSummonView(hudNode, application)
+        val unitSummonViewBuilder = UnitSummonView.Builder()
+        unitSummonViewBuilder.addButton(UnitType.HumanKnight) {
+            print("click")
+        }
+        unitSummonViewBuilder.addButton(UnitType.HumanAssassin) {
+            print("click2")
+        }
+        unitSummonViewBuilder.addButton(UnitType.HumanArcher) {
+            print("click3")
+        }
+        unitSummonView = unitSummonViewBuilder.view
+        unitSummonView.setLocalTranslation(100F, 200F, 0F)
     }
 
     private fun initArena() {
@@ -353,9 +362,7 @@ class FightScreen : Base3dQbgState() {
         application.rootNode.attachChild(arenaNode)
         application.rootNode.attachChild(unitNode)
 
-        // TODO:
-        application.guiNode.attachChild(unitSummonView.window)
-        application.guiNode.attachChild(unitSummonView.menu)
+        application.guiNode.attachChild(unitSummonView)
 
         application.setDisplayStatView(false)
         application.camera.isParallelProjection = false

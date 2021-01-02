@@ -8,6 +8,8 @@ import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
 import com.jme3.audio.AudioData
 import com.jme3.audio.AudioNode
+import com.jme3.math.Vector2f
+import com.jme3.math.Vector3f
 import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
@@ -41,11 +43,15 @@ class MainMenuAppState : BaseAppState() {
 
     private fun initMenu() {
 
+        val width = application.guiViewPort.camera.width.toFloat()
+        val height = application.guiViewPort.camera.height.toFloat()
+
         window = Container()
 
-        window.background = IconComponent("title.png")
+        val windowBackground = IconComponent("title.png")
+        windowBackground.iconSize = Vector2f(width, height)
 
-        val height = application.guiViewPort.camera.height.toFloat()
+        window.background = windowBackground
 
         window.setLocalTranslation(0F, height, 0F)
 
