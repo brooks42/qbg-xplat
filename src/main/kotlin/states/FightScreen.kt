@@ -55,6 +55,9 @@ class FightScreen : Base3dQbgState() {
 
     var lanes = arrayListOf<SummonLane>()
 
+    private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
+    private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
+
     override fun initialize(app: Application) {
         super.initialize(app)
 
@@ -86,21 +89,38 @@ class FightScreen : Base3dQbgState() {
     private fun initHud() {
         hudNode = Container()
 
+        val width = application.guiViewPort.camera.width.toFloat()
         val height = application.guiViewPort.camera.height.toFloat()
+
         hudNode.setLocalTranslation(0F, height, 0F)
 
         val unitSummonViewBuilder = UnitSummonView.Builder()
         unitSummonViewBuilder.addButton(UnitType.HumanKnight) {
-            print("click")
+            println("HumanKnight")
+            selectSummonUnitType(UnitType.HumanKnight)
         }
-        unitSummonViewBuilder.addButton(UnitType.HumanAssassin) {
-            print("click2")
+        unitSummonViewBuilder.addButton(UnitType.HumanSpearman) {
+            println("HumanSpearman")
+            selectSummonUnitType(UnitType.HumanSpearman)
         }
         unitSummonViewBuilder.addButton(UnitType.HumanArcher) {
-            print("click3")
+            println("HumanArcher")
+            selectSummonUnitType(UnitType.HumanArcher)
+        }
+        unitSummonViewBuilder.addButton(UnitType.HumanPaladin) {
+            println("HumanPaladin")
+            selectSummonUnitType(UnitType.HumanPaladin)
+        }
+        unitSummonViewBuilder.addButton(UnitType.HumanAssassin) {
+            println("HumanAssassin")
+            selectSummonUnitType(UnitType.HumanAssassin)
+        }
+        unitSummonViewBuilder.addButton(UnitType.HumanWizard) {
+            println("HumanWizard")
+            selectSummonUnitType(UnitType.HumanWizard)
         }
         unitSummonView = unitSummonViewBuilder.view
-        unitSummonView.setLocalTranslation(100F, 200F, 0F)
+        unitSummonView.setLocalTranslation(50F, height - 50F, 0F)
     }
 
     private fun initArena() {
@@ -142,23 +162,15 @@ class FightScreen : Base3dQbgState() {
         val ray = Ray(rayOrigin, dir);
         println("ray = $ray")
 
-        var collisionCount = application.guiNode.collideWith(ray, results)
-        println("collisionCount for gui collision == $collisionCount")
+        var collisionCount = application.rootNode.collideWith(ray, results)
 
-        val consumed = guiHitTest(name, results)
+        if (collisionCount > 0) {
 
-        if (!consumed) {
-            collisionCount = application.rootNode.collideWith(ray, results)
-            println("collisionCount for root collision == $collisionCount")
-
-            if (collisionCount > 0) {
-
-                pickHitsForPick(results).forEach {
-                    // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
-                    for (lane in lanes) {
-                        if (lane.geometry == it.geometry) {
-                            processSummon(lane)
-                        }
+            pickHitsForPick(results).forEach {
+                // if the player's click struck a lane, doing some iteration dev so just spawn a knight at that lane for now
+                for (lane in lanes) {
+                    if (lane.geometry == it.geometry) {
+                        processSummon(lane)
                     }
                 }
             }
@@ -179,25 +191,8 @@ class FightScreen : Base3dQbgState() {
         return uniqueGeometryHitMap.values.toList()
     }
 
-    // returns whether the click was consumed or not
-    private fun guiHitTest(name: String, collisionResults: CollisionResults): Boolean {
-        // TODO: iterate through all the GUI elements
-
-        for (i in 0 until collisionResults.size()) {
-            // For each "hit", we know distance, impact point, geometry.
-            val collision = collisionResults.getCollision(i)
-            val dist = collision.distance
-            val pt = collision.contactPoint
-            val target = collision.geometry.name
-            println("Selection #$i: $target at $pt, $dist WU away.")
-            return true
-        }
-
-        return false
-    }
-
     // quick iterating function to spawn a knight
-    fun spawnKnightOnLane(lane: SummonLane, unitType: UnitType) {
+    fun spawnUnitOnLane(lane: SummonLane, unitType: UnitType) {
 
         print("spawn human")
         val unit = unitFactory.unit(unitType)
@@ -232,130 +227,36 @@ class FightScreen : Base3dQbgState() {
         }
     }
 
-    // this is some debug code that can be removed in the future...
-    private var arrayOfInputsBetweenEnters = arrayListOf<String>()
-    private var betweenEnters = false
-
     private val keyListener = ActionListener { name, down, _ ->
         if (!down) {
             when (name) {
-                resetPos -> {
-                    application.camera.location = Vector3f(0F, 0F, 0F)
+                selectKnight -> {
+                    selectSummonUnitType(UnitType.HumanKnight)
                 }
-                one -> {
-                    arrayOfInputsBetweenEnters.add("1")
+                selectSpearman -> {
+                    selectSummonUnitType(UnitType.HumanSpearman)
                 }
-                two -> {
-                    arrayOfInputsBetweenEnters.add("2")
+                selectArcher -> {
+                    selectSummonUnitType(UnitType.HumanArcher)
                 }
-                three -> {
-                    arrayOfInputsBetweenEnters.add("3")
+                selectPaladin -> {
+                    selectSummonUnitType(UnitType.HumanPaladin)
                 }
-                four -> {
-                    arrayOfInputsBetweenEnters.add("4")
+                selectAssassin -> {
+                    selectSummonUnitType(UnitType.HumanAssassin)
                 }
-                five -> {
-                    arrayOfInputsBetweenEnters.add("5")
-                }
-                six -> {
-                    arrayOfInputsBetweenEnters.add("6")
-                }
-                seven -> {
-                    arrayOfInputsBetweenEnters.add("7")
-                }
-                eight -> {
-                    arrayOfInputsBetweenEnters.add("8")
-                }
-                nine -> {
-                    arrayOfInputsBetweenEnters.add("9")
-                }
-                zero -> {
-                    arrayOfInputsBetweenEnters.add("0")
-                }
-                enter -> {
-                    if (betweenEnters) {
-                        teleportToEnteredLoc()
-                    }
-                    arrayOfInputsBetweenEnters.clear()
-                    betweenEnters = !betweenEnters
-                }
-                x -> {
-                    arrayOfInputsBetweenEnters.add("x")
-                }
-                y -> {
-                    arrayOfInputsBetweenEnters.add("y")
-                }
-                z -> {
-                    arrayOfInputsBetweenEnters.add("z")
-                }
-                printPos -> {
-                    printCameraInfo()
-                }
-                upArrow -> {
-                    application.camera.frustumNear += 0.1F
-                }
-                downArrow -> {
-                    application.camera.frustumNear -= 0.1F
+                selectWizard -> {
+                    selectSummonUnitType(UnitType.HumanWizard)
                 }
             }
         }
     }
 
-    // form is <enter> <vector> location <enter>
-    private fun teleportToEnteredLoc() {
-        var location = ""
-        var axis: String? = null
+    private fun selectSummonUnitType(unitType: UnitType) {
+        selectedUnitType = unitType
 
-        arrayOfInputsBetweenEnters.forEach {
-            if (axis == null) {
-                axis = it
-            } else {
-                location += it
-            }
-        }
-
-        println("parsed location: $location")
-        val pos = location.toFloatOrNull()
-
-        if (pos != null) {
-            var newLocation: Vector3f = application.camera.location
-            val currentLoc = application.camera.location
-            when (axis) {
-                x -> {
-                    newLocation = Vector3f(pos, currentLoc.y, currentLoc.z)
-                }
-                y -> {
-                    newLocation = Vector3f(currentLoc.x, pos, currentLoc.z)
-                }
-                z -> {
-                    newLocation = Vector3f(currentLoc.x, currentLoc.y, pos)
-                }
-            }
-            println("teleporting to new location: $newLocation")
-            application.camera.location = newLocation
-            application.camera.lookAt(defaultCameraFacing, application.camera.up)
-        }
+        // TODO: update the UI to show which unit is selected
     }
-
-    private fun printCameraInfo() {
-        println("camera info:")
-        println("location: ${application.camera.location}")
-        println("direction: ${application.camera.direction}")
-        println("frustumNear: ${application.camera.frustumNear}")
-        println("frustumFar: ${application.camera.frustumFar}")
-        println("projection: ${application.camera.viewProjectionMatrix}")
-    }
-
-    private fun winFight() {
-
-    }
-
-    private fun loseFight() {
-
-    }
-
-    private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
-    private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
 
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
@@ -381,44 +282,20 @@ class FightScreen : Base3dQbgState() {
         application.inputManager.addMapping(leftClick, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
         application.inputManager.addMapping(rightClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
 
-        application.inputManager.addMapping(resetPos, KeyTrigger(Keyboard.KEY_SPACE))
-        application.inputManager.addMapping(one, KeyTrigger(Keyboard.KEY_1))
-        application.inputManager.addMapping(two, KeyTrigger(Keyboard.KEY_2))
-        application.inputManager.addMapping(three, KeyTrigger(Keyboard.KEY_3))
-        application.inputManager.addMapping(four, KeyTrigger(Keyboard.KEY_4))
-        application.inputManager.addMapping(five, KeyTrigger(Keyboard.KEY_5))
-        application.inputManager.addMapping(six, KeyTrigger(Keyboard.KEY_6))
-        application.inputManager.addMapping(seven, KeyTrigger(Keyboard.KEY_7))
-        application.inputManager.addMapping(eight, KeyTrigger(Keyboard.KEY_8))
-        application.inputManager.addMapping(nine, KeyTrigger(Keyboard.KEY_9))
-        application.inputManager.addMapping(zero, KeyTrigger(Keyboard.KEY_0))
-        application.inputManager.addMapping(enter, KeyTrigger(Keyboard.KEY_RETURN))
-        application.inputManager.addMapping(x, KeyTrigger(Keyboard.KEY_X))
-        application.inputManager.addMapping(y, KeyTrigger(Keyboard.KEY_Y))
-        application.inputManager.addMapping(z, KeyTrigger(Keyboard.KEY_Z))
-        application.inputManager.addMapping(printPos, KeyTrigger(Keyboard.KEY_LCONTROL))
-        application.inputManager.addMapping(upArrow, KeyTrigger(Keyboard.KEY_UP))
-        application.inputManager.addMapping(downArrow, KeyTrigger(Keyboard.KEY_DOWN))
+        application.inputManager.addMapping(selectKnight, KeyTrigger(Keyboard.KEY_1))
+        application.inputManager.addMapping(selectSpearman, KeyTrigger(Keyboard.KEY_2))
+        application.inputManager.addMapping(selectArcher, KeyTrigger(Keyboard.KEY_3))
+        application.inputManager.addMapping(selectPaladin, KeyTrigger(Keyboard.KEY_4))
+        application.inputManager.addMapping(selectAssassin, KeyTrigger(Keyboard.KEY_5))
+        application.inputManager.addMapping(selectWizard, KeyTrigger(Keyboard.KEY_6))
         application.inputManager.addListener(clickListener, leftClick)
         application.inputManager.addListener(clickListener, rightClick)
-        application.inputManager.addListener(keyListener, resetPos)
-        application.inputManager.addListener(keyListener, one)
-        application.inputManager.addListener(keyListener, two)
-        application.inputManager.addListener(keyListener, three)
-        application.inputManager.addListener(keyListener, four)
-        application.inputManager.addListener(keyListener, five)
-        application.inputManager.addListener(keyListener, six)
-        application.inputManager.addListener(keyListener, seven)
-        application.inputManager.addListener(keyListener, eight)
-        application.inputManager.addListener(keyListener, nine)
-        application.inputManager.addListener(keyListener, zero)
-        application.inputManager.addListener(keyListener, enter)
-        application.inputManager.addListener(keyListener, x)
-        application.inputManager.addListener(keyListener, y)
-        application.inputManager.addListener(keyListener, z)
-        application.inputManager.addListener(keyListener, printPos)
-        application.inputManager.addListener(keyListener, upArrow)
-        application.inputManager.addListener(keyListener, downArrow)
+        application.inputManager.addListener(keyListener, selectKnight)
+        application.inputManager.addListener(keyListener, selectSpearman)
+        application.inputManager.addListener(keyListener, selectArcher)
+        application.inputManager.addListener(keyListener, selectPaladin)
+        application.inputManager.addListener(keyListener, selectAssassin)
+        application.inputManager.addListener(keyListener, selectWizard)
     }
 
     override fun onDisable() {
@@ -443,24 +320,12 @@ class FightScreen : Base3dQbgState() {
         const val leftClick = "leftClick"
         const val rightClick = "rightClick"
 
-        const val resetPos = "resetPos"
-        const val one = "one"
-        const val two = "two"
-        const val three = "three"
-        const val four = "four"
-        const val five = "five"
-        const val six = "six"
-        const val seven = "seven"
-        const val eight = "eight"
-        const val nine = "nine"
-        const val zero = "zero"
-        const val enter = "enter"
-        const val x = "x"
-        const val y = "y"
-        const val z = "z"
-        const val upArrow = "upArrow"
-        const val downArrow = "downArrow"
-        const val printPos = "printPos"
+        const val selectKnight = "one"
+        const val selectSpearman = "two"
+        const val selectArcher = "three"
+        const val selectPaladin = "four"
+        const val selectAssassin = "five"
+        const val selectWizard = "six"
     }
 }
 

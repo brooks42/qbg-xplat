@@ -13,11 +13,11 @@ class SummonMessage(val unitType: UnitType,
     }
 }
 
-class SummonMessageProcessor(val fightScreen: FightScreen): MessageProcessor<SummonMessage> {
+class SummonMessageProcessor(private val fightScreen: FightScreen): MessageProcessor<SummonMessage> {
 
     override fun process(message: SummonMessage) {
         print("received message $message")
-        fightScreen.spawnKnightOnLane(fightScreen.lanes[message.lane], UnitType.HumanKnight)
+        fightScreen.spawnUnitOnLane(fightScreen.lanes[message.lane], message.unitType)
         fightScreen.spawnOrcOnLane(fightScreen.lanes[message.lane])
     }
 }
