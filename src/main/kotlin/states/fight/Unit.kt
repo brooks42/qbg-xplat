@@ -1,5 +1,6 @@
 package desktopkt.states.fight
 
+import animation.AnimationFactory
 import com.jme3.app.Application
 import com.jme3.material.Material
 import com.jme3.material.RenderState
@@ -7,6 +8,7 @@ import com.jme3.math.Vector3f
 import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Geometry
 import com.jme3.scene.shape.Box
+import com.simsilica.lemur.anim.Animation
 import desktopkt.utils.ImageManager
 
 class Unit(val type: UnitType) {
@@ -29,7 +31,9 @@ enum class UnitType {
     OrkKnight
 }
 
-class UnitFactory(val application: Application, val imageManager: ImageManager) {
+class UnitFactory(private val application: Application, private val imageManager: ImageManager) {
+
+    private val animationFactory: AnimationFactory = AnimationFactory(imageManager)
 
     fun unit(type: UnitType): Unit {
         return Unit(type)
@@ -60,7 +64,7 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
         geom.localTranslation.y += defaultUnitBound // so the feet touch the floor
         geom.queueBucket = RenderQueue.Bucket.Transparent;
 
-        return UnitView(unit, geom)
+        return UnitView(unit, geom, animationFactory)
     }
 
     companion object {
@@ -84,7 +88,8 @@ class UnitFactory(val application: Application, val imageManager: ImageManager) 
 // it wraps a Unit and acts as kind of an MVC style wrapper for units
 // where this is the view and the battle screen stuff is the controller
 class UnitView(val unit: Unit,
-               val geom: Geometry) {
+               val geom: Geometry,
+               private val animationFactory: AnimationFactory) {
 
     var bounce = 0f
     var friction = .1f
@@ -99,6 +104,19 @@ class UnitView(val unit: Unit,
         }
         set(value) {
             geom.localTranslation = value
+        }
+
+    private val animationFrameList: AnimationFactory.FrameList
+        get() {
+            return when (unit.type) {
+                UnitType.HumanKnight -> AnimationFactory.FrameList.HumanKnight
+                UnitType.HumanSpearman -> AnimationFactory.FrameList.HumanSpearman
+                UnitType.HumanArcher -> AnimationFactory.FrameList.HumanArcher
+                UnitType.HumanPaladin -> AnimationFactory.FrameList.HumanPaladin
+                UnitType.HumanWizard -> AnimationFactory.FrameList.HumanWizard
+                UnitType.HumanAssassin -> AnimationFactory.FrameList.HumanAssassin
+                UnitType.OrkKnight -> AnimationFactory.FrameList.OrkKnight
+            }
         }
 
     fun update(tpf: Float) {
@@ -121,15 +139,16 @@ class UnitView(val unit: Unit,
         }
 
         // now update the animation
-//        this.frame_switch--;
-//        if (frame_switch <= 0) {
-//            this.current_frame++;
-//            if (current_frame >= anim.length) {
-//                current_frame = 0;
-//            }
-//            sprite.setTexture(anim[current_frame])
-//            frame_switch = MAX_FRAME_TIME_ANIM;
-//        }
+        this.frame_switch--;
+        if (frame_switch <= 0) {
+            this.current_frame++;
+            val frameList = animationFactory.getAnimationFrameList(animationFrameList)
+            if (current_frame >= frameList.size) {
+                current_frame = 0;
+            }
+            geom.material.setTexture("ColorMap", frameList[current_frame])
+            frame_switch = MAX_FRAME_TIME_ANIM;
+        }
     }
 }
 

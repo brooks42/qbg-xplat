@@ -18,7 +18,7 @@ class ImageManager(private val assetManager: AssetManager) {
 
     private val textures: HashMap<String, Texture2D> = HashMap()
 
-    fun quickLoadImage(assetName: String?): Texture2D {
+    fun quickLoadImage(assetName: String): Texture2D {
         val loaded: Texture2D
         val textureKey = TextureKey(assetName)
         loaded = assetManager.loadAsset(textureKey) as Texture2D
