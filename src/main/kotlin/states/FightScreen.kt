@@ -20,7 +20,7 @@ import desktopkt.multiplayer.Server
 import desktopkt.states.fight.*
 import desktopkt.states.fight.messages.SummonMessage
 import desktopkt.states.fight.messages.SummonMessageProcessor
-import models.ImageManager
+import desktopkt.utils.ImageManager
 import org.lwjgl.input.Keyboard
 
 
@@ -54,6 +54,10 @@ class FightScreen : Base3dQbgState() {
     var unitList = arrayListOf<UnitView>()
 
     var lanes = arrayListOf<SummonLane>()
+
+    // TODO: this is fine here for now while the FightScreen still controls the rules, in the future this
+    //  FightScreen is basically a viewmodel for the Server, which will need the FightRules instead
+    val fightRules = FightRules()
 
     private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
@@ -162,7 +166,7 @@ class FightScreen : Base3dQbgState() {
         val ray = Ray(rayOrigin, dir);
         println("ray = $ray")
 
-        var collisionCount = application.rootNode.collideWith(ray, results)
+        val collisionCount = application.rootNode.collideWith(ray, results)
 
         if (collisionCount > 0) {
 
@@ -348,7 +352,7 @@ class SummonLane(val index: Int, assetManager: AssetManager) {
     companion object {
 
         // this way the lane is 1 unit long, could be helpful for speed calculations later on
-        val laneWidth = 1F
+        const val laneWidth = 1F
 
         const val arenaHeight = 0.5F
         const val laneCount = 16

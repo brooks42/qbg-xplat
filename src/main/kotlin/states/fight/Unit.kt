@@ -3,14 +3,11 @@ package desktopkt.states.fight
 import com.jme3.app.Application
 import com.jme3.material.Material
 import com.jme3.material.RenderState
-import com.jme3.math.ColorRGBA
 import com.jme3.math.Vector3f
 import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Geometry
-import com.jme3.scene.Node
 import com.jme3.scene.shape.Box
-import com.jme3.scene.shape.Quad
-import models.ImageManager
+import desktopkt.utils.ImageManager
 
 class Unit(val type: UnitType) {
 
@@ -134,4 +131,9 @@ class UnitView(val unit: Unit,
 //            frame_switch = MAX_FRAME_TIME_ANIM;
 //        }
     }
+}
+
+// a unit's ability, like archers shooting arrows or mages casting lightning
+class Ability {
+
 }

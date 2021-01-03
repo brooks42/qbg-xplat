@@ -23,7 +23,6 @@ import desktop.QbgApplication
 import desktopkt.height
 import desktopkt.models.SaveGame
 import desktopkt.width
-import sprites.PSprite
 
 
 /**
@@ -233,7 +232,7 @@ class CampaignScreen(val saveGame: SaveGame) : BaseAppState() {
      */
     internal inner class UpgradesInlay : BaseAppState() {
 
-        var overlay: PSprite? = null
+//        var overlay: PSprite? = null
 //        var upgradeKnightsButton: PButton? = null
 //        var upgradeSpearmenButton: PButton? = null
 //        var upgradeArcherButton: PButton? = null

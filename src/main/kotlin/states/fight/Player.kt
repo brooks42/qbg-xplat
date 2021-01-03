@@ -6,6 +6,8 @@ class Player(val name: String) {
 
     var manaRegen: Float = defaultManaRegen
 
+    var health: Int = defaultHealth
+
     var units = arrayListOf<Unit>()
 
     /*
@@ -49,10 +51,10 @@ class Player(val name: String) {
 
     companion object {
 
-        val defaultMana = 10.0f
+        const val defaultMana = 10.0f
 
-        val defaultManaRegen = 0.005f
+        const val defaultManaRegen = 0.005f
 
-        val defaultHealth = 20
+        const val defaultHealth = 20
     }
 }

@@ -5,7 +5,7 @@
 package animation
 
 import com.jme3.texture.Texture
-import models.ImageManager
+import desktopkt.utils.ImageManager
 
 /**
  *

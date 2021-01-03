@@ -16,8 +16,8 @@ import sprites.SpriteFactory
 import states.LoadingScreen
 import states.MainMenuAppState
 import states.StoryScreen
-import models.ImageManager
-import models.Settings
+import desktopkt.utils.ImageManager
+import desktopkt.utils.Settings
 
 class QbgApplication : SimpleApplication() {
 

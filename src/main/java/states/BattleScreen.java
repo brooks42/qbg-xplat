@@ -5,22 +5,13 @@
 package states;
 
 import com.jme3.app.Application;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.renderer.RenderManager;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-
-import sprites.PSprite;
-import world.Unit;
 
 /**
  *
  * @author brooks42
  */
-public class BattleScreen extends BaseAppState {
+public class BattleScreen /*extends BaseAppState*/ {
 
 //    float rot = 0f;
 //    // various stats for the player and opponent
@@ -41,7 +32,6 @@ public class BattleScreen extends BaseAppState {
 //    private int unit_bar_start_at = 237;
 //    private int selected_summon = 0;
 
-    @Override
     protected void initialize(Application app) {
 
 //        won = false;
@@ -114,21 +104,6 @@ public class BattleScreen extends BaseAppState {
 //            assDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("human_assassin_display"),
 //                    unit_bar_start_at + 275, 130, 50, 50));
 //        }
-    }
-
-    @Override
-    protected void cleanup(Application app) {
-
-    }
-
-    @Override
-    protected void onEnable() {
-
-    }
-
-    @Override
-    protected void onDisable() {
-
     }
 
     public void loadStats() {
@@ -225,202 +200,6 @@ public class BattleScreen extends BaseAppState {
 //        }
 //    }
 
-    @Override
-    public void update(float tpf) {
-
-//        if (!showingInlay) {
-//            rot += 0.25f;
-//            background.setRotation(rot);
-//
-//            // first update the players' mana pools
-//            this.playerMana += playerManaRegen * tpf;
-//            this.oppMana += oppManaRegen * tpf;
-//            // top them off if appropriate
-//            if (playerMana > playerManaMax) {
-//                playerMana = playerManaMax;
-//            }
-//            if (oppMana > oppManaMax) {
-//                oppMana = oppManaMax;
-//            }
-//
-//            // now layout the circle if appropriate
-//            summonCircle.setX(10000);
-//            abilityCircle.setX(10000);
-//            if (summonBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
-//                summonCircle.setX(Mouse.getX() - 98);
-//                summonCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
-//
-//                if (Mouse.isButtonDown(0)) {
-//                    if (!clicked) {
-//                        int spent_mana = (int) Math.min(12, playerMana);
-//                        int summon_units = (spent_mana / 4);
-//                        spent_mana = summon_units * 4;
-//                        // summon up to 3 units
-//                        for (int i = 0; i < summon_units; i++) {
-//                            createUnit(selected_summon, Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY());
-//                        }
-//                        playerMana -= spent_mana;
-//                        clicked = true;
-//                    }
-//                } else {
-//                    clicked = false;
-//                }
-//            } else if (arenaBox.contains(Mouse.getX(), Settings.SCREEN_HEIGHT - Mouse.getY())) {
-//                abilityCircle.setX(Mouse.getX() - 98);
-//                abilityCircle.setY(Settings.SCREEN_HEIGHT - Mouse.getY() - 48);
-//
-//                // maybe use abilities if appropriate
-//                if (Mouse.isButtonDown(0)) {
-//                    if (!clicked) {
-//                        for (int i = 0; i < units.size(); i++) {
-//                            if (units.get(i).sprite.hittest(abilityCircle)) {
-//                                activateAbility(units.get(i));
-//                                playerMana--;
-//
-//                                // costs 1 mana to use abilities; if you have no more
-//                                // mana, stop
-//                                if (playerMana <= 0) {
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        clicked = true;
-//                    }
-//                } else {
-//                    clicked = false;
-//                }
-//            }
-//
-//            // go through and kill lightning if appropriate
-//            for (int i = 0; i < lightning.size(); i++) {
-//                lightning.get(i).update(tpf);
-//                if (lightning.get(i).def <= 0) {
-//                    lightning.remove(i);
-//                }
-//            }
-//
-//            knightDisp.update(tpf);
-//            spearDisp.update(tpf);
-//            archerDisp.update(tpf);
-//            paladinDisp.update(tpf);
-//            wizDisp.update(tpf);
-//            assDisp.update(tpf);
-//            selectedDisp.update(tpf);
-//
-//            updateUnits(tpf);
-//            doAI();
-//            this.doHealthAndManaWidthCalc();
-//        } else {
-//            inlay.update(tpf);
-//        }
-    }
-
-    @Override
-    public void render(RenderManager rm) {
-
-//        background.render();
-//        arena.render();
-//
-//        // draw lightning behind things
-//        for (int i = 0; i < lightning.size(); i++) {
-//            lightning.get(i).sprite.render();
-//        }
-//
-//        summonCircle.render();
-//        abilityCircle.render();
-//
-//        for (int i = 0; i < units.size(); i++) {
-//            units.get(i).sprite.render();
-//        }
-//        for (int i = 0; i < enemyUnits.size(); i++) {
-//            enemyUnits.get(i).sprite.render();
-//        }
-//
-//        healthBar.render();
-//        oppHealthBar.render();
-//        manaBar.render();
-//
-//        StringRender.getInstance();
-//        StringRender.drawString(StringRender.font24, "Health: "
-//                + (int) this.playerHealth + "/" + (int) this.playerHealthMax, 11, 3, Color.white);
-//        StringRender.drawString(StringRender.font24, "Mana: "
-//                + (int) this.playerMana + "/" + (int) this.playerManaMax, 11, 35, Color.white);
-//        StringRender.drawString(StringRender.font24, "Health: "
-//                + (int) this.oppHealth + "/" + (int) this.oppHealthMax, 511, 3, Color.white);
-//
-//        knightDisp.render();
-//        spearDisp.render();
-//        archerDisp.render();
-//        paladinDisp.render();
-//        wizDisp.render();
-//        assDisp.render();
-//        selectedDisp.render();
-//
-//        if (showingInlay) {
-//            inlay.render();
-//        }
-    }
-
-    //
-    // GAME-SPECIFIC CODE:
-    //
-    /**
-     * Selects the Unit Type to summon as follows:
-     *
-     * 0 - Knight 1 - Spearman 2 - Archer 3 - Paladin 4 - Wizard 5 - Assassin
-     *
-     * @param num
-     */
-    public void selectUnitType(int num) {
-//        selected_summon = num;
-//        selectedDisp = new PSprite(SpriteFactory.getSprite(ImageManager.getImage("selected_unit_display"),
-//                unit_bar_start_at + (num * 55), 130, 50, 50));
-    }
-
-    /**
-     * Creates a unit around the passed (x, y). This will add a random amount of
-     * drift to the x and y before creating the unit.
-     *
-     * @param x
-     * @param y
-     */
-    public void createUnit(int type, int x, int y) {
-        // creates a unit centered at the (x, y) where the screen was clicked
-        // values range inside of the spawn circle
-//        while (true) {
-//            int x_diff = random.nextInt(140) - 70;
-//            int y_diff = random.nextInt(80) - 40;
-//
-//            Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
-//            if (summonBox.contains(unit.sprite.getBounds())) {
-//                units.add(unit);
-//                return;
-//            }
-//        }
-    }
-
-    /**
-     * Creates an enemy unit.
-     *
-     * @param type
-     * @param x
-     * @param y
-     */
-//    public void createEnemyUnit(int type, int x, int y) {
-//        System.out.println("Creating enemy unit at (" + x + ", " + y + ")");
-//        // creates a unit centered at the (x, y) with a small random offset
-//        int x_diff = random.nextInt(140) - 70;
-//        int y_diff = random.nextInt(80) - 40;
-//
-//        // if it isn't in bounds, then remove the x_ and y_diffs
-//        if (!enemySummonBox.contains(x + x_diff, y + y_diff)) {
-//            x_diff = 0;
-//            y_diff = 0;
-//        }
-//        Unit unit = Unit.getUnit(type, x + x_diff, y + y_diff);
-//        enemyUnits.add(unit);
-//    }
-
     /**
      * Performs the AI tasks (mostly summoning orks)
      */
@@ -445,94 +224,6 @@ public class BattleScreen extends BaseAppState {
 //    }
 
     /**
-     * Updates the units on the board, doing hit detection and bouncing them if
-     * appropriate.
-     */
-    public void updateUnits(float tpf) {
-
-        //
-//        for (int i = 0; i < units.size(); i++) {
-//            // if the unit is dead, remove it
-//            if (units.get(i).def <= 0) {
-//                units.remove(i);
-//                Sounds.playSoundEffect("bounce");
-//                continue;
-//            }
-//
-//            // else update it
-//            units.get(i).update(tpf);
-//            if (enemySummonBox.intersects(units.get(i).sprite.getBounds())) {
-//                if (units.get(i).counts) {
-//                    this.oppHealth--;
-//                }
-//
-//                if (oppHealth <= 0) {
-//                    win();
-//                }
-//                units.remove(i);
-//                continue;
-//            }
-//
-//            // just in case
-////            if (units.get(i).sprite.getX() > 1000) {
-////                units.remove(i);
-////            }
-//        }
-//
-//        // update enemy units
-//        for (int i = 0; i < enemyUnits.size(); i++) {
-//            // if the unit is dead, remove it
-//            if (enemyUnits.get(i).def <= 0) {
-//                SaveGame.incrementMoney();
-//                enemyUnits.remove(i);
-//                Sounds.playSoundEffect("bounce");
-//                continue;
-//            }
-//
-//            // else update it
-//            enemyUnits.get(i).update(tpf);
-//            if (summonBox.intersects(enemyUnits.get(i).sprite.getBounds())) {
-//                this.playerHealth--;
-//                if (playerHealth <= 0) {
-//                    lose();
-//                }
-//                enemyUnits.remove(i);
-//                continue;
-//            }
-//
-//            // just in case
-////            if (enemyUnits.get(i).sprite.getX() < -100) {
-////                enemyUnits.remove(i);
-////            }
-//        }
-//
-//        // do hit detection
-//        for (Unit unit : units) {
-//            for (Unit enemyUnit : enemyUnits) {
-//                if (unit.sprite.hittest(enemyUnit.sprite)) {
-//
-//                    // first bounce the units that are hitting eachother
-//                    unit.bounce(enemyUnit.push);
-//                    enemyUnit.bounce(unit.push);
-//
-//                    // then decide about damage
-//                    unit.def -= enemyUnit.atk;
-//                    enemyUnit.def -= unit.atk;
-//                }
-//            }
-//        }
-    }
-
-    /**
-     * Has the passed unit use its ability, if appropriate.
-     *
-     * @param unit
-     */
-    public void activateAbility(Unit unit) {
-        unit.useAbility(this);
-    }
-
-    /**
      * Calculates the width of the health and mana bars for the game.
      */
     public void doHealthAndManaWidthCalc() {
@@ -543,26 +234,6 @@ public class BattleScreen extends BaseAppState {
 //        barwidth = this.healthBoxWidth * (oppHealth / oppHealthMax);
 //        this.oppHealthBar.setWidth((int) Math.floor(barwidth));
     }
-
-    ///
-    /// METHODS FOR WINNING/LOSING AND DISPLAYING APPROPRIATE INLAY
-    ///
-//    public void win() {
-//        won = true;
-//        showInlay();
-//    }
-//
-//    public void lose() {
-//        won = false;
-//        showInlay();
-//    }
-//
-//    public void showInlay() {
-//        inlay = new WinLoseInlay();
-//        inlay.won = won;
-//        inlay.setup();
-//        showingInlay = true;
-//    }
 
     /**
      * The WinLoseInlay that displays whether the player won or lost, and allows

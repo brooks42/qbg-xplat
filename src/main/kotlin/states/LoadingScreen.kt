@@ -8,7 +8,7 @@ import com.jme3.app.Application
 import com.jme3.app.state.BaseAppState
 import com.jme3.scene.Node
 import desktop.QbgApplication
-import models.Settings
+import desktopkt.utils.Settings
 
 /**
  *

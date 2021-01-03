@@ -13,22 +13,21 @@ import com.jme3.renderer.RenderManager;
 import java.awt.*;
 import java.util.ArrayList;
 
-import sprites.PSprite;
 import models.StringRender;
 
 /**
  *
  * @author brooks42
  */
-public class GameEndScreen extends AbstractAppState {
+public class GameEndScreen {
 
-    private PSprite background1, background2;
+//    private PSprite background1, background2;
     private ArrayList<String> lines;
     private float scroll_speed = .15f;
     private float draw_starting = 0f;
 
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
+//    @Override
+//    public void initialize(AppStateManager stateManager, Application app) {
 
 //        background1 = new PSprite(SpriteFactory.getSprite(
 //                ImageManager.getImage("game_map"), 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT));
@@ -58,29 +57,5 @@ public class GameEndScreen extends AbstractAppState {
 //        } catch (FileNotFoundException e) {
 //            System.out.println("There was a problem loading the story file: " + e.getMessage());
 //        }
-    }
-
-    @Override
-    public void update(float tpf) {
-        draw_starting -= scroll_speed;
-//        skipButton.update(tpf);
-    }
-
-    @Override
-    public void render(RenderManager rm) {
-
-//        background1.render();
-//        background2.render();
-
-        // render the text for the story screen here
-        for (int i = 0; i < lines.size(); i++) {
-            StringRender.drawString(StringRender.font24, lines.get(i), 50, 300 + (int) draw_starting + (24 * i), Color.lightGray);
-        }
-
-//        skipButton.render();
-    }
-
-    // skips the story, going straight to the campaign map screen
-    public void skip() {
-    }
+//    }
 }

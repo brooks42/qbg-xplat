@@ -1,7 +1,9 @@
 package desktopkt.states.fight
 
+import states.BattleScreen
+
 // TODO: this should be able to load and customize rules easily
-class FightRules() {
+class FightRules {
 
     fun costToSummon(unitType: UnitType): Float {
         return when(unitType) {
@@ -18,4 +20,14 @@ class FightRules() {
     fun canAffordToSummon(mana: Float, unitType: UnitType): Boolean {
         return mana > costToSummon(unitType)
     }
+
+    fun fight(unitA: Unit, unitB: Unit) {
+
+    }
+
+    fun bounce(amount: Float) {
+//        bounce = amount
+    }
+
+    fun useAbility(unit: Unit) { }
 }

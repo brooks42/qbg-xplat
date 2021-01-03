@@ -1,7 +1,7 @@
 /*
  * The ImageManager class recursively loads all the images in a passed directory.
  */
-package models
+package desktopkt.utils
 
 import com.jme3.asset.AssetManager
 import com.jme3.asset.TextureKey
