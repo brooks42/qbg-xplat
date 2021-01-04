@@ -18,6 +18,5 @@ class SummonMessageProcessor(private val fightScreen: FightScreen): MessageProce
     override fun process(message: SummonMessage) {
         print("received message $message")
         fightScreen.spawnUnitOnLane(fightScreen.lanes[message.lane], message.unitType)
-        fightScreen.spawnOrcOnLane(fightScreen.lanes[message.lane])
     }
 }

@@ -1,9 +1,11 @@
-package desktopkt.states.fight
+package desktopkt.states.fight.views
 
 import com.jme3.math.Vector2f
 import com.simsilica.lemur.*
 import com.simsilica.lemur.component.BoxLayout
 import com.simsilica.lemur.component.IconComponent
+import desktopkt.states.fight.UnitFactory
+import desktopkt.states.fight.UnitType
 
 class UnitSummonView: Container() {
 
@@ -14,7 +16,7 @@ class UnitSummonView: Container() {
         layout = boxLayout
     }
 
-    fun addButton(unitType: UnitType, onClick: ()->kotlin.Unit) {
+    fun addButton(unitType: UnitType, onClick: ()->Unit) {
         val button = addChild(Button(null))
         buttonList.add(button)
 
@@ -32,7 +34,7 @@ class UnitSummonView: Container() {
 
         val view = UnitSummonView()
 
-        fun addButton(unitType: UnitType, onClick: ()->kotlin.Unit) {
+        fun addButton(unitType: UnitType, onClick: ()->Unit) {
             view.addButton(unitType, onClick)
         }
     }

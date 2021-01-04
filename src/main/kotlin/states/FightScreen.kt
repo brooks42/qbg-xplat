@@ -20,6 +20,8 @@ import desktopkt.multiplayer.Server
 import desktopkt.states.fight.*
 import desktopkt.states.fight.messages.SummonMessage
 import desktopkt.states.fight.messages.SummonMessageProcessor
+import desktopkt.states.fight.views.PlayerStatsView
+import desktopkt.states.fight.views.UnitSummonView
 import desktopkt.utils.ImageManager
 import org.lwjgl.input.Keyboard
 
@@ -49,15 +51,13 @@ class FightScreen : Base3dQbgState() {
 
     lateinit var unitSummonView: UnitSummonView
 
+    lateinit var playerStatsView: PlayerStatsView
+
     var selectedUnitType = UnitType.HumanKnight
 
     var unitList = arrayListOf<UnitView>()
 
     var lanes = arrayListOf<SummonLane>()
-
-    // TODO: this is fine here for now while the FightScreen still controls the rules, in the future this
-    //  FightScreen is basically a viewmodel for the Server, which will need the FightRules instead
-    val fightRules = FightRules()
 
     private val defaultCameraPosition = Vector3f(0F, 0.71F, 1F)
     private val defaultCameraFacing = Vector3f(0F, 0.25F, 0F)
@@ -97,6 +97,10 @@ class FightScreen : Base3dQbgState() {
         val height = application.guiViewPort.camera.height.toFloat()
 
         hudNode.setLocalTranslation(0F, height, 0F)
+
+        playerStatsView = PlayerStatsView()
+
+        playerStatsView.setLocalTranslation(50F, height - 100F, 0F)
 
         val unitSummonViewBuilder = UnitSummonView.Builder()
         unitSummonViewBuilder.addButton(UnitType.HumanKnight) {
@@ -163,7 +167,7 @@ class FightScreen : Base3dQbgState() {
                 .subtractLocal(rayOrigin).normalizeLocal()
         println("dir = $dir")
         // Aim the ray from the clicked spot forwards.
-        val ray = Ray(rayOrigin, dir);
+        val ray = Ray(rayOrigin, dir)
         println("ray = $ray")
 
         val collisionCount = application.rootNode.collideWith(ray, results)
@@ -195,27 +199,16 @@ class FightScreen : Base3dQbgState() {
         return uniqueGeometryHitMap.values.toList()
     }
 
-    // quick iterating function to spawn a knight
     fun spawnUnitOnLane(lane: SummonLane, unitType: UnitType) {
 
-        print("spawn human")
         val unit = unitFactory.unit(unitType)
         val unitView = unitFactory.nodeForUnit(lane.geometry.localTranslation, unit)
-        unitView.location.x -= SummonLane.laneWidth / 2
 
-        unitList.add(unitView)
-        unitNode.apply {
-            this.attachChild(unitView.geom)
+        if (unitType.isHuman) {
+            unitView.location.x -= SummonLane.laneWidth / 2
+        } else {
+            unitView.location.x += SummonLane.laneWidth / 2
         }
-    }
-
-    // quick iterating function to spawn an orc
-    fun spawnOrcOnLane(lane: SummonLane) {
-
-        print("spawn orc")
-        val unit = unitFactory.unit(UnitType.OrkKnight)
-        val unitView = unitFactory.nodeForUnit(lane.geometry.localTranslation, unit)
-        unitView.location.x += SummonLane.laneWidth / 2
 
         unitList.add(unitView)
         unitNode.apply {
@@ -225,7 +218,7 @@ class FightScreen : Base3dQbgState() {
 
     private fun processSummon(lane: SummonLane) {
         if (fight.canPlayerOneAffordUnit(selectedUnitType)) {
-            // TODO: spend the mana
+            fight.playerOneSpendMana(selectedUnitType)
             val message = SummonMessage(selectedUnitType, lane.index)
             server.send(message)
         }
@@ -267,6 +260,7 @@ class FightScreen : Base3dQbgState() {
         application.rootNode.attachChild(arenaNode)
         application.rootNode.attachChild(unitNode)
 
+        application.guiNode.attachChild(playerStatsView)
         application.guiNode.attachChild(unitSummonView)
 
         application.setDisplayStatView(false)
@@ -278,10 +272,6 @@ class FightScreen : Base3dQbgState() {
         lanes.forEach {
             arenaNode.attachChild(it.geometry)
         }
-
-        // if (DEBUG) {
-//        setAxes()
-        // }
 
         application.inputManager.addMapping(leftClick, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
         application.inputManager.addMapping(rightClick, MouseButtonTrigger(MouseInput.BUTTON_RIGHT))
@@ -304,6 +294,10 @@ class FightScreen : Base3dQbgState() {
 
     override fun onDisable() {
         application.guiNode.detachChild(hudNode)
+
+        application.guiNode.attachChild(playerStatsView)
+        application.guiNode.attachChild(unitSummonView)
+
         application.rootNode.detachAllChildren()
 
         // TODO: gotta delete all the other mappings too
@@ -316,6 +310,11 @@ class FightScreen : Base3dQbgState() {
     }
 
     override fun update(tpf: Float) {
+
+        fight.update(tpf)
+
+        playerStatsView.update(fight.playerOne)
+
         unitList.forEach { it.update(tpf) }
     }
 
@@ -359,7 +358,7 @@ class SummonLane(val index: Int, assetManager: AssetManager) {
         val laneHeight = arenaHeight / laneCount
 
         val laneZPositions: ArrayList<Float> by lazy {
-            var lanePositionArray = arrayListOf<Float>()
+            val lanePositionArray = arrayListOf<Float>()
 
                 // lanes are 1/laneCount of the arena height
                 val initPos = -(arenaHeight / 2)

@@ -21,14 +21,22 @@ class Unit(val type: UnitType) {
     }
 }
 
-enum class UnitType {
+interface UnitTypeInfo {
+    val isHuman: Boolean
+        get() = true
+}
+
+enum class UnitType: UnitTypeInfo {
     HumanKnight,
     HumanSpearman,
     HumanArcher,
     HumanPaladin,
     HumanWizard,
     HumanAssassin,
-    OrkKnight
+    OrkKnight {
+        override val isHuman: Boolean
+            get() = false
+    }
 }
 
 class UnitFactory(private val application: Application, private val imageManager: ImageManager) {

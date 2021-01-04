@@ -5,11 +5,19 @@ package desktopkt.states.fight
  * to sync up playing with other players, etc
  */
 class Fight(val playerOne: Player,
-            val playerTwo: Player) {
+            val playerTwo: Player,
+            val rules: FightRules) {
 
-    val rules = FightRules()
+    fun update(tpf: Float) {
+        playerOne.update(tpf)
+        playerTwo.update(tpf)
+    }
+
+    fun playerOneSpendMana(unitType: UnitType) {
+        playerOne.spendMana(rules.costToSummon(unitType).toInt())
+    }
 
     fun canPlayerOneAffordUnit(unitType: UnitType): Boolean {
-        return rules.canAffordToSummon(playerOne.mana, unitType)
+        return rules.canAffordToSummon(playerOne.mana.toFloat(), unitType)
     }
 }

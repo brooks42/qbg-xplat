@@ -2,13 +2,22 @@ package desktopkt.states.fight
 
 class Player(val name: String) {
 
-    var mana: Float = defaultMana
+    val mana: Int
+        get() {
+            return manaFloat.toInt()
+        }
 
-    var manaRegen: Float = defaultManaRegen
+    private var manaFloat: Float = defaultMana
+
+    private var manaRegen: Float = defaultManaRegen
 
     var health: Int = defaultHealth
 
     var units = arrayListOf<Unit>()
+
+    fun spendMana(mana: Int) {
+        manaFloat -= mana
+    }
 
     /*
         public void loadStats() {
@@ -46,7 +55,7 @@ class Player(val name: String) {
      */
 
     fun update(tpf: Float) {
-        mana += (manaRegen * tpf)
+        manaFloat += (manaRegen * tpf)
     }
 
     companion object {
