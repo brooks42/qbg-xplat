@@ -9,6 +9,8 @@ class Player(val name: String) {
 
     private var manaFloat: Float = defaultMana
 
+    private var maxMana: Float = defaultMana
+
     private var manaRegen: Float = defaultManaRegen
 
     var health: Int = defaultHealth
@@ -55,14 +57,14 @@ class Player(val name: String) {
      */
 
     fun update(tpf: Float) {
-        manaFloat += (manaRegen * tpf)
+        manaFloat = Math.min(manaFloat + (manaRegen * tpf), maxMana)
     }
 
     companion object {
 
         const val defaultMana = 10.0f
 
-        const val defaultManaRegen = 0.005f
+        const val defaultManaRegen = 0.05f
 
         const val defaultHealth = 20
     }

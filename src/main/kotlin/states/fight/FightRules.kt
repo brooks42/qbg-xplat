@@ -18,7 +18,7 @@ class FightRules {
     }
 
     fun canAffordToSummon(mana: Float, unitType: UnitType): Boolean {
-        return mana > costToSummon(unitType)
+        return mana >= costToSummon(unitType)
     }
 
     fun fight(unitA: Unit, unitB: Unit) {
