@@ -255,6 +255,14 @@ class FightScreen : Base3dQbgState() {
         // TODO: update the UI to show which unit is selected
     }
 
+    private fun isUnitInDamageSlice(unit: UnitView): Boolean {
+        if (unit.location.x > (SummonLane.laneWidth / 2) ||
+                unit.location.x < -(SummonLane.laneWidth / 2)) {
+            return true
+        }
+        return false
+    }
+
     override fun onEnable() {
         application.guiNode.attachChild(hudNode)
         application.rootNode.attachChild(arenaNode)
@@ -311,11 +319,30 @@ class FightScreen : Base3dQbgState() {
 
     override fun update(tpf: Float) {
 
+        // TODO: all the stuff below should be moved into this fight update instead...
         fight.update(tpf)
 
         playerStatsView.update(fight.playerOne)
 
+        val unitsToRemove = mutableListOf<UnitView>()
         unitList.forEach { it.update(tpf) }
+
+        for (unit in unitList) {
+            if (isUnitInDamageSlice(unit)) {
+                print("ping")
+                unitsToRemove.add(unit)
+                fight.dealDamage(unit.unit)
+            }
+        }
+
+        unitsToRemove.forEach {
+            destroyUnit(it)
+        }
+    }
+
+    private fun destroyUnit(unit: UnitView) {
+        unit.geom.removeFromParent()
+        unitList.remove(unit)
     }
 
     companion object {

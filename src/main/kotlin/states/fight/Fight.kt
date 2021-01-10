@@ -13,6 +13,14 @@ class Fight(val playerOne: Player,
         playerTwo.update(tpf)
     }
 
+    fun dealDamage(unit: Unit) {
+        if (unit.type.isHuman) {
+            playerTwo.health--
+        } else {
+            playerOne.health--
+        }
+    }
+
     fun playerOneSpendMana(unitType: UnitType) {
         playerOne.spendMana(rules.costToSummon(unitType).toInt())
     }
