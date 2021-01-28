@@ -8,6 +8,16 @@ class Fight(val playerOne: Player,
             val playerTwo: Player,
             val rules: FightRules) {
 
+    val winningPlayer: Player?
+        get() {
+            if (playerOne.health <= 0) {
+                return playerTwo
+            } else if (playerTwo.health <= 0) {
+                return playerOne
+            }
+            return null
+        }
+
     fun update(tpf: Float) {
         playerOne.update(tpf)
         playerTwo.update(tpf)

@@ -333,11 +333,30 @@ class FightScreen : Base3dQbgState() {
                 unitsToRemove.add(unit)
                 fight.dealDamage(unit.unit)
             }
+
+            if (unit.unit.hp <= 0) {
+                // TODO: show an animation when a dude dies
+                unitsToRemove.add(unit)
+            }
         }
 
         unitsToRemove.forEach {
             destroyUnit(it)
         }
+
+        if (fight.winningPlayer == fight.playerOne) {
+            win()
+        } else if (fight.winningPlayer == fight.playerTwo) {
+            lose()
+        }
+    }
+
+    private fun win() {
+        print("the player won :)")
+    }
+
+    private fun lose() {
+        print("the player lost :(")
     }
 
     private fun destroyUnit(unit: UnitView) {

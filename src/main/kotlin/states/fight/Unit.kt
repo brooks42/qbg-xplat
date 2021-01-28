@@ -8,7 +8,6 @@ import com.jme3.math.Vector3f
 import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Geometry
 import com.jme3.scene.shape.Box
-import com.simsilica.lemur.anim.Animation
 import desktopkt.utils.ImageManager
 
 class Unit(val type: UnitType) {
@@ -18,6 +17,23 @@ class Unit(val type: UnitType) {
         UnitType.HumanAssassin -> 0.05f
         UnitType.OrkKnight -> -0.03f
         else -> 0.02f
+    }
+
+    val baseHp: Int
+        get() {
+            return when(type) {
+                UnitType.HumanKnight -> 5
+                UnitType.OrkKnight -> 5
+                UnitType.HumanWizard -> 2
+                UnitType.HumanPaladin -> 7
+                else -> 3
+            }
+        }
+
+    var hp: Int
+
+    init {
+        hp = baseHp
     }
 }
 
